@@ -1,0 +1,28 @@
+<?php require_once (DOCUMENT_ROOT . '/_lib/header.view.html'); ?>
+
+
+<div class="center_box_login">
+    <div>
+        <div class="hidden-xs col-md-4"></div>
+        <div class="col-xs-12 col-md-8 ">
+            <h3><?php echo LANG_REGISTER_HDL ?></h3>
+        </div>
+        <div class="clear"></div>
+    </div>
+				
+    
+    <?php echo $form->printForm(LANG_REGISTER_SAVE, '/register/save'); ?>
+
+</div>
+
+<script>
+    $('.register_form').ajax_form({
+        'success': function(form, button, data) {
+            if (data.success) {
+                top.location.replace('/login');
+            }
+        }
+    });
+</script>
+
+<?php require_once (DOCUMENT_ROOT . '/_lib/footer.view.html'); ?>
