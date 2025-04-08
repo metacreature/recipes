@@ -1,6 +1,7 @@
 <?php
 
 require_once (DOCUMENT_ROOT . '/_lib/base.cont.php');
+require_once (DOCUMENT_ROOT . '/models/user.model.php');
 
 class Controller_Register extends Controller_Base
 {
@@ -52,13 +53,11 @@ class Controller_Register extends Controller_Base
         $form = $this->_get_form();
         $form->resolveRequest();
         if ($this->_validate_form($form)) {
-            $res = $this->_db->executePreparedQuery(
-                'INSERT INTO tbl_user (user_name, email, password) VALUES (?,?,?)',
-                [
-                    $form->getField('user_name')->getValue(),
-                    $form->getField('email')->getValue(),
-                    md5(SECURE_SALT . $form->getField('password')->getValue() .SECURE_SALT),
-                ]);
+            $user_obj = new Model_User($this->_db);
+            $res = $user_obj->create(
+                $form->getField('user_name')->getValue(),
+                $form->getField('email')->getValue(), 
+                $form->getField('password')->getValue());
             if ($res) {
                 return $form->getFormSuccess(LANG_REGISTER_SUCCESS);
             } 

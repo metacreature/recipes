@@ -1,6 +1,7 @@
 <?php
 
 require_once (DOCUMENT_ROOT . '/_lib/base.cont.php');
+require_once (DOCUMENT_ROOT . '/models/user.model.php');
 
 class Controller_Login extends Controller_Base
 {
@@ -32,20 +33,13 @@ class Controller_Login extends Controller_Base
         $form = $this->_get_form();
         $form->resolveRequest();
         if ($this->_validate_form($form)) {
-            $res = $this->_db->executePreparedQuery(
-                'SELECT user_id, user_name FROM tbl_user WHERE email = ? AND password = ?;',
-                [
-                    $form->getField('email')->getValue(),
-                    md5(SECURE_SALT . $form->getField('password')->getValue() .SECURE_SALT),
-                ]);
-            if ($res) {
-                $data = $this->_db->fetchAssoc();
-                if ($data && $data['user_id']) {
-                    $_SESSION['login'] = true;
-                    $_SESSION['user_id'] = $data['user_id'];
-                    $_SESSION['user_name'] = $data['user_name'];
-                    return $form->getFormSuccess(LANG_LOGIN_SUCCESS);
-                }
+            $user_obj = new Model_User($this->_db);
+            $data = $user_obj->login($form->getField('email')->getValue(), $form->getField('password')->getValue());
+            if ($data) {
+                $_SESSION['login'] = true;
+                $_SESSION['user_id'] = $data['user_id'];
+                $_SESSION['user_name'] = $data['user_name'];
+                return $form->getFormSuccess(LANG_LOGIN_SUCCESS);
             }
         }
         return $form->getFormError(LANG_LOGIN_FAIL);
