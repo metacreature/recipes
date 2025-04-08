@@ -11,6 +11,8 @@ class Controller_Register extends Controller_Base
     protected function _get_form() {
         $form = new FW_Ajax_Form('register_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
+        $form->addFormField('Text', 'user_name', false, LANG_REGISTER_USERNAME, true)
+            ->setMinLength(6);
         $form->addFormField('Email', 'email', false, LANG_REGISTER_EMAIL, true);
         $form->addFormField('Password', 'password', false, LANG_REGISTER_PASSWORD, true)
             ->setMinLength(8)
@@ -50,9 +52,19 @@ class Controller_Register extends Controller_Base
         $form = $this->_get_form();
         $form->resolveRequest();
         if ($this->_validate_form($form)) {
-            return $form->getFormSuccess(LANG_REGISTER_SUCCESS);
-        } else {
-            return $form->getFormError(LANG_REGISTER_FAIL);
-        }
+            $res = $this->_db->executePreparedQuery(
+                'INSERT INTO tbl_user (user_name, email, password) VALUES (?,?,?)',
+                [
+                    $form->getField('user_name')->getValue(),
+                    $form->getField('email')->getValue(),
+                    md5(SECURE_SALT . $form->getField('password')->getValue() .SECURE_SALT),
+                ]);
+            if ($res) {
+                return $form->getFormSuccess(LANG_REGISTER_SUCCESS);
+            } 
+            return $form->getFormError(LANG_REGISTER_FAIL_EMAIL);
+        } 
+        return $form->getFormError(LANG_REGISTER_FAIL);
+        
     }
 }

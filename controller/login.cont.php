@@ -32,9 +32,28 @@ class Controller_Login extends Controller_Base
         $form = $this->_get_form();
         $form->resolveRequest();
         if ($this->_validate_form($form)) {
-            return $form->getFormSuccess(LANG_LOGIN_SUCCESS);
-        } else {
-            return $form->getFormError(LANG_LOGIN_FAIL);
+            $res = $this->_db->executePreparedQuery(
+                'SELECT user_id, user_name FROM tbl_user WHERE email = ? AND password = ?;',
+                [
+                    $form->getField('email')->getValue(),
+                    md5(SECURE_SALT . $form->getField('password')->getValue() .SECURE_SALT),
+                ]);
+            if ($res) {
+                $data = $this->_db->fetchAssoc();
+                if ($data && $data['user_id']) {
+                    $_SESSION['login'] = true;
+                    $_SESSION['user_id'] = $data['user_id'];
+                    $_SESSION['user_name'] = $data['user_name'];
+                    return $form->getFormSuccess(LANG_LOGIN_SUCCESS);
+                }
+            }
         }
+        return $form->getFormError(LANG_LOGIN_FAIL);
+        
+    }
+
+    function logout() {
+        @session_destroy();
+        return WEB_URL . '?logout';
     }
 }

@@ -6,7 +6,7 @@ class Controller_Recipes_List extends Controller_Base
 {
     function __construct($db) {
         parent::__construct($db);
-        $this->_check_login();
+        // $this->_check_login();
     }
 
     function view() {

@@ -497,6 +497,36 @@ div#infinite_scroll_loading {
 
 body{
 	background-color: hsl(36, 52%, 56%);
+	padding: 0px !important;
+}
+
+#header{
+	border-bottom: 1px solid black;
+	padding: 5px 20px;
+	margin-bottom: 10px;
+}
+#header .logo{
+	display: block;
+	float: left;
+}
+#header .logo img{
+	height: 50px;
+}
+#header .login, 
+#header .logout,
+#header .user_name{
+	display: block;
+	float: right;
+	font-size: 18px;
+	margin-left: 20px;
+	margin-top: 15px;
+}
+#header .login img, 
+#header .logout img,
+#header .user_name img{
+	height: 18px;
+	margin-right: 0px;
+	margin-top: -3px;
 }
 
 .center_box_login{

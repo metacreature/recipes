@@ -2,7 +2,6 @@
 
 require_once ('_lib/global.inc.php');
 
-
 $db = FW_MySQLDataBaseLayer::singleton();
 ignore_user_abort(true);
 
@@ -21,8 +20,7 @@ if ($url && preg_match('#^[a-z_\/]+$#', $url) && file_exists('controller/' . $ur
 	$controller_file = 'controller/' . $controller_request;
 	$function = $slashpos === false ? '' : substr($url, $slashpos + 1);
 } else if (!$controller_request) {
-	@require_once('controller/login.cont.php');
-	$controller_file = 'controller/login';
+	$controller_file = 'controller/' . LANDING_PAGE;
 	$function = 'view';
 } else {
 	die('controller "' . $controller_request . '" does not exist!');

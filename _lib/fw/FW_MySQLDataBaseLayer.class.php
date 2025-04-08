@@ -272,6 +272,29 @@ class FW_MySQLDataBaseLayer
         return false;
     }
 
+    function executePreparedQuery($sSQL, $data, $iRn = 0)
+    {
+        $rRes = @$this->_rMysqli->execute_query($sSQL, $data);
+
+        if ($rRes !== false) {
+            $this->_arrResource[$iRn] = $rRes instanceof mysqli_result ? $rRes : null;
+            $this->_arrLog[] = $iRn . ' ' . $sSQL;
+            return true;
+        }
+
+        $sError = '<b>' . $iRn . ' ' . $sSQL . '
+		<br />(ERROR)' . $this->_rMysqli->error . '</b>';
+        $this->_arrLog[] = $sError;
+        $this->_bHasError = true;
+
+        if ($this->_bSaveErrorSeperate) {
+            $this->_sTempLog = $sError;
+            $this->_logError();
+        }
+
+        return false;
+    }
+
     // ============ Result-Methods ============ //
     function fetchAssoc($iRn = 0)
     {

@@ -15,6 +15,7 @@ define('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT'].(TEST_SERVER ? '' : '/rezepte'
 define('WEB_ROOT', '');
 define('SECURE_SALT', '18dd27efc08342874wgdfhdhz28265203e964c9');
 define('HIDDEN_IMAGEFOLDER_SECURE', 'kjdfgutalocveabta');
+define('LANDING_PAGE', 'recipes/list');
 
 // config
 if (TEST_SERVER) {

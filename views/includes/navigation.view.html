@@ -1,0 +1,27 @@
+<div id="header">
+    <a class="logo" href="<?php echo WEB_URL . '/' . LANDING_PAGE ?>">
+        <img src="/static/images/logo.svg" />
+    </a>
+
+    <?php if (Controller_Base::is_login()) { ?>
+
+        <a class="logout" href="<?php echo WEB_URL . '/login/logout'; ?>">
+            <img src="/static/images/icons/exit-outline.svg" />
+            <span><?php echo LANG_NAVIGATION_LOGOUT; ?></span>
+        </a>
+        <span class="user_name">
+            <img src="/static/images/icons/person-circle-outline.svg" />
+            <span><?php echo Controller_Base::get_user_name(); ?></span>
+        </span>
+
+    <?php } else  { ?>
+
+        <a class="login" href="<?php echo WEB_URL . '/login'; ?>">
+            <img src="/static/images/icons/enter-outline.svg" />
+            <span><?php echo LANG_NAVIGATION_LOGIN; ?></span>
+        </a>
+
+    <?php } ?>
+
+    <div class="clear"></div>
+</div>
