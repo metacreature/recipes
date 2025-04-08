@@ -236,12 +236,17 @@ $.fn.ajax_form.fullSerializeFormArray = function(form, add_disabled) {
 $.fn.ajax_form.submit_form = function(form, button, options) {
 	if (!form.data('is_submitting')) {
 		form.data('is_submitting', true);
+
+		var settings = $.extend(true, {}, $.fn.ajax_form.defaults, options);
+		if (settings.beforesubmit) {
+			settings.beforesubmit(form, button);
+		}
 		
 		var data = $.fn.ajax_form.fullSerializeFormArray(form);
 		
 		button.addClass("btn-loading");
 		button.blur();
-
+		
 		$.ajax({
 			type: "POST",
 			dataType: "json",
@@ -258,6 +263,7 @@ $.fn.ajax_form.submit_form = function(form, button, options) {
 
 $.fn.ajax_form.defaults = {
 	submit_btn: null,
+	beforesubmit: null,
 	success: null,
 	warning: null,
 	error: null,

@@ -32,3 +32,14 @@ define('LANG_LOGIN_PASSWORD', 'Password');
 define('LANG_LOGIN_SAVE', 'Login');
 define('LANG_LOGIN_FAIL', 'Login fehlgeschlagen!');
 define('LANG_LOGIN_SUCCESS', 'Login erfolgreich!');
+
+
+define('LANG_LIST_FILTER_USER', 'Benutzer');
+define('LANG_LIST_FILTER_CATEGORY', 'Kategorie');
+define('LANG_LIST_FILTER_TAG', 'Tag');
+define('LANG_LIST_FILTER_INGREDIENTS', 'Zutaten');
+define('LANG_LIST_FILTER_NAME', 'Name');
+define('LANG_LIST_FILTER_ERROR', 'Etwas ist schiefgelaufen!');
+
+
+define('LANG_LIST_ADD', 'Rezept hinzfügen');

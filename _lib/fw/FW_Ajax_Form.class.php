@@ -234,7 +234,7 @@ class FW_Ajax_Form
 
     function printSubmit($sDisplayValue, $sClassName = null, $sEndpoint = null)
     {
-        return '<a href="#" '.($sEndpoint ? 'data-endpoint="' .$sEndpoint  . '"' : '').' class="btn btn-ajax-submit' . ($sClassName ? ' ' . $sClassName : ''). '"><span>' . xssProtect($sDisplayValue) . '</span></a>';
+        return '<a href="#" '.($sEndpoint ? 'data-endpoint="' .$sEndpoint  . '"' : '').' class="btn btn-ajax-submit' . ($sClassName ? ' ' . $sClassName : ''). '"><span>' . $sDisplayValue . '</span></a>';
     }
 
     function printLabel($sFieldName)

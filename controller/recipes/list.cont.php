@@ -1,6 +1,8 @@
 <?php
 
 require_once (DOCUMENT_ROOT . '/_lib/base.cont.php');
+require_once (DOCUMENT_ROOT . '/models/user.model.php');
+require_once (DOCUMENT_ROOT . '/models/recipe.model.php');
 
 class Controller_Recipes_List extends Controller_Base
 {
@@ -9,83 +11,68 @@ class Controller_Recipes_List extends Controller_Base
         // $this->_check_login();
     }
 
-    protected function _get_user_list() {
-        $res = $this->_db->execcuteUnbufferedQuery('SELECT 
-            tbl_user.user_id as user_id,
-            tbl_user.user_name as user_name
-            FROM tbl_user
-            INNER JOIN tbl_recipe USING (user_id)
-            WHERE tbl_recipe.public = 1 
-            ORDER BY tbl_user.user_name ASC;');
-
-        $row_list = $this->_db->getAssocResults();
-        $data = [];
-        foreach ($row_list as $row) {
-            $data[$row['user_id']] = $row['user_name'];
-        }
-        return $data;
-    }
-
-    protected function _get_category_list() {
-        $res = $this->_db->execcuteUnbufferedQuery('SELECT 
-            category_id,
-            category_name
-            FROM tbl_category
-            ORDER BY category_name ASC;');
-
-        $row_list = $this->_db->getAssocResults();
-        $data = [];
-        foreach ($row_list as $row) {
-            $data[$row['category_id']] = $row['category_name'];
-        }
-        return $data;
-    }
-
-    protected function _get_tag_list() {
-        $res = $this->_db->execcuteUnbufferedQuery('SELECT 
-            tag_id,
-            tag_name
-            FROM tbl_tag
-            ORDER BY tag_name ASC;');
-
-        $row_list = $this->_db->getAssocResults();
-        $data = [];
-        foreach ($row_list as $row) {
-            $data[$row['tag_id']] = $row['tag_name'];
-        }
-        return $data;
-    }
-
-    protected function _get_ingredients_list() {
-        $res = $this->_db->execcuteUnbufferedQuery('SELECT 
-            tag_id,
-            tag_name
-            FROM tbl_tag
-            ORDER BY tag_name ASC;');
-
-        $row_list = $this->_db->getAssocResults();
-        $data = [];
-        foreach ($row_list as $row) {
-            $data[$row['tag_id']] = $row['tag_name'];
-        }
-        return $data;
-    }
-
     protected function _get_form() {
-        $user_list = $this->_get_user_list();
-        $category_list = $this->_get_category_list();
+        $user_obj = new Model_User($this->_db);
+        $recipe_obj = new Model_Recipe($this->_db);
+        $user_list = $user_obj->get_user_list_with_recipes(Controller_Base::get_user_id());
+        $category_list = $recipe_obj->get_category_list();
+        $tag_list = $recipe_obj->get_tag_list();
+        $ingredients_list = $recipe_obj->get_ingredients_list();
 
-        $form = new FW_Ajax_Form('register_form', false);
+        $form = new FW_Ajax_Form('filter_form', false);
+
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
-        if (true || count($user_list) > 0) {
-            $form->addFormField('Select', 'user_id', false, LANG_LIST_FILTER_USER, false)
-                ->setList($user_list);
+        
+        $form->addFormField('Hidden', 'page', false, 'x', true)
+            ->setValue('0')
+            ->setRegex('#^[0-9]$#');
+        if (count($user_list) > 0) {
+            $form->addFormField('Select', 'user_id', false, 'x', false)
+                ->setList($user_list)
+                ->setMultiple(true);
         }
-        $form->addFormField('Password', 'password', false, LANG_LOGIN_PASSWORD, true);
+        $form->addFormField('Select', 'category_id', false, 'x', false)
+                ->setList($category_list)
+                ->setMultiple(true);
+        $form->addFormField('Select', 'tag_id', false, 'x', false)
+                ->setList($tag_list)
+                ->setMultiple(true);
+        $form->addFormField('Select', 'ingredients_id', false, 'x', false)
+                ->setList($ingredients_list)
+                ->setMultiple(true);
+
+        $form->addFormField('Text', 'recipe_name', false, 'x', false);
+
         return $form;
     }
 
     function view() {
+        $form = $this->_get_form();
         require_once (DOCUMENT_ROOT . '/views/recipes/list.view.html');
+    }
+
+    function get() {
+        $form = $this->_get_form();
+        $form->resolveRequest($_POST);
+        
+        if ($form->validate()) {
+            $recipe_obj = new Model_Recipe($this->_db);
+            $offset = 50 * intval(!$form->getValue('page'));
+            $offset = $offset > 0 ? $offset - 1 : 0;
+            $data = $recipe_obj->get_recipe_list(
+                Controller_Base::get_user_id(),
+                $form->getValue('user_id'),
+                $form->getValue('category_id'),
+                $form->getValue('tag_id'),
+                $form->getValue('ingredients_id'),
+                $form->getValue('recipe_name'),
+                50,
+                $offset
+            );
+            if (is_array($data)) {
+                return $form->getFormSuccess('', ['data'=>$data]);
+            }
+        } 
+        return $form->getFormError(LANG_LIST_FILTER_ERROR);
     }
 }

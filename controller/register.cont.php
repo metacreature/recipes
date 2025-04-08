@@ -55,9 +55,9 @@ class Controller_Register extends Controller_Base
         if ($this->_validate_form($form)) {
             $user_obj = new Model_User($this->_db);
             $res = $user_obj->create(
-                $form->getField('user_name')->getValue(),
-                $form->getField('email')->getValue(), 
-                $form->getField('password')->getValue());
+                $form->getValue('user_name'),
+                $form->getValue('email'), 
+                $form->getValue('password'));
             if ($res) {
                 return $form->getFormSuccess(LANG_REGISTER_SUCCESS);
             } 

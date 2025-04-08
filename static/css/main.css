@@ -500,6 +500,7 @@ body{
 	padding: 0px !important;
 }
 
+/* header */
 #header{
 	border-bottom: 1px solid black;
 	padding: 5px 20px;
@@ -529,13 +530,18 @@ body{
 	margin-top: -3px;
 }
 
+/* login and register */
 .center_box_login{
 	width: 80%;
 	max-width: 800px;
 	padding: 10px;
 	border: 1px solid black;
 	border-radius: 6px;
-	margin: 0 auto;
+	margin: 20px auto;
+	
+}
+.center_box_login .ajax-form-response:has(.ajax-form-success) {
+	display: none !important;
 }
 .center_box_login .headline{
 	padding-left: 10px;
@@ -544,4 +550,95 @@ body{
 	.center_box_login .headline{
 		padding: 0px;
 	}
+}
+
+/* recipe-list filter */
+#list_filter{
+	padding: 10px 20px 0 20px;
+}
+#list_filter .filter_input_wrapper{
+	width: calc(100% - 30px);
+	float: left;
+}
+#list_filter .field_wrapper{
+	margin-right: 10px;
+	padding-bottom: 10px;
+	float: left;
+	display: block;
+	width: calc(25% - 10px);
+}
+#list_filter .field_wrapper:empty{
+	display: none;
+}
+#list_filter .field_wrapper:last-child{
+	margin-right: 0px;
+}
+#list_filter .medium_visible{
+	display: none;
+}
+#list_filter .count5 .field_wrapper{
+	width: calc(20% - 10px);
+}
+@media(max-width: 1200px) {
+	#list_filter .count4 .field_wrapper,
+	#list_filter .count5 .field_wrapper{
+		width: calc(50% - 10px);
+	}
+	#list_filter .count5 .field_wrapper:nth-child(1),
+	#list_filter .count5 .field_wrapper:nth-child(2),
+	#list_filter .count5 .field_wrapper:nth-child(3){
+		width: calc(33.3333% - 10px);
+	}
+	#list_filter .medium_visible{
+		display: block;
+	}
+}
+@media(max-width: 700px) {
+	#list_filter .field_wrapper,
+	#list_filter .count5 .field_wrapper{
+		width: calc(100% - 10px) !important;
+		margin-right: 0px!important;
+	}
+	#list_filter .medium_visible{
+		display: hidden;
+	}
+}
+#list_filter .btn-ajax-submit{
+	float: right;
+	display: block;
+	padding: 5px;
+	height: 30px;
+	width: 30px;
+	margin-right: 0px;
+}
+#list_filter .btn-ajax-submit img{
+	height: 20px;
+	width: 20px;
+}
+#list_filter .field_wrapper .fieldtext{
+	height: 30px;
+	font-size: 12px;
+}
+#list_filter .field_wrapper textarea{
+	margin-top: 6px;
+}
+
+/* recipe_list */
+#recipe_list{
+	padding: 10px 10px 20px 20px;
+}
+#recipe_list .entry{
+	display: block;
+	float: left;
+	width: 130px;
+	padding: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	border: 1px solid black;
+	border-radius: 5px;
+}
+#recipe_list .entry.add_recipe img{
+	display: block;
+	width: 50%;
+	margin: 0px auto;
 }
