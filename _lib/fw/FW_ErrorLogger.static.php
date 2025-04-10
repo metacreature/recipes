@@ -85,7 +85,7 @@ class FW_ErrorLogger
         // writes the whole message to the log-file and/or database (depends on the function's content)
         self::_write($sMessage, '');
 
-        echo "\n<div class=\"errorlogger\">\n	<b>" . date('d.m.Y - h:i:s') . "</b><br />\n	<i>" . $sMessage . "</i>\n";
+        echo "\n<div class=\"errorlogger\">\n	<b>" . date('d.m.Y - h:i:s') . "</b><br>\n	<i>" . $sMessage . "</i>\n";
         if (self::$bPrintCallStack)
             echo $sPrettyPrintedCallStack;
         echo "\n</div><div style=\"clear:both;\"></div>\n";
@@ -115,7 +115,7 @@ class FW_ErrorLogger
 
     static function printInfo($sMessage = '')
     {
-        echo "\n<div class=\"errorlogger\">\n	<b>" . date('d.m.Y - h:i:s') . "</b><br />\n	<i>" . $sMessage . "</i>\n";
+        echo "\n<div class=\"errorlogger\">\n	<b>" . date('d.m.Y - h:i:s') . "</b><br>\n	<i>" . $sMessage . "</i>\n";
         echo "\n</div><div style=\"clear:both;\"></div>\n";
     }
 
@@ -159,7 +159,7 @@ class FW_ErrorLogger
         $sCallStack = '	<div style="clear:both;"></div><div class="errorlogger_callstack"><a href="#" onclick="this.nextSibling.style.display=this.nextSibling.style.display==\'none\'?\'block\':\'none\'; return false;">Call Stack >></a><div style="display:none;"><ol>';
 
         foreach ($arrCallStack as $arrEntry) {
-            $sCallStack .= $nl . '		<li><br /><ul>';
+            $sCallStack .= $nl . '		<li><br><ul>';
             foreach ($arrEntry as $sKey => $mValue) {
                 if (is_array($mValue)) {
                     if (count($mValue)) {
@@ -241,7 +241,7 @@ class FW_ErrorLogger
                 $sDirName .= '/';
 
                 // prepares the message
-                $sContentToWrite = "\n<div class=\"errorlogger\">\n	<b>" . date('d.m.Y - H:i:s') . "</b><br />\n	<i>" . $sMessage . "</i>\n";
+                $sContentToWrite = "\n<div class=\"errorlogger\">\n	<b>" . date('d.m.Y - H:i:s') . "</b><br>\n	<i>" . $sMessage . "</i>\n";
                 $sContentToWrite .= $sPrettyPrintedCallStack;
                 $sContentToWrite .= "\n</div><div style=\"clear:both;\"></div>\n";
 

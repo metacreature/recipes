@@ -245,6 +245,6 @@ class Field_File extends Field_Base
     {
         $arrAttributes = $this->_getAttributes($arrAttributes, $bFormDisabled);
 
-        return '<input' . $this->_buildAttributesString($arrAttributes) . ' />';
+        return '<input' . $this->_buildAttributesString($arrAttributes) . '>';
     }
 }

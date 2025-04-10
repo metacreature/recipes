@@ -18,8 +18,8 @@ class Field_Text extends Field_Base
     {
         parent::__construct($sName);
         $this->setFieldErrors(array(
-            'too_long' => 'input too long <br />(max {LENGTH}, actual {ACTUAL_LENGTH})',
-            'too_short' => 'input too short <br />(min {LENGTH}), actual {ACTUAL_LENGTH})'
+            'too_long' => 'input too long <br>(max {LENGTH}, actual {ACTUAL_LENGTH})',
+            'too_short' => 'input too short <br>(min {LENGTH}), actual {ACTUAL_LENGTH})'
         ));
     }
 
@@ -108,7 +108,9 @@ class Field_Text extends Field_Base
         $arrAttributes['type'] = $this->_sType;
         $arrAttributes['value'] = $this->_mValue;
 
-        $arrAttributes['placeholder'] = $this->getPlaceholder();
+        if ($this->getPlaceholder()) {
+            $arrAttributes['placeholder'] = $this->getPlaceholder();
+        }
         if ($this->_iMaxLength) {
             $arrAttributes['maxlength'] = $this->_iMaxLength;
         }
@@ -119,6 +121,6 @@ class Field_Text extends Field_Base
     {
         $arrAttributes = $this->_getAttributes($arrAttributes, $bFormDisabled);
 
-        return '<input' . $this->_buildAttributesString($arrAttributes) . ' />';
+        return '<input' . $this->_buildAttributesString($arrAttributes) . '>';
     }
 }

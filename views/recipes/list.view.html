@@ -1,7 +1,7 @@
 <?php require_once (DOCUMENT_ROOT . '/views/includes/header.view.html'); ?>
 <?php require_once (DOCUMENT_ROOT . '/views/includes/navigation.view.html'); ?>
 
-<div id="list_filter">
+<div id="recipe_list_filter">
     <?php 
     echo $form->printStartTag();
     $class = $form->printInput('user_id') ? ' count5' : ' count4';
@@ -14,42 +14,42 @@
     echo '  <div class="field_wrapper">' . $form->printInput('recipe_name') . '</div>';
     echo '  <div class="clear"></div>';
     echo '</div>';
-    echo $form->printSubmit('<img src="/static/images/icons/search-sharp.svg" />', 'search', '/recipes/list/get');
+    echo $form->printSubmit('<img src="/static/images/icons/search-sharp.svg">', 'search', '/recipes/list/list');
     echo '<div class="clear"></div>';
     echo $form->printEndTag();
     ?>
 </div>
 
 <div id="recipe_list">
-    <a class="entry add_recipe">
-        <img src="/static/images/icons/add-circle-outline.svg" />
-        <span><?php echo LANG_LIST_ADD; ?></span>
+    <a class="entry add_recipe" href="/recipes/editor">
+        <img src="/static/images/icons/add-circle-outline.svg">
+        <span><?php echo LANG_RECIPE_LIST_ADD; ?></span>
     </a>
 
 </div>
 
 <script>
     $('select[name="user_id[]"]').select2({
-        placeholder: "<?php echo LANG_LIST_FILTER_USER; ?>",
+        placeholder: "<?php echo LANG_RECIPE_LIST_FILTER_USER; ?>",
         allowClear: true,
         width: '100%'
     });
     $('select[name="category_id[]"]').select2({
-        placeholder: "<?php echo LANG_LIST_FILTER_CATEGORY; ?>",
+        placeholder: "<?php echo LANG_RECIPE_LIST_FILTER_CATEGORY; ?>",
         allowClear: true,
         width: '100%'
     });
     $('select[name="tag_id[]"]').select2({
-        placeholder: "<?php echo LANG_LIST_FILTER_TAG; ?>",
+        placeholder: "<?php echo LANG_RECIPE_LIST_FILTER_TAG; ?>",
         allowClear: true,
         width: '100%'
     });
     $('select[name="ingredients_id[]"]').select2({
-        placeholder: "<?php echo LANG_LIST_FILTER_INGREDIENTS; ?>",
+        placeholder: "<?php echo LANG_RECIPE_LIST_FILTER_INGREDIENTS; ?>",
         allowClear: true,
         width: '100%'
     });
-    $('input[name="recipe_name"]').attr('placeholder', "<?php echo LANG_LIST_FILTER_NAME; ?>");
+    $('input[name="recipe_name"]').attr('placeholder', "<?php echo LANG_RECIPE_LIST_FILTER_NAME; ?>");
 
     $('.filter_form').ajax_form({
         'success': function(form, button, data) {
@@ -60,7 +60,7 @@
                 for(row of data.data) {
                     var html = '<div class="entry public'+row.public+'" data-recipe_id="'+row.recipe_id+'">';
                         html += '<span>'+row.user_name+'</span>';
-                        html += '<img src="/gallery/s_image_'+row.recipe_id+'.webp" />';
+                        html += '<img src="/gallery/s_image_'+row.recipe_id+'.webp">';
                         html += '<div>'+row.recipe_name+'</div>';
                         html += '</div>';
                     $('#recipe_list').append(html)

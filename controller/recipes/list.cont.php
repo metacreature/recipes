@@ -25,7 +25,7 @@ class Controller_Recipes_List extends Controller_Base
         
         $form->addFormField('Hidden', 'page', false, 'x', true)
             ->setValue('0')
-            ->setRegex('#^[0-9]$#');
+            ->setRegex('#^[0-9]+$#');
         if (count($user_list) > 0) {
             $form->addFormField('Select', 'user_id', false, 'x', false)
                 ->setList($user_list)
@@ -51,15 +51,15 @@ class Controller_Recipes_List extends Controller_Base
         require_once (DOCUMENT_ROOT . '/views/recipes/list.view.html');
     }
 
-    function get() {
+    function list() {
         $form = $this->_get_form();
         $form->resolveRequest($_POST);
         
         if ($form->validate()) {
             $recipe_obj = new Model_Recipe($this->_db);
-            $offset = 50 * intval(!$form->getValue('page'));
+            $offset = 50 * intval($form->getValue('page'));
             $offset = $offset > 0 ? $offset - 1 : 0;
-            $data = $recipe_obj->get_recipe_list(
+            $data = $recipe_obj->list(
                 Controller_Base::get_user_id(),
                 $form->getValue('user_id'),
                 $form->getValue('category_id'),
@@ -73,6 +73,6 @@ class Controller_Recipes_List extends Controller_Base
                 return $form->getFormSuccess('', ['data'=>$data]);
             }
         } 
-        return $form->getFormError(LANG_LIST_FILTER_ERROR);
+        return $form->getFormError(LANG_RECIPE_LIST_FILTER_ERROR);
     }
 }

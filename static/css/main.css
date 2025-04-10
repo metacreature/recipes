@@ -173,9 +173,6 @@ a.btn-loading:focus::before{
 	margin-top: 5px;
 }
 
-.form-group:last-of-type {
-	margin-bottom: 5px;
-}
 
 .input-group-addon {
 	font-size: 12px !important;
@@ -211,6 +208,7 @@ select.form-control {
 	padding-right: 0px;
 	padding-top: 3px !important;
 	text-align: left !important;
+	margin-bottom: 5px !important;
 }
 
 .field-error-msg{
@@ -228,12 +226,9 @@ select.form-control {
 }
 
 
-.button-line label{
-	display: none;
-}
 .button-line .btn{
 	float: left;
-	margin-top: 10px;
+	margin-top: 5px;
 	margin-bottom: 10px;
 }
 
@@ -285,12 +280,33 @@ select.form-control {
 	label.control-label {
 		text-align: right !important;
 	}
-	.ajax-form-response,
-	.button-line .btn{
+
+	form.col-md-5-7 .ajax-form-response{
+		margin-left: calc(41.6666% + 12px);
+	}
+	form.col-md-5-7 .field-error-msg{
+		margin-left: 41.6666%;
+	}
+
+	form.col-md-4-8 .ajax-form-response{
 		margin-left: calc(33.3333% + 10px);
 	}
-	.field-error-msg{
+	form.col-md-4-8 .field-error-msg{
 		margin-left: 33.3333%;
+	}
+	
+	form.col-md-3-9 .ajax-form-response{
+		margin-left: calc(25% + 8px);
+	}
+	form.col-md-3-9 .field-error-msg{
+		margin-left: 25%;
+	}
+
+	form.col-md-2-10 .ajax-form-response{
+		margin-left: calc(16.6666666% + 8px);
+	}
+	form.col-md-2-10 .field-error-msg{
+		margin-left: 16.6666666%;
 	}
 }
 
@@ -340,18 +356,69 @@ div.combobox_dd{
     overflow-y: auto;
     background-color: #e3e4e5;
     border: 1px solid #aaaaaa !important;
-    margin-left: 10px;
+    margin-top: 25px;
 }
 div.combobox_dd div{
 	display: block;
 	padding: 4px 10px;
 	position: relative;
 	cursor: pointer;
+	white-space: nowrap;
 }
 div.combobox_dd div:hover,
 div.combobox_dd div.active{
 	background-color: #005f7e;
 	color: #FFFFFF;
+}
+
+
+/****************************************************/
+/******************* tagify *********************/
+.tags-look{
+	margin-top: 3px;
+}
+.tagify.form-control{
+	padding: 4px 0;
+	height: 31px;
+}
+.tagify__input{
+	margin-top: 0;
+}
+.tags-look .tagify__dropdown__item{
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 3px;
+    padding: 3px 5px;
+    border: 1px solid #CCC;
+    background: #F3F3F3;
+    margin: 5px;
+    font-size: 12px;
+    color: black;
+    transition: 0s;
+}
+
+.tags-look .tagify__dropdown__item--active{
+    border-color: black;
+}
+
+.tags-look .tagify__dropdown__item:hover{
+    background: lightyellow;
+    border-color: gold;
+}
+
+.tags-look .tagify__dropdown__item--hidden {
+    max-width: 0;
+    max-height: initial;
+    padding: .3em 0;
+    margin: .2em 0;
+    white-space: nowrap;
+    text-indent: -20px;
+    border: 0;
+}
+
+tag.tagify__tag{
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
 }
 
 
@@ -492,6 +559,7 @@ div#infinite_scroll_loading {
 	vertical-align: middle;
 }
 
+
 /****************************************************/
 /********************* others ***********************/
 
@@ -533,7 +601,7 @@ body{
 /* login and register */
 .center_box_login{
 	width: 80%;
-	max-width: 800px;
+	max-width: 500px;
 	padding: 10px;
 	border: 1px solid black;
 	border-radius: 6px;
@@ -543,67 +611,60 @@ body{
 .center_box_login .ajax-form-response:has(.ajax-form-success) {
 	display: none !important;
 }
-.center_box_login .headline{
-	padding-left: 10px;
-}
-@media ( max-width : 991px) {
-	.center_box_login .headline{
-		padding: 0px;
-	}
-}
+
 
 /* recipe-list filter */
-#list_filter{
+#recipe_list_filter{
 	padding: 10px 20px 0 20px;
 }
-#list_filter .filter_input_wrapper{
+#recipe_list_filter .filter_input_wrapper{
 	width: calc(100% - 30px);
 	float: left;
 }
-#list_filter .field_wrapper{
+#recipe_list_filter .field_wrapper{
 	margin-right: 10px;
 	padding-bottom: 10px;
 	float: left;
 	display: block;
 	width: calc(25% - 10px);
 }
-#list_filter .field_wrapper:empty{
+#recipe_list_filter .field_wrapper:empty{
 	display: none;
 }
-#list_filter .field_wrapper:last-child{
+#recipe_list_filter .field_wrapper:last-child{
 	margin-right: 0px;
 }
-#list_filter .medium_visible{
+#recipe_list_filter .medium_visible{
 	display: none;
 }
-#list_filter .count5 .field_wrapper{
+#recipe_list_filter .count5 .field_wrapper{
 	width: calc(20% - 10px);
 }
 @media(max-width: 1200px) {
-	#list_filter .count4 .field_wrapper,
-	#list_filter .count5 .field_wrapper{
+	#recipe_list_filter .count4 .field_wrapper,
+	#recipe_list_filter .count5 .field_wrapper{
 		width: calc(50% - 10px);
 	}
-	#list_filter .count5 .field_wrapper:nth-child(1),
-	#list_filter .count5 .field_wrapper:nth-child(2),
-	#list_filter .count5 .field_wrapper:nth-child(3){
+	#recipe_list_filter .count5 .field_wrapper:nth-child(1),
+	#recipe_list_filter .count5 .field_wrapper:nth-child(2),
+	#recipe_list_filter .count5 .field_wrapper:nth-child(3){
 		width: calc(33.3333% - 10px);
 	}
-	#list_filter .medium_visible{
+	#recipe_list_filter .medium_visible{
 		display: block;
 	}
 }
 @media(max-width: 700px) {
-	#list_filter .field_wrapper,
-	#list_filter .count5 .field_wrapper{
+	#recipe_list_filter .field_wrapper,
+	#recipe_list_filter .count5 .field_wrapper{
 		width: calc(100% - 10px) !important;
 		margin-right: 0px!important;
 	}
-	#list_filter .medium_visible{
+	#recipe_list_filter .medium_visible{
 		display: hidden;
 	}
 }
-#list_filter .btn-ajax-submit{
+#recipe_list_filter .btn-ajax-submit{
 	float: right;
 	display: block;
 	padding: 5px;
@@ -611,15 +672,15 @@ body{
 	width: 30px;
 	margin-right: 0px;
 }
-#list_filter .btn-ajax-submit img{
+#recipe_list_filter .btn-ajax-submit img{
 	height: 20px;
 	width: 20px;
 }
-#list_filter .field_wrapper .fieldtext{
+#recipe_list_filter .field_wrapper .fieldtext{
 	height: 30px;
 	font-size: 12px;
 }
-#list_filter .field_wrapper textarea{
+#recipe_list_filter .field_wrapper textarea{
 	margin-top: 6px;
 }
 
@@ -641,4 +702,83 @@ body{
 	display: block;
 	width: 50%;
 	margin: 0px auto;
+}
+
+
+#recipe_editor{
+}
+@media(min-width: 1200px) {
+	#recipe_editor .original_text label,
+	#recipe_editor .original_text .field-wrapper{
+		width: 100%;
+		text-align: left !important;
+		padding-bottom: 8px;
+	}
+}
+#recipe_editor .ingredients_entry{
+	margin-bottom: 8px;
+}
+#recipe_editor .ingredients_entry:last-of-type{
+	margin-bottom: 0px;
+}
+
+#recipe_editor .ingredients_entry input,
+#recipe_editor .ingredients_inputs > div,
+#recipe_editor .ingredients_is_alternative,
+#recipe_editor .ingredients_is_alternative span,
+#recipe_editor .ingredients_inputs{
+	float: left;
+}
+#recipe_editor .ingredients_is_alternative{
+	width: 60px;
+	padding-top: 2px;
+}
+#recipe_editor .ingredients_is_alternative span{
+	display: block;
+	padding: 2px 0 0 5px;
+}
+#recipe_editor .ingredients_inputs{
+	width: calc(100% - 100px);
+}
+#recipe_editor .ingredients_inputs > input:nth-child(1){
+	width: 60px;
+}
+#recipe_editor .ingredients_inputs > *:nth-child(2){
+	width: calc(40% - 30px);
+}
+#recipe_editor .ingredients_inputs > *:nth-child(3){
+	width: calc(60% - 30px);
+}
+#recipe_editor .ingredients_inputs .combobox_dd{
+	min-width: 100%;
+}
+#recipe_editor #steps_list textarea{
+	display: block;
+	float: left;
+	width: calc(100% - 40px);
+}
+#recipe_editor #ingredients_list .btn_remove,
+#recipe_editor #steps_list .btn_remove{
+	background-color: red;
+	border-color: red;
+	color: #FFFFFF;
+	display: block;
+	float: right;
+	font-size: 24px;
+	line-height: 16px;
+	font-weight: bold;
+	padding-top: 3px;
+	padding-bottom: 6px;
+}
+
+#recipe_editor #add_ingredients,
+#recipe_editor #add_step{
+	background-color:darkgreen;
+	border-color: darkgreen;
+	color: #FFFFFF;
+	font-size: 20px;
+	font-weight: bold;
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-top: 0px;
 }

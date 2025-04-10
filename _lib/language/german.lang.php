@@ -21,7 +21,7 @@ define('LANG_REGISTER_PASSWORD_ERROR', 'Password muß mindestens je einen Großb
 define('LANG_REGISTER_REPEAT_PASSWORD', 'Password wiederholen');
 define('LANG_REGISTER_REPEAT_PASSWORD_ERROR', 'Password nicht identisch!');
 define('LANG_REGISTER_SAVE', 'Registrieren');
-define('LANG_REGISTER_FAIL', 'Registrierung fehlgeschlagen!');
+define('LANG_REGISTER_INVALID', 'Bitte überprüfen Sie ihre Eingabe!');
 define('LANG_REGISTER_FAIL_EMAIL', 'E-Mail schon vorhanden!');
 define('LANG_REGISTER_SUCCESS', 'Registrierung erfolgreich!');
 
@@ -34,12 +34,30 @@ define('LANG_LOGIN_FAIL', 'Login fehlgeschlagen!');
 define('LANG_LOGIN_SUCCESS', 'Login erfolgreich!');
 
 
-define('LANG_LIST_FILTER_USER', 'Benutzer');
-define('LANG_LIST_FILTER_CATEGORY', 'Kategorie');
-define('LANG_LIST_FILTER_TAG', 'Tag');
-define('LANG_LIST_FILTER_INGREDIENTS', 'Zutaten');
-define('LANG_LIST_FILTER_NAME', 'Name');
-define('LANG_LIST_FILTER_ERROR', 'Etwas ist schiefgelaufen!');
+define('LANG_RECIPE_LIST_FILTER_USER', 'Benutzer');
+define('LANG_RECIPE_LIST_FILTER_CATEGORY', 'Kategorie');
+define('LANG_RECIPE_LIST_FILTER_TAG', 'Tag');
+define('LANG_RECIPE_LIST_FILTER_INGREDIENTS', 'Zutaten');
+define('LANG_RECIPE_LIST_FILTER_NAME', 'Name');
+define('LANG_RECIPE_LIST_FILTER_ERROR', 'Etwas ist schiefgelaufen!');
+define('LANG_RECIPE_LIST_ADD', 'Rezept hinzfügen');
 
 
-define('LANG_LIST_ADD', 'Rezept hinzfügen');
+
+define('LANG_SELECT2_SELECT', 'Auswählen');
+define('LANG_RECIPE_EDITOR_ORIGINAL', 'Original-Text');
+define('LANG_RECIPE_EDITOR_PUBLIC', 'Öffentlich');
+define('LANG_RECIPE_EDITOR_CATEGORY', 'Kategorie');
+define('LANG_RECIPE_EDITOR_TAGLIST', 'Tags');
+define('LANG_RECIPE_EDITOR_NAME', 'Name');
+define('LANG_RECIPE_EDITOR_PERSONS', 'Anz. Personen');
+define('LANG_RECIPE_EDITOR_INGREDIENTS', 'Zutaten');
+define('LANG_RECIPE_EDITOR_INGREDIENTS_IS_ALTERNATIVE', 'Oder');
+define('LANG_RECIPE_EDITOR_INGREDIENTS_QUANTITY', 'Menge');
+define('LANG_RECIPE_EDITOR_INGREDIENTS_UNIT', 'Einheit');
+define('LANG_RECIPE_EDITOR_INGREDIENTS_NAME', 'Name');
+define('LANG_RECIPE_EDITOR_STEP', 'Schritt ');
+define('LANG_RECIPE_EDITOR_SAVE', 'Speichern');
+define('LANG_RECIPE_EDITOR_FAIL', 'Speichern fehlgeschlagen!');
+define('LANG_RECIPE_EDITOR_SUCCESS', 'Speichern erfolgreich!');
+define('LANG_RECIPE_EDITOR_INVALID', 'Bitte überprüfen Sie ihre Eingabe!');

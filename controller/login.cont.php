@@ -17,12 +17,6 @@ class Controller_Login extends Controller_Base
         return $form;
     }
 
-    protected function _validate_form($form) {
-        $valid = $form->validate();
-        $password = $form->getField('password');
-        return $valid;
-    }
-
     function view() {
         $this->_logout();
         $form = $this->_get_form();
@@ -32,7 +26,7 @@ class Controller_Login extends Controller_Base
     function save() {
         $form = $this->_get_form();
         $form->resolveRequest();
-        if ($this->_validate_form($form)) {
+        if ($form->validate($form)) {
             $user_obj = new Model_User($this->_db);
             $data = $user_obj->login($form->getValue('email'), $form->getValue('password'));
             if ($data) {

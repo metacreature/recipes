@@ -237,7 +237,7 @@ class FW_MySQLDataBaseLayer
         }
 
         $sError = '<b>' . $iRn . ' ' . $sSQL . '
-		<br />(ERROR)' . $this->_rMysqli->error . '</b>';
+		<br>(ERROR)' . $this->_rMysqli->error . '</b>';
         $this->_arrLog[] = $sError;
         $this->_bHasError = true;
 
@@ -260,7 +260,7 @@ class FW_MySQLDataBaseLayer
         }
 
         $sError = '<b>' . $iRn . ' ' . $sSQL . '
-		<br />(ERROR)' . $this->_rMysqli->error . '</b>';
+		<br>(ERROR)' . $this->_rMysqli->error . '</b>';
         $this->_arrLog[] = $sError;
         $this->_bHasError = true;
 
@@ -283,7 +283,7 @@ class FW_MySQLDataBaseLayer
         }
 
         $sError = '<b>' . $iRn . ' ' . $sSQL . '
-		<br />(ERROR)' . $this->_rMysqli->error . '</b>';
+		<br>(ERROR)' . $this->_rMysqli->error . '</b>';
         $this->_arrLog[] = $sError;
         $this->_bHasError = true;
 
@@ -508,7 +508,7 @@ class FW_MySQLDataBaseLayer
     function printLog()
     {
         if (count($this->_arrLog))
-            echo 'SQL Log: ' . count($this->_arrLog) . " Abfragen<br />\n<ul><li>" . implode("</li>\n<li>", $this->_arrLog) . '</li></ul>';
+            echo 'SQL Log: ' . count($this->_arrLog) . " Abfragen<br>\n<ul><li>" . implode("</li>\n<li>", $this->_arrLog) . '</li></ul>';
         else
             echo 'SQL Log: 0 Abfragen';
     }
@@ -517,7 +517,7 @@ class FW_MySQLDataBaseLayer
     {
         if ($this->_bIsInit) {
             if (count($this->_arrLog)) {
-                FW_ErrorLogger::writeInfo('SQL Log: ' . count($this->_arrLog) . " Abfragen<br />\n<ul><li>" . implode("</li>\n<li>", $this->_arrLog) . '</li></ul>');
+                FW_ErrorLogger::writeInfo('SQL Log: ' . count($this->_arrLog) . " Abfragen<br>\n<ul><li>" . implode("</li>\n<li>", $this->_arrLog) . '</li></ul>');
             } else {
                 FW_ErrorLogger::writeInfo('SQL Log: 0 Abfragen');
             }
@@ -527,7 +527,7 @@ class FW_MySQLDataBaseLayer
     protected function _logError()
     {
         if ($this->_bIsInit) {
-            FW_ErrorLogger::writeError("SQL Error:<br />\n" . $this->_sTempLog);
+            FW_ErrorLogger::writeError("SQL Error:<br>\n" . $this->_sTempLog);
         }
         $this->_sTempLog = '';
     }

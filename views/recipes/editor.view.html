@@ -1,0 +1,101 @@
+<?php require_once (DOCUMENT_ROOT . '/views/includes/header.view.html'); ?>
+<?php require_once (DOCUMENT_ROOT . '/views/includes/navigation.view.html'); ?>
+
+<div id="recipe_editor">
+    <?php 
+    $form->setColMd(2,10);
+    echo $form->printStartTag();
+    echo '<div class="col-lg-7">';
+    echo    '<div class="ajax-form-response"></div>';
+    echo    $form->printLine('public', LANG_RECIPE_EDITOR_PUBLIC);
+    echo    $form->printLine('category_id', LANG_RECIPE_EDITOR_CATEGORY);
+    echo    $form->printLine('tag_list', LANG_RECIPE_EDITOR_TAGLIST);
+    echo    $form->printLine('recipe_name', LANG_RECIPE_EDITOR_NAME);
+    echo    $form->printLine('persons', LANG_RECIPE_EDITOR_PERSONS);
+
+    echo    '<div class="field-line form-group row line-mandatory">';
+    echo        '<label class="col-xs-12 col-md-2 control-label">'.LANG_RECIPE_EDITOR_INGREDIENTS.' *</label>';
+    echo        '<div class="field-wrapper col-xs-12 col-md-10" id="ingredients_list">';
+    $cnt = 0;
+    while($cnt < (int)$form->getValue('cnt_ingredients')) {
+        $cnt++;
+        echo        '<div class="ingredients_entry">';
+        echo            '<div class="ingredients_is_alternative">';
+        echo                $form->printInput('ingredients_is_alternative_'.$cnt).'<span>'.LANG_RECIPE_EDITOR_INGREDIENTS_IS_ALTERNATIVE.'</span>';
+        echo                '<div class="clear"></div>';
+        echo            '</div>';
+        echo            '<div class="ingredients_inputs">';
+        echo                $form->printInput('ingredients_quantity_'.$cnt, ['placeholder' => LANG_RECIPE_EDITOR_INGREDIENTS_QUANTITY]);
+        echo                $form->printInput('ingredients_unit_'.$cnt, ['data-type' => 'ingredients_unit', 'placeholder' => LANG_RECIPE_EDITOR_INGREDIENTS_UNIT]);
+        echo                $form->printInput('ingredients_name_'.$cnt, ['data-type' => 'ingredients_name', 'placeholder' => LANG_RECIPE_EDITOR_INGREDIENTS_NAME]);
+        echo                '<div class="clear"></div>';
+        echo            '</div>';
+        echo            '<a class="btn btn_remove">-</a>';
+        echo            '<div class="clear"></div>';
+        echo        '</div>';
+    }
+    echo        '</div>';
+    echo    '</div>';
+
+    echo    '<div class="button-line form-group row">';
+    echo        '<label class="col-md-2 control-label hidden-xs hidden-sm">&nbsp;</label>';
+    echo        '<div class="field-wrapper col-xs-12 col-md-10" id="ingredients_list">';
+    echo            '<a class="btn" id="add_ingredients">+</a>';
+    echo        '</div>';
+    echo    '</div>';
+
+    echo    '<div id="steps_list">';
+    $cnt = 0;
+    while($cnt < (int)$form->getValue('cnt_step')) {
+        $cnt++;
+        echo    '<div class="field-line form-group row line-mandatory">';
+        echo        '<label class="col-xs-12 col-md-2 control-label">'.LANG_RECIPE_EDITOR_STEP . $cnt.' *</label>';
+        echo        '<div class="field-wrapper col-xs-12 col-md-10">';
+        echo            $form->printInput('step_description_'.$cnt);
+        echo            '<a class="btn btn_remove">-</a>';
+        echo            '<div class="clear"></div>';
+        echo        '</div>';
+        echo        '<div class="clear"></div>';
+        echo     '</div>';
+    }
+    echo    '</div>';
+
+    
+    
+    echo    '<div class="button-line form-group row">';
+    echo        '<label class="col-md-2 control-label hidden-xs hidden-sm">&nbsp;</label>';
+    echo        '<div class="field-wrapper col-xs-12 col-md-10" id="ingredients_list">';
+    echo            '<a class="btn" id="add_step">+</a>';
+    echo        '</div>';
+    echo    '</div>';
+
+    echo '</div>';
+    echo '<div class="col-lg-5">';
+    echo    $form->printLine('original_text', LANG_RECIPE_EDITOR_ORIGINAL, null, 'original_text');
+    echo '</div>';
+    echo '<div class="clear"></div>';
+    echo '<div class="col-lg-7">';
+    echo $form->printSubmitLine(LANG_RECIPE_EDITOR_SAVE, 'save', '/recipes/editor/save');
+    echo '</div>';
+    echo $form->printEndTag();
+    ?>
+</div>
+
+<script>
+    $('select[name="category_id"]').val("<?php echo $form->getValue('category_id'); ?>").select2({
+        placeholder: "<?php echo LANG_SELECT2_SELECT; ?>",
+        width: '100%',
+        minimumResultsForSearch: 10
+    });
+    
+    var unit_list = <?php echo json_encode($unit_list); ?>;
+    var ingredients_list = <?php echo json_encode($ingredients_list); ?>;
+    var tag_list = <?php echo json_encode($tag_list); ?>;
+
+</script>
+
+
+<script src='/static/js/recipe_editor.js'></script>
+
+
+<?php require_once (DOCUMENT_ROOT . '/views/includes/footer.view.html'); ?>

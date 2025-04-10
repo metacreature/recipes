@@ -64,6 +64,9 @@ class Field_Checkbox extends Field_Base
         if ($bFormDisabled || $this->_bDisabled) {
             $arrAttributes['disabled'] = '';
         }
-        return '<input' . $this->_buildAttributesString($arrAttributes) . ' />' . '<input type="hidden" name="_available_' . $this->_sName . '" value="1" />';
+        if (!empty($arrAttributes['autocomplete'])) {
+            unset($arrAttributes['autocomplete']);
+        }
+        return '<input' . $this->_buildAttributesString($arrAttributes) . '>' . '<input type="hidden" name="_available_' . $this->_sName . '" value="1">';
     }
 }

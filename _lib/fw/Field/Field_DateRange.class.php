@@ -149,9 +149,9 @@ class Field_DateRange extends Field_Date
             $arrAttributesTo['value'] = $this->_mValueTo;
         }
 
-        $ret = '<input' . $this->_buildAttributesString($arrAttributesFrom) . ' />
+        $ret = '<input' . $this->_buildAttributesString($arrAttributesFrom) . '>
 					<span class="input-group-addon daterange-middle">&#8211;</span>
-					<input' . $this->_buildAttributesString($arrAttributesTo) . ' />';
+					<input' . $this->_buildAttributesString($arrAttributesTo) . '>';
         
         $ret .= '<script>
     		$("#'.$arrAttributesFrom['id'].', #'.$arrAttributesTo['id'].'").datepicker({

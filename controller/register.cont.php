@@ -63,7 +63,6 @@ class Controller_Register extends Controller_Base
             } 
             return $form->getFormError(LANG_REGISTER_FAIL_EMAIL);
         } 
-        return $form->getFormError(LANG_REGISTER_FAIL);
-        
+        return $form->getFormError(LANG_REGISTER_INVALID); 
     }
 }

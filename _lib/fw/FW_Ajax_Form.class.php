@@ -14,6 +14,9 @@ class FW_Ajax_Form
     
     protected $_secure_time;
 
+    protected $_col_md_label = 4;
+    protected $_col_md_field = 8;
+
     function __construct($form_name, $activate_secure = false, $secure_time = 0) 
     {
         $this->_form_name = $form_name;
@@ -37,6 +40,11 @@ class FW_Ajax_Form
         $this->_arrFormFields[$sFieldName] = $oField;
 
         return $oField;
+    }
+
+    function setColMd($iLabel, $iField) {
+        $this->_col_md_label = (string) $iLabel;
+        $this->_col_md_field = (string) $iField;
     }
 
     function setFieldErrors($arrFieldErrors, $mTypes = null)
@@ -212,8 +220,8 @@ class FW_Ajax_Form
         }
         
         return '
-			<form method="post" ' . $sEncType . ' autocomplete="off" class="ajax-form form-horizontal ' . $this->_form_name . '" data-name="'.$this->_form_name.'">'.
-			($this->_activate_secure ? '<input type="hidden" name="secure" value="' . $secure . '" />' : '').
+			<form method="post" ' . $sEncType . ' autocomplete="off" class="ajax-form form-horizontal col-md-'.$this->_col_md_label.'-'.$this->_col_md_field.' ' . $this->_form_name . '" data-name="'.$this->_form_name.'">'.
+			($this->_activate_secure ? '<input type="hidden" name="secure" value="' . $secure . '">' : '').
             $sReturn;
     }
 
@@ -227,7 +235,10 @@ class FW_Ajax_Form
     {
         if (! $this->_bFormDisabled) {
             return '
-				<div class="button-line"><label>&nbsp;</label>' . $this->printSubmit($sDisplayValue, $sClassName, $sEndpoint) . '<div class="clear"></div></div>';
+				<div class="button-line form-group row"><label class="control-label col-md-'.$this->_col_md_label.' hidden-xs hidden-sm">&nbsp;</label>' .
+                '<div class="button-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">' .
+                 $this->printSubmit($sDisplayValue, $sClassName, $sEndpoint) . 
+                 '</div><div class="clear"></div></div>';
         }
         return '';
     }
@@ -237,16 +248,17 @@ class FW_Ajax_Form
         return '<a href="#" '.($sEndpoint ? 'data-endpoint="' .$sEndpoint  . '"' : '').' class="btn btn-ajax-submit' . ($sClassName ? ' ' . $sClassName : ''). '"><span>' . $sDisplayValue . '</span></a>';
     }
 
-    function printLabel($sFieldName)
+    function printLabel($sFieldName, $sLabel = null)
     {
         if (! array_key_exists($sFieldName, $this->_arrFormFields)) {
             return null;
         }
         $oField = $this->_arrFormFields[$sFieldName];
-        if ($oField->getLabel()) {
-            return '<label class="col-xs-12 col-md-4 control-label" for="' . $sFieldName . '">' . $oField->getLabel() . ($oField->getMandatory() ? ' *' : '') . '</label>';
+        $sLabel = $sLabel ? $sLabel : $oField->getLabel();
+        if ($sLabel) {
+            return '<label class="col-xs-12 col-md-'.$this->_col_md_label.' control-label" for="' . $sFieldName . '">' . $sLabel . ($oField->getMandatory() ? ' *' : '') . '</label>';
         } else {
-            return '<label class="col-xs-12 col-md-4 control-label" for="' . $sFieldName . '">&nbsp;</label>';
+            return '<label class="col-xs-12 col-md-'.$this->_col_md_label.' control-label" for="' . $sFieldName . '">&nbsp;</label>';
         }
     }
 
@@ -276,7 +288,7 @@ class FW_Ajax_Form
         return mb_trim($sClassName);
     }
 
-    function printLine($sFieldName, $arrFieldAttributes = null, $sLineClassNames = '')
+    function printLine($sFieldName, $sLabel = null, $arrFieldAttributes = null, $sLineClassNames = '')
     {
         if (! array_key_exists($sFieldName, $this->_arrFormFields)) {
             return null;
@@ -288,8 +300,8 @@ class FW_Ajax_Form
 
         return '
 				<div class="' . mb_trim($sClassName) . '">' .
-                    $this->printLabel($sFieldName) .
-                    '<div class="field-wrapper col-xs-12 col-md-8">' .
+                    $this->printLabel($sFieldName, $sLabel) .
+                    '<div class="field-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">' .
                         $this->printInput($sFieldName, $arrFieldAttributes) .
                 '</div><div class="clear"></div></div>';
     }
