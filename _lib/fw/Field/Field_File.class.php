@@ -10,7 +10,7 @@ class Field_File extends Field_Base
 
     protected $_iMaxSize = 0;
 
-    protected $b_Mulitple = false;
+    protected $_bMultiple = false;
 
     function __construct($sName)
     {

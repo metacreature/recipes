@@ -48,6 +48,21 @@ class Controller_Recipes_List extends Controller_Base
 
     function view() {
         $form = $this->_get_form();
+        $form->resolveRequest($_GET);
+        $recipe_list = [];
+        $recipe_obj = new Model_Recipe($this->_db);
+        if ($form->validate()) {
+            $recipe_list = $recipe_obj->list(
+                Controller_Base::get_user_id(),
+                $form->getValue('user_id'),
+                $form->getValue('category_id'),
+                $form->getValue('tag_id'),
+                $form->getValue('ingredients_id'),
+                $form->getValue('recipe_name'),
+                5000,
+                0
+            );
+        }
         require_once (DOCUMENT_ROOT . '/views/recipes/list.view.html');
     }
 
@@ -66,7 +81,7 @@ class Controller_Recipes_List extends Controller_Base
                 $form->getValue('tag_id'),
                 $form->getValue('ingredients_id'),
                 $form->getValue('recipe_name'),
-                50,
+                5000,
                 $offset
             );
             if (is_array($data)) {

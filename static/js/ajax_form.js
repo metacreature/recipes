@@ -102,7 +102,8 @@ $.fn.ajax_form.ajax_form_complete = function(form, button, options, data, status
 	
 	form.find(".ajax-form-response").hide().html("");
 	form.find(".field-error-msg").remove();
-	form.find(".field-line").removeClass('line-error');
+	form.find('.line-error').removeClass('line-error');
+	form.find('.field-error').removeClass('field-error');
 	
 	var ajax_form_scrolltop = function() {
 		var top = form.find(".ajax-form-response").offset().top;
@@ -159,7 +160,7 @@ $.fn.ajax_form.ajax_form_complete = function(form, button, options, data, status
 				if (!field.attr('name')) {
 					field = form.find('[name="' + i + '[]"]').first();
 				}
-				field.closest(".field-line").addClass("line-error");
+				field.addClass("field-error").closest(".field-line").addClass("line-error");
 				if (error_list[i] !== true) {
 					error = typeof error_list[i] == 'string' ? error_list[i] : error_list[i][0]
 					field.closest(".field-line").prepend('<span class="field-error-msg">'+error+'</span>');

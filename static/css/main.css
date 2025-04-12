@@ -219,10 +219,10 @@ select.form-control {
 	color: #C9302C;
 }
 
-.line-error input{
-	background-color: #F2DEDE;
-	color: #C9302C;
-	border: 1px solid #C9302C;
+.field-error{
+	background-color: #F2DEDE !important;
+	color: #C9302C !important;
+	border: 1px solid #C9302C !important;
 }
 
 
@@ -423,144 +423,6 @@ tag.tagify__tag{
 
 
 /****************************************************/
-/******************* dropzone *********************/
-
-.dropzone{
-	border: 0 none;
-	padding: 0;
-	min-height: 152px;
-}
-
-.dropzone .dz-message {
-    min-height: 152px;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #CCCCCC;
-    font-size: 2em;
-}
-
-.dropzone .dz-preview .dz-progress{
-	display: none;
-}
-.dropzone .dz-preview.dz-processing .dz-progress{
-	display: block;
-}
-.dropzone .dz-preview.dz-success .dz-success-mark,
-.dropzone .dz-preview.dz-error .dz-error-mark {
-    -webkit-animation: none;
-    -moz-animation: none;
-    -ms-animation: none;
-    -o-animation: none;
-    animation: none;
-    opacity: 1;
-    margin-top: -15px;
-    margin-left: -15px;
-}
-.dropzone .dz-preview:hover .dz-success-mark,
-.dropzone .dz-preview:hover .dz-error-mark{
-	display: none;
-}
-.dropzone .dz-preview .dz-success-mark svg,
-.dropzone .dz-preview .dz-error-mark svg{
-	width: 30px;
-	height: 30px;
-}
-.dropzone .dz-preview .dz-success-mark svg g path{
-	fill: green;
-	fill-opacity: 1;
-}
-.dropzone .dz-preview .dz-error-mark svg g{
-	fill: red;
-	fill-opacity: 1;
-}
-
-.dropzone .dz-preview .dz-remove{
-	position: absolute;
-	z-index: 10000;
-	width: 24px;
-	height: 24px;
-	top: -8px;
-	right: -8px;
-	background-color: red;
-	border-radius: 24px;
-	
-	font-size: 14px;
-	line-height: 24px;
-	text-align: center;
-	color: #FFFFFF;
-	text-decoration: none !important;
-	
-}
-
-.dropzone .dz-preview.dz-success .dz-remove{
-	display: none;
-}
-
-.dropzone .dz-preview .dz-image{
-	border-radius: 0 !important;
-	overflow: visible;
-	width: auto !important;
-	height: 120px;
-	min-width: 60px;
-	background-color: #CCCCCC;
-}
-.dropzone .dz-preview .dz-image img {
-	height: 120px;
-}
-
-/****************************************************/
-/*************** infinite scroll ********************/
-
-#infinite_scroll_next td {
-	padding-top: 15px;
-	height: 40px;
-}
-
-ul#infinite_scroll_pagina {
-	position: fixed;
-	z-index: 2;
-	display: none;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-	margin: 0px;
-	padding: 0px;
-	height: 30px;
-	text-align: center;
-	background-color: #222222;
-	list-style-type: none;
-}
-
-ul#infinite_scroll_pagina li {
-	padding: 0px 5px;
-	display: inline-block;
-}
-
-ul#infinite_scroll_pagina li a {
-	display: block;
-	padding: 5px;
-	color: #FFFFFF;
-}
-
-div#infinite_scroll_loading {
-	position: fixed;
-	z-index: 3;
-	display: none;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-	margin: 0px;
-	padding: 0px;
-	height: 30px;
-	text-align: center;
-	background-color: #FCF8E3;
-	vertical-align: middle;
-}
-
-
-/****************************************************/
 /********************* others ***********************/
 
 body{
@@ -687,41 +549,89 @@ body{
 /* recipe_list */
 #recipe_list{
 	padding: 10px 10px 20px 20px;
+	display: flex;
 }
 #recipe_list .entry{
 	display: block;
 	float: left;
-	width: 130px;
+	width: 180px;
+	box-sizing: content-box;
 	padding: 10px;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	border: 1px solid black;
 	border-radius: 5px;
 }
-#recipe_list .entry.add_recipe img{
+#recipe_list .entry img{
 	display: block;
-	width: 50%;
+	width: 180px;
+	height: 120px;
 	margin: 0px auto;
 }
+#recipe_list .entry.add_recipe{
+	color: black !important;
+	text-decoration: none !important;
+}
 
+#recipe_list .entry.add_recipe img{
+	display: block;
+	width: 80px;
+	height: 80px;
+	margin: 0px auto;
+	margin-top: 30px;
+}
+#recipe_list .entry.add_recipe span{
+	display: block;
+	text-align: center;
+}
+
+/* recipe-editor */
 
 #recipe_editor{
+	padding-bottom: 200px;
 }
+
 @media(min-width: 1200px) {
 	#recipe_editor .original_text label,
-	#recipe_editor .original_text .field-wrapper{
+	#recipe_editor .original_text .field-wrapper,
+	#recipe_editor .image label,
+	#recipe_editor .image .field-wrapper{
 		width: 100%;
 		text-align: left !important;
 		padding-bottom: 8px;
 	}
 }
+#recipe_editor #original_text{
+	min-height: 400px;
+	resize: vertical;
+}
+#recipe_editor #image_preview input,
+#recipe_editor #image_preview span{
+	float: left;
+	display: block;
+}
+#recipe_editor #image_preview span{
+	margin-top: 3px;
+	margin-left: 10px;
+	font-weight: bold;
+}
+#recipe_editor #image_preview .field-wrapper img{
+	width: 180px;
+	height: 120px;
+	margin-bottom: 5px;
+}
+#recipe_editor .ingredients_list_wrapper .field-error-msg{
+	display: none;
+}#recipe_editor .ingredients_list_wrapper .field-error-msg:first-child{
+	display: block;
+}
+
 #recipe_editor .ingredients_entry{
 	margin-bottom: 8px;
 }
 #recipe_editor .ingredients_entry:last-of-type{
 	margin-bottom: 0px;
 }
-
 #recipe_editor .ingredients_entry input,
 #recipe_editor .ingredients_inputs > div,
 #recipe_editor .ingredients_is_alternative,
@@ -732,6 +642,9 @@ body{
 #recipe_editor .ingredients_is_alternative{
 	width: 60px;
 	padding-top: 2px;
+}
+#recipe_editor .ingredients_entry:first-child .ingredients_is_alternative{
+	opacity: 0;
 }
 #recipe_editor .ingredients_is_alternative span{
 	display: block;
@@ -756,6 +669,8 @@ body{
 	display: block;
 	float: left;
 	width: calc(100% - 40px);
+	min-height: 150px;
+	resize: vertical;
 }
 #recipe_editor #ingredients_list .btn_remove,
 #recipe_editor #steps_list .btn_remove{

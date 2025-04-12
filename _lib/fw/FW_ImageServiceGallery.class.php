@@ -16,10 +16,18 @@ class FW_ImageServiceGallery extends FW_ImageServiceBase
 
         $this->_orig_subfolder_name .= $secure_key;
         foreach($subfolder_names as $name => $hidden) {
-            $this->_subfolder_names[$name . $secure_key] = $hidden;
+            if ($hidden) {
+                $this->_subfolder_names[$name . $secure_key] = $hidden;
+            } else {
+                $this->_subfolder_names[$name] = $hidden;
+            }
         }
         
         $this->_create_directories($this->_base_dirname);
+    }
+
+    function getBaseDirName(){
+        return $this->_base_dirname;
     }
     
     protected function _create_directories($base_dirname) 
@@ -60,7 +68,7 @@ class FW_ImageServiceGallery extends FW_ImageServiceBase
             $image_name = self::get_next_image_name($image_name, $this->_base_dirname, array_keys($this->_subfolder_names));
         }
         
-        if (!$this->_logo_images_loaded) {
+        if (!$this->_logo_images_loaded && $attach_logo) {
             $logo_light_name = self::trim_dir($this->_logo_light_name);
             $logo_dark_name = self::trim_dir($this->_logo_dark_name);
             $ret = $this->raw_load_logo_images($logo_light_name, $logo_dark_name);
@@ -69,7 +77,7 @@ class FW_ImageServiceGallery extends FW_ImageServiceBase
             }
         }
         
-        return $image_name;
+        return ['image_name' => $image_name];
     }
     
     function upload($upload_file_name, $image_name, $overwrite, $attach_logo = true, $image_data = null)

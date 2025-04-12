@@ -3,6 +3,7 @@
 require_once (DOCUMENT_ROOT . '/_lib/base.cont.php');
 require_once (DOCUMENT_ROOT . '/models/user.model.php');
 require_once (DOCUMENT_ROOT . '/models/recipe.model.php');
+require_once (DOCUMENT_ROOT . '/_lib/fw/FW_ImageServiceGallery.class.php');
 
 class Controller_Recipes_Editor extends Controller_Base
 {
@@ -36,6 +37,9 @@ class Controller_Recipes_Editor extends Controller_Base
         $form->addFormField('Text', 'persons', false, null, true)
             ->setRegex('#^[0-9]+$#');
         $form->addFormField('Textarea', 'original_text', false, null, false);
+        $form->addFormField('File', 'image', false, null, false)
+            ->setExtensions('jpg','jpeg','png','webp');
+        $form->addFormField('Checkbox', 'del_image', false, null, false);
         
 
         $form->resolveRequest($request);
@@ -45,7 +49,8 @@ class Controller_Recipes_Editor extends Controller_Base
         while($cnt < $cnt_ingeredients) {
             $cnt++;
             $form->addFormField('Checkbox', 'ingredients_is_alternative_'.$cnt, false, '', false);
-            $form->addFormField('Text', 'ingredients_quantity_'.$cnt, false, '', true);
+            $form->addFormField('Text', 'ingredients_quantity_'.$cnt, false, '', true)
+            ->setRegex('#^[0-9]+([,.][0-9])?$#');;
             $form->addFormField('Text', 'ingredients_unit_'.$cnt, false, '', true);
             $form->addFormField('Text', 'ingredients_name_'.$cnt, false, '', true);
         }
@@ -109,7 +114,7 @@ class Controller_Recipes_Editor extends Controller_Base
             function my_trim($value) {
                 return mb_trim($value);
             }
-            $tag_list = array_map('my_trim', explode(',', $form->getValue('tag_list')));
+            $tag_list = array_map('my_trim', array_column(json_decode($form->getValue('tag_list')), 'value'));
 
             $ingredients_list = [];
             $cnt = 0;
@@ -131,6 +136,28 @@ class Controller_Recipes_Editor extends Controller_Base
                 $step_list[] = $form->getValue('step_description_'.$cnt);
             }
 
+            $image_upload = null;
+            if ($form->getValue('image') && !$form->getValue('del_image')) {
+                $oImageService = new FW_ImageServiceGallery('recipes', HIDDEN_IMAGEFOLDER_SECURE, array());
+                $image_name = uniqid();
+                
+                $arrUploadedImage = $form->getValue('image');
+                $arrUploadedImage = reset($arrUploadedImage);
+                $res_img = $oImageService->upload($arrUploadedImage['tmp_name'], $image_name, false);
+                
+                if (!is_array($res_img)) {
+                    return $form->getFormError(LANG_RECIPE_EDITOR_FAIL_IMAGE);
+                }
+
+                $oImageService->raw_create_image($oImageService->getBaseDirName().'/'.$image_name, 'webp', null, [900, 600], null, null, false, FW_ImageServiceBase::RESIZE_MODE_COVER);
+                $oImageService->raw_create_image($oImageService->getBaseDirName().'/'.$image_name.'_s', 'webp', null, [180, 120], null, null, false, FW_ImageServiceBase::RESIZE_MODE_COVER);
+                
+                $image_upload = [
+                    'orig_image_name' => $res_img['orig_image_name'],
+                    'image_name' => $image_name
+                ];
+            }
+
             $recipe_obj = new Model_Recipe($this->_db);
             $res = $recipe_obj->save(
                 Controller_Base::get_user_id(),
@@ -140,9 +167,22 @@ class Controller_Recipes_Editor extends Controller_Base
                 $form->getValue('recipe_name'), 
                 $form->getValue('persons'), 
                 $form->getValue('original_text'), 
-                $tag_list, $ingredients_list, $step_list);
+                $tag_list, $ingredients_list, $step_list, 
+                $form->getValue('del_image'),
+                $image_upload);
             if ($res) {
-                return $form->getFormSuccess(LANG_RECIPE_EDITOR_SUCCESS, ['recipe_id' => $res]);
+
+                $tag_list = array_values($recipe_obj->get_tag_list());
+                $ingredients_list = array_values($recipe_obj->get_ingredients_list());
+                $unit_list = array_values($recipe_obj->get_unit_list());
+
+                return $form->getFormSuccess(LANG_RECIPE_EDITOR_SUCCESS, [
+                    'recipe_id' => $res, 
+                    'tag_list' => $tag_list, 
+                    'ingredients_list' => $ingredients_list, 
+                    'unit_list' => $unit_list, 
+                    'image_name' => !empty($image_upload) ? $image_upload['image_name'] : ''
+                ]);
             } 
             return $form->getFormError(LANG_RECIPE_EDITOR_FAIL);
         } 

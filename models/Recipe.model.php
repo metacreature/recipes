@@ -113,13 +113,22 @@ class Model_Recipe extends Model_Base{
                 tbl_recipe.recipe_id as recipe_id,
                 tbl_category.category_name as category_name,
                 tbl_recipe.recipe_name as recipe_name, 
+                tbl_recipe.image_name as image_name, 
                 tbl_user.user_name as user_name, 
                 tbl_recipe.public as public
             FROM tbl_recipe 
             INNER JOIN tbl_category USING (category_id)
             INNER JOIN tbl_user USING (user_id)
             '. $join.'
-            WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) '. $query
+            WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) 
+            GROUP BY 
+                tbl_recipe.recipe_id,
+                tbl_category.category_name,
+                tbl_recipe.recipe_name, 
+                tbl_recipe.image_name,
+                tbl_user.user_name, 
+                tbl_recipe.public
+            '. $query
             . ($limit ? ' LIMIT ' . (int)$limit : '')
             . ($offset ? ' OFFSET ' . (int)$offset : ''),
             $query_values
@@ -164,7 +173,7 @@ class Model_Recipe extends Model_Base{
         return $recipe;
     }
 
-    function save($user_id, $recipe_id, $public, $category_id, $recipe_name, $persons, $original_text, $tag_list, $ingredients_list, $step_list) {
+    function save($user_id, $recipe_id, $public, $category_id, $recipe_name, $persons, $original_text, $tag_list, $ingredients_list, $step_list, $del_image, $image_upload) {
         
         $this->_db->begin();
         try{
@@ -213,12 +222,23 @@ class Model_Recipe extends Model_Base{
             $this->_db->rollback();
             return;
         }
+
+        if ($del_image) {
+            $this->_db->executePreparedQuery('UPDATE tbl_recipe SET image_name = NULL, orig_image_name = NULL  WHERE recipe_id = ?;', 
+                [$recipe_id]);
+        } elseif($image_upload) {
+            $this->_db->executePreparedQuery('UPDATE tbl_recipe SET image_name = ?, orig_image_name = ? WHERE recipe_id = ?;', 
+                [$image_upload['image_name'], $image_upload['orig_image_name'], $recipe_id]);
+        }
+        
         $this->_db->commit();
         return $recipe_id;
     }
 
     protected function _save_tag_list($recipe_id, $tag_list) {
         if (empty($tag_list)) return;
+
+        $tag_list = array_values(array_unique($tag_list));
 
         $this->_db->executePreparedQuery('INSERT IGNORE INTO tbl_tag (tag_name) 
             VALUES (' . implode('),(', array_fill(0, count($tag_list), '?')) . ')',
@@ -239,8 +259,8 @@ class Model_Recipe extends Model_Base{
     protected function _save_ingredients_list($recipe_id, $ingredients_list) {
         if (empty($ingredients_list)) return;
 
-        $ingredients_name_list = array_unique(array_column($ingredients_list, 'ingredients_name'));
-        $unit_name_list = array_unique(array_column($ingredients_list, 'unit_name'));
+        $ingredients_name_list = array_values(array_unique(array_column($ingredients_list, 'ingredients_name')));
+        $unit_name_list = array_values(array_unique(array_column($ingredients_list, 'unit_name')));
 
         $this->_db->executePreparedQuery('INSERT IGNORE INTO tbl_ingredients (ingredients_name) 
             VALUES (' . implode('),(', array_fill(0, count($ingredients_name_list), '?')) . ')',
@@ -257,7 +277,7 @@ class Model_Recipe extends Model_Base{
             $cnt++;
             $values[] = $recipe_id;
             $values[] = $cnt;
-            $values[] = $row['quantity'];
+            $values[] = str_replace(',', '.', $row['quantity']);
             $values[] = $row['is_alternative'];
             $values[] = $row['ingredients_name'];
             $values[] = $row['unit_name'];

@@ -46,6 +46,8 @@ CREATE TABLE tbl_recipe (
   persons TINYINT UNSIGNED NOT NULL,
   original_text TEXT,
   last_edited  DATETIME NOT NULL,
+  orig_image_name VARCHAR(255) NOT NULL,
+  image_name VARCHAR(255) NOT NULL,
   PRIMARY KEY (recipe_id),
   FOREIGN KEY (category_id) REFERENCES tbl_category (category_id),
   INDEX public (public, user_id)
@@ -85,6 +87,7 @@ INSERT INTO tbl_unit (unit_name, locked) VALUES
 ('Kilo', 1),
 ('Gramm', 1),
 ('Liter', 1),
+('Centiliter', 1),
 ('Milliliter', 1),
 ('Stück', 1),
 ('Bund', 1),

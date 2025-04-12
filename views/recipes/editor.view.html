@@ -13,7 +13,7 @@
     echo    $form->printLine('recipe_name', LANG_RECIPE_EDITOR_NAME);
     echo    $form->printLine('persons', LANG_RECIPE_EDITOR_PERSONS);
 
-    echo    '<div class="field-line form-group row line-mandatory">';
+    echo    '<div class="field-line form-group row line-mandatory ingredients_list_wrapper">';
     echo        '<label class="col-xs-12 col-md-2 control-label">'.LANG_RECIPE_EDITOR_INGREDIENTS.' *</label>';
     echo        '<div class="field-wrapper col-xs-12 col-md-10" id="ingredients_list">';
     $cnt = 0;
@@ -39,7 +39,7 @@
 
     echo    '<div class="button-line form-group row">';
     echo        '<label class="col-md-2 control-label hidden-xs hidden-sm">&nbsp;</label>';
-    echo        '<div class="field-wrapper col-xs-12 col-md-10" id="ingredients_list">';
+    echo        '<div class="field-wrapper col-xs-12 col-md-10">';
     echo            '<a class="btn" id="add_ingredients">+</a>';
     echo        '</div>';
     echo    '</div>';
@@ -64,13 +64,25 @@
     
     echo    '<div class="button-line form-group row">';
     echo        '<label class="col-md-2 control-label hidden-xs hidden-sm">&nbsp;</label>';
-    echo        '<div class="field-wrapper col-xs-12 col-md-10" id="ingredients_list">';
+    echo        '<div class="field-wrapper col-xs-12 col-md-10">';
     echo            '<a class="btn" id="add_step">+</a>';
     echo        '</div>';
     echo    '</div>';
 
     echo '</div>';
     echo '<div class="col-lg-5">';
+    echo    $form->printLine('image', LANG_RECIPE_EDITOR_IMAGE, null, 'image');
+
+    
+    echo    '<div class="button-line form-group row" id="image_preview">';
+    echo        '<label class="col-md-2 control-label hidden-xs hidden-sm hidden-lg">&nbsp;</label>';
+    echo        '<div class="field-wrapper col-xs-12 col-md-10">';
+    echo            '<div class="clear"></div>';
+    echo            $form->printInput('del_image');
+    echo            '<span>'.LANG_RECIPE_EDITOR_DEL_IMAGE.'</span>';
+    echo            '<div class="clear"></div>';
+    echo        '</div>';
+    echo    '</div>';
     echo    $form->printLine('original_text', LANG_RECIPE_EDITOR_ORIGINAL, null, 'original_text');
     echo '</div>';
     echo '<div class="clear"></div>';
@@ -91,6 +103,7 @@
     var unit_list = <?php echo json_encode($unit_list); ?>;
     var ingredients_list = <?php echo json_encode($ingredients_list); ?>;
     var tag_list = <?php echo json_encode($tag_list); ?>;
+    var image_name = "<?php echo !empty($recipe) && !empty($recipe['image_name']) ? $recipe['image_name'] : ''; ?>";
 
 </script>
 

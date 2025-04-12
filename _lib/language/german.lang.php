@@ -45,6 +45,8 @@ define('LANG_RECIPE_LIST_ADD', 'Rezept hinzfügen');
 
 
 define('LANG_SELECT2_SELECT', 'Auswählen');
+define('LANG_RECIPE_EDITOR_IMAGE', 'Bild');
+define('LANG_RECIPE_EDITOR_DEL_IMAGE', 'Bild löschen');
 define('LANG_RECIPE_EDITOR_ORIGINAL', 'Original-Text');
 define('LANG_RECIPE_EDITOR_PUBLIC', 'Öffentlich');
 define('LANG_RECIPE_EDITOR_CATEGORY', 'Kategorie');
@@ -59,5 +61,6 @@ define('LANG_RECIPE_EDITOR_INGREDIENTS_NAME', 'Name');
 define('LANG_RECIPE_EDITOR_STEP', 'Schritt ');
 define('LANG_RECIPE_EDITOR_SAVE', 'Speichern');
 define('LANG_RECIPE_EDITOR_FAIL', 'Speichern fehlgeschlagen!');
+define('LANG_RECIPE_EDITOR_FAIL_IMAGE', 'Bildupload fehlgeschlagen!');
 define('LANG_RECIPE_EDITOR_SUCCESS', 'Speichern erfolgreich!');
 define('LANG_RECIPE_EDITOR_INVALID', 'Bitte überprüfen Sie ihre Eingabe!');
