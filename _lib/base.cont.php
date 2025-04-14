@@ -26,11 +26,16 @@ class Controller_Base
     protected function _check_login() {
         if (!in_array('login', $_SESSION) || !$_SESSION['login']) {
             @session_destroy();
-            if (strpos($_SERVER['HTTP_ACCEPT'], 'text/json') === false) {
-                header('Location: ' . WEB_URL . '/login');
+            if (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') === false) {
+                $target = str_replace("?logout", "", $_SERVER['REQUEST_URI']);
+                if ($target == '' || $target == '/') {
+                    header('Location: ' . WEB_URL . '/user/login');
+                } else {
+                    header('Location: ' . WEB_URL . '/user/login?target='.urlencode($target));
+                }
             } else {
                 header('Content-Type: application/json; charset=utf-8');
-		        echo json_encode(['error' => 'Not logged in!']);
+		        echo json_encode(['error' => 1, 'message' => CHECK_LOGIN_ERROR_NOT_LOGIN]);
 		        ob_end_flush();
             }
             exit;

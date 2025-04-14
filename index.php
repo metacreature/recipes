@@ -20,10 +20,12 @@ if ($url && preg_match('#^[a-z_\/]+$#', $url) && file_exists('controller/' . $ur
 	$controller_file = 'controller/' . $controller_request;
 	$function = $slashpos === false ? '' : substr($url, $slashpos + 1);
 } else if (!$controller_request) {
-	$controller_file = 'controller/' . LANDING_PAGE;
+	$controller_file = 'controller/' . SETTINGS_LANDING_PAGE;
 	$function = 'view';
 } else {
-	die('controller "' . $controller_request . '" does not exist!');
+	header('HTTP/1.0 403 Forbidden');
+	require_once(DOCUMENT_ROOT . '/crawler.html');
+    exit;
 }
 
 $controller_name = implode('_', array_map('ucfirst', preg_split('#[\/_]#', $controller_file)));
@@ -54,7 +56,9 @@ if ($function && preg_match('#^[a-z_]+$#', $function) && method_exists($obj_cont
 		ob_end_flush();
 	}
 } else {
-	die('function "' . $function . '" does not exist!');
+	header('HTTP/1.0 403 Forbidden');
+	require_once(DOCUMENT_ROOT . '/crawler.html');
+    exit;
 }
 
 exit();

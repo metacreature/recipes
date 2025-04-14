@@ -10,8 +10,14 @@
         <div class="clear"></div>
     </div>
 				
-    
-    <?php echo $form->printForm(LANG_LOGIN_SAVE, '/login/save'); ?>
+    <?php 
+    echo $form->printStartTag();
+    echo '<div class="ajax-form-response"></div>';
+    echo $form->printLine('email', LANG_LOGIN_EMAIL);
+    echo $form->printLine('password', LANG_LOGIN_PASSWORD);
+    echo $form->printSubmitLine(LANG_LOGIN_SAVE, 'save', '/user/login/save');
+    echo $form->printEndTag();
+    ?>
 
 </div>
 
@@ -19,7 +25,7 @@
     $('.register_form').ajax_form({
         'success': function(form, button, data) {
             if (data.success) {
-                top.location.replace('/recipes/list');
+                top.location.replace('<?php echo !empty($_GET['target']) ? str_replace("'", "\\'", $_GET['target']) : '/' . SETTINGS_LANDING_PAGE; ?>');
             }
         }
     });

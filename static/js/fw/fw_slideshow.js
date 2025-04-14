@@ -173,7 +173,7 @@ var slideshow = function(jquery_selector,slideshow_ajax_url, id_name, renderSlid
             }
         }
         
-        node.find('.inner').html('');
+        $('#slideshow').find('.inner').html('');
         loadSlideshowSlide(id, true);
     }
 

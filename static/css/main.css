@@ -626,16 +626,19 @@ body{
 }
 #header .login, 
 #header .logout,
-#header .user_name{
+#header .user_name,
+#header .register{
 	display: block;
 	float: right;
 	font-size: 18px;
 	margin-left: 20px;
 	margin-top: 15px;
+	color: black;
 }
 #header .login img, 
 #header .logout img,
-#header .user_name img{
+#header .user_name img,
+#header .register img{
 	height: 18px;
 	margin-right: 0px;
 	margin-top: -3px;

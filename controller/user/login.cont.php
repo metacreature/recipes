@@ -3,7 +3,7 @@
 require_once (DOCUMENT_ROOT . '/_lib/base.cont.php');
 require_once (DOCUMENT_ROOT . '/models/user.model.php');
 
-class Controller_Login extends Controller_Base
+class Controller_User_Login extends Controller_Base
 {
     function __construct($db) {
         parent::__construct($db);
@@ -12,15 +12,15 @@ class Controller_Login extends Controller_Base
     protected function _get_form() {
         $form = new FW_Ajax_Form('register_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
-        $form->addFormField('Email', 'email', false, LANG_LOGIN_EMAIL, true);
-        $form->addFormField('Password', 'password', false, LANG_LOGIN_PASSWORD, true);
+        $form->addFormField('Email', 'email', false, '', true);
+        $form->addFormField('Password', 'password', false, '', true);
         return $form;
     }
 
     function view() {
         $this->_logout();
         $form = $this->_get_form();
-        require_once (DOCUMENT_ROOT . '/views/login.view.html');
+        require_once (DOCUMENT_ROOT . '/views/user/login.view.html');
     }
 
     function save() {

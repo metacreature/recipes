@@ -3,22 +3,27 @@
 require_once (DOCUMENT_ROOT . '/_lib/base.cont.php');
 require_once (DOCUMENT_ROOT . '/models/user.model.php');
 
-class Controller_Register extends Controller_Base
+class Controller_User_Register extends Controller_Base
 {
     function __construct($db) {
         parent::__construct($db);
+        if (!SETTINGS_ALLOW_REGISTER) {
+            header('HTTP/1.0 403 Forbidden');
+            require_once(DOCUMENT_ROOT . '/crawler.html');
+            exit;
+        }
     }
 
     protected function _get_form() {
         $form = new FW_Ajax_Form('register_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
-        $form->addFormField('Text', 'user_name', false, LANG_REGISTER_USERNAME, true)
+        $form->addFormField('Text', 'user_name', false, '', true)
             ->setMinLength(6);
-        $form->addFormField('Email', 'email', false, LANG_REGISTER_EMAIL, true);
-        $form->addFormField('Password', 'password', false, LANG_REGISTER_PASSWORD, true)
+        $form->addFormField('Email', 'email', false, '', true);
+        $form->addFormField('Password', 'password', false, '', true)
             ->setMinLength(8)
             ->setFieldErrors(['external' => LANG_REGISTER_PASSWORD_ERROR]);
-        $form->addFormField('Password', 'password_confirmation', false, LANG_REGISTER_REPEAT_PASSWORD, true)
+        $form->addFormField('Password', 'password_confirmation', false, '', true)
             ->setFieldErrors(['external' => LANG_REGISTER_REPEAT_PASSWORD_ERROR]);
         return $form;
     }
@@ -46,7 +51,7 @@ class Controller_Register extends Controller_Base
     function view() {
         $this->_logout();
         $form = $this->_get_form();
-        require_once (DOCUMENT_ROOT . '/views/register.view.html');
+        require_once (DOCUMENT_ROOT . '/views/user/register.view.html');
     }
 
     function save() {

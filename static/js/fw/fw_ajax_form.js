@@ -61,13 +61,20 @@ $.fn.ajax_form = function(options) {
 		var form = $(this);
 		var button = settings.submit_btn ? $(settings.submit_btn) : form.find('.btn-ajax-submit').first();
 		
+		form.on('submit', function(event) {
+			$.fn.ajax_form.submit_form(form, button, options);
+			event.preventDefault();
+			event.stopPropagation();
+		})
+
 		button.click(function(event) {
 			event.preventDefault();
 			event.stopPropagation();
-			$.fn.ajax_form.submit_form(form, button, options);
+			form.submit();
 		});
 		
 		$.fn.ajax_form.init_press_save(form, button);
+
 		
 		var form_messages = sessionStorage.getItem('form_messages');
 		if (form_messages) {

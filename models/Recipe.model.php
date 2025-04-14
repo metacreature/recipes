@@ -120,15 +120,15 @@ class Model_Recipe extends Model_Base{
             INNER JOIN tbl_category USING (category_id)
             INNER JOIN tbl_user USING (user_id)
             '. $join.'
-            WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) 
-            GROUP BY 
+            WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?)'
+            . $query 
+            .'GROUP BY 
                 tbl_recipe.recipe_id,
                 tbl_category.category_name,
                 tbl_recipe.recipe_name, 
                 tbl_recipe.image_name,
                 tbl_user.user_name, 
-                tbl_recipe.public
-            '. $query
+                tbl_recipe.public'
             . ($limit ? ' LIMIT ' . (int)$limit : '')
             . ($offset ? ' OFFSET ' . (int)$offset : ''),
             $query_values

@@ -7,6 +7,12 @@ require_once ('fw/FW_MySQLDataBaseLayer.class.php');
 
 require_once ('language/german.lang.php');
 
+// settings
+define('SETTINGS_LANDING_PAGE', 'recipes/list');
+define('SETTINGS_ALLOW_REGISTER', false);
+define('SETTINGS_LIST_REQUIRES_LOGIN', false);
+
+
 
 // FW-Config
 define('TEST_SERVER', strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
@@ -17,7 +23,8 @@ define('WEB_ROOT', '');
 define('GALLERY_WEB_ROOT', '/gallery');
 define('SECURE_SALT', '18dd27efc08342874wgdfhdhz28265203e964c9');
 define('HIDDEN_IMAGEFOLDER_SECURE', 'kjdfgutalocveabta');
-define('LANDING_PAGE', 'recipes/list');
+
+
 
 // config
 if (TEST_SERVER) {
@@ -42,7 +49,6 @@ if (TEST_SERVER) {
 	define('DB_PASSWORD', 'hkzuyzhjyd');
 	define('DB_NAME', 'domain_rezepte');
 	define('DB_PERSISTENT', false);
-	
 	
     define('DEBUG_MODE', false);
     ini_set('error_reporting', 0);

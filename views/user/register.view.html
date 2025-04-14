@@ -12,7 +12,16 @@
     </div>
 				
     
-    <?php echo $form->printForm(LANG_REGISTER_SAVE, '/register/save'); ?>
+    <?php 
+    echo $form->printStartTag();
+    echo '<div class="ajax-form-response"></div>';
+    echo $form->printLine('user_name', LANG_REGISTER_USERNAME);
+    echo $form->printLine('email', LANG_REGISTER_EMAIL);
+    echo $form->printLine('password', LANG_REGISTER_PASSWORD);
+    echo $form->printLine('password_confirmation', LANG_REGISTER_REPEAT_PASSWORD);
+    echo $form->printSubmitLine(LANG_REGISTER_SAVE, 'save', '/user/register/save');
+    echo $form->printEndTag();
+    ?>
 
 </div>
 
@@ -20,7 +29,7 @@
     $('.register_form').ajax_form({
         'success': function(form, button, data) {
             if (data.success) {
-                top.location.replace('/login');
+                top.location.replace('/user/login');
             }
         }
     });

@@ -8,7 +8,9 @@ class Controller_Recipes_List extends Controller_Base
 {
     function __construct($db) {
         parent::__construct($db);
-        // $this->_check_login();
+        if (SETTINGS_LIST_REQUIRES_LOGIN) {
+            $this->_check_login();
+        }
     }
 
     protected function _get_form() {

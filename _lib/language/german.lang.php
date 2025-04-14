@@ -12,6 +12,7 @@ define('LANG_FORMFIELD_ERRORS', array(
 
 define('LANG_NAVIGATION_LOGIN', 'login');
 define('LANG_NAVIGATION_LOGOUT', 'logout');
+define('LANG_NAVIGATION_REGISTER', 'registrieren');
 
 define('LANG_REGISTER_HDL', 'Registrieren');
 define('LANG_REGISTER_USERNAME', 'Benutzername');
@@ -25,6 +26,8 @@ define('LANG_REGISTER_INVALID', 'Bitte überprüfen Sie ihre Eingabe!');
 define('LANG_REGISTER_FAIL_EMAIL', 'E-Mail schon vorhanden!');
 define('LANG_REGISTER_SUCCESS', 'Registrierung erfolgreich!');
 
+
+define('CHECK_LOGIN_ERROR_NOT_LOGIN', 'Sie sind nicht eingeloggt');
 
 define('LANG_LOGIN_HDL', 'Login');
 define('LANG_LOGIN_EMAIL', 'E-Mail');
@@ -43,7 +46,6 @@ define('LANG_RECIPE_LIST_FILTER_ERROR', 'Etwas ist schiefgelaufen!');
 define('LANG_RECIPE_LIST_ADD', 'Rezept hinzfügen');
 define('LANG_RECIPE_LIST_LOAD_DETAIL', 'Etwas ist schiefgelaufen!');
 define('LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE', 'oder');
-
 
 
 define('LANG_SELECT2_SELECT', 'Auswählen');
