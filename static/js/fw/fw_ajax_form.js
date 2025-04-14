@@ -120,8 +120,6 @@ $.fn.ajax_form.ajax_form_complete = function(form, button, options, data, status
 		form.find(".ajax-form-response").html('<span class="ajax-form-error">Es ist ein Fehler aufgetreten! Bitte versuche es später noch einmal!</span>').show();
 		button.removeClass("btn-loading");
 		
-	} else if (data.message && data.message	== "Unauthenticated.") {
-		document.location.href = ADMIN_WEB_ROOT + '/login';
 	} else if (data.success && data.redirect_url) {
 		if(data.message) {
 			var key = form.data('name')+'__'+data.redirect_url;

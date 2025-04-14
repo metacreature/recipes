@@ -18,14 +18,15 @@ class Field_Checkbox extends Field_Base
     function setValue($sValue)
     {
         $this->_mValue = empty($sValue) ? '0' : '1';
+
         return $this;
     }
 
     function resolveRequest($arrRequest)
     {
-        if (array_key_exists('_available_' . $this->_sName, $arrRequest)) {
+        //if (array_key_exists('_available_' . $this->_sName, $arrRequest)) {
             $this->setValue(! empty($arrRequest[$this->_sName]) ? 1 : 0);
-        }
+        //}
     }
 
     protected function _validateMandatory()
@@ -67,6 +68,6 @@ class Field_Checkbox extends Field_Base
         if (!empty($arrAttributes['autocomplete'])) {
             unset($arrAttributes['autocomplete']);
         }
-        return '<input' . $this->_buildAttributesString($arrAttributes) . '>' . '<input type="hidden" name="_available_' . $this->_sName . '" value="1">';
+        return '<input' . $this->_buildAttributesString($arrAttributes) . '>'; // . '<input type="hidden" name="_available_' . $this->_sName . '" value="1">';
     }
 }

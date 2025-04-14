@@ -90,4 +90,20 @@ class Controller_Recipes_List extends Controller_Base
         } 
         return $form->getFormError(LANG_RECIPE_LIST_FILTER_ERROR);
     }
+
+    function get() {
+        $form = new FW_Ajax_Form('detail_form', false);
+        if (empty($_POST['recipe_id']) || !preg_match('#^\d+$#', $_POST['recipe_id'])) {
+            return $form->getFormError(LANG_RECIPE_LIST_LOAD_DETAIL);
+        }
+        $recipe_obj = new Model_Recipe($this->_db);
+        $data = $recipe_obj->get(
+            $_POST['recipe_id'],
+            Controller_Base::get_user_id()
+        );
+        if (is_array($data)) {
+            return $form->getFormSuccess('', ['data'=>$data]);
+        }
+        return $form->getFormError(LANG_RECIPE_LIST_LOAD_DETAIL);
+    }
 }

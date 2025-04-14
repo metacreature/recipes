@@ -138,12 +138,28 @@ class Model_Recipe extends Model_Base{
     }
 
     function get($recipe_id, $user_id) {
-        $this->_db->executePreparedQuery('SELECT * FROM tbl_recipe WHERE recipe_id = ? AND (public = 1 OR user_id = ?);', 
+        $this->_db->executePreparedQuery('SELECT 
+            tbl_recipe.recipe_id as recipe_id,
+            tbl_recipe.category_id as category_id,
+            tbl_category.category_name as category_name,
+            tbl_recipe.recipe_name as recipe_name, 
+            tbl_recipe.image_name as image_name, 
+            tbl_recipe.user_id as user_id,  
+            tbl_user.user_name as user_name, 
+            tbl_recipe.public as public,
+            tbl_recipe.persons as persons,
+            tbl_recipe.original_text as original_text
+            FROM tbl_recipe 
+            INNER JOIN tbl_category USING (category_id)
+            INNER JOIN tbl_user USING (user_id)
+            WHERE recipe_id = ? AND (public = 1 OR user_id = ?);', 
             [(int) $recipe_id, (int) $user_id]);
         $recipe = $this->_db->fetchAssoc();
         if (!$recipe) {
             return;
         }
+
+        $recipe['editable'] = $user_id == $recipe['user_id'];
 
         $this->_db->executePreparedQuery('SELECT tbl_tag.tag_name 
             FROM tbl_recipe_tag 

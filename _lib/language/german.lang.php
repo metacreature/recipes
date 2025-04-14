@@ -41,6 +41,8 @@ define('LANG_RECIPE_LIST_FILTER_INGREDIENTS', 'Zutaten');
 define('LANG_RECIPE_LIST_FILTER_NAME', 'Name');
 define('LANG_RECIPE_LIST_FILTER_ERROR', 'Etwas ist schiefgelaufen!');
 define('LANG_RECIPE_LIST_ADD', 'Rezept hinzfügen');
+define('LANG_RECIPE_LIST_LOAD_DETAIL', 'Etwas ist schiefgelaufen!');
+define('LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE', 'oder');
 
 
 

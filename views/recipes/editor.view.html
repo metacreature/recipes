@@ -104,11 +104,8 @@
     var ingredients_list = <?php echo json_encode($ingredients_list); ?>;
     var tag_list = <?php echo json_encode($tag_list); ?>;
     var image_name = "<?php echo !empty($recipe) && !empty($recipe['image_name']) ? $recipe['image_name'] : ''; ?>";
-
 </script>
 
-
 <script src='/static/js/recipe_editor.js'></script>
-
 
 <?php require_once (DOCUMENT_ROOT . '/views/includes/footer.view.html'); ?>

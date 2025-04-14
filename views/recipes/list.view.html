@@ -54,46 +54,10 @@
     });
     $('input[name="recipe_name"]').attr('placeholder', "<?php echo LANG_RECIPE_LIST_FILTER_NAME; ?>");
 
-    function buildRecipeList(recipe_list) {
-        for(row of recipe_list) {
-            var html = '<div class="entry public'+row.public+'" data-recipe_id="'+row.recipe_id+'">';
-                html += '<div class="recipe_name">'+row.recipe_name+'</div>';
-                html += '<div class="category_name">'+row.category_name+'</div>';
-                if (row.image_name) {
-                    html += '<img src="/gallery/recipes/'+row.image_name+'_s.webp">';
-                } else {
-                    html += '<img src="/gallery/recipes/blank_s.webp">';
-                }
-                html += '<div class="user_name">'+row.user_name+'</div>';
-                html += '<div class="public_'+row.public+'"></div>';
-                html += '<div class="clear"></div>';
-                html += '</div>';
-            $('#recipe_list').append(html)
-        }
-    }
-
-    buildRecipeList(recipe_list);
-
-    $('.filter_form').ajax_form({
-        'success': function(form, button, data) {
-            if (data.success) {
-                if (!button.hasClass('pagination')) {
-                    $('#recipe_list .entry:not(.add_recipe)').remove();
-                } 
-                buildRecipeList(data.data);
-                var query_string = form.serialize().replace(/page=[0-9]+/, '').replace(/&&/, '&').replace(/^&/, '').replace(/&&/, '');
-                history.replaceState({}, '', self.location.href.replace(/\?.*$/, '') + '?' + query_string);
-            }
-            button.removeClass('pagination');
-        },
-        'beforesubmit': function(form, button) {
-            if (!button.hasClass('pagination')) {
-                $('.filter_form input[name="page"]').val(0);
-            }
-        },
-    });
+    var recipe_detail_ingredients_alternative = "<?php echo LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE; ?>"
 
 </script>
 
+<script src='/static/js/recipe_list.js'></script>
 
 <?php require_once (DOCUMENT_ROOT . '/views/includes/footer.view.html'); ?>

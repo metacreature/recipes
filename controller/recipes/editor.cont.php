@@ -95,7 +95,6 @@ class Controller_Recipes_Editor extends Controller_Base
                 }
             }
         }
-        
         $form = $this->_get_form($form_values);
         $form->resolveRequest($form_values);
 
@@ -149,7 +148,7 @@ class Controller_Recipes_Editor extends Controller_Base
                     return $form->getFormError(LANG_RECIPE_EDITOR_FAIL_IMAGE);
                 }
 
-                $oImageService->raw_create_image($oImageService->getBaseDirName().'/'.$image_name, 'webp', null, [900, 600], null, null, false, FW_ImageServiceBase::RESIZE_MODE_COVER);
+                $oImageService->raw_create_image($oImageService->getBaseDirName().'/'.$image_name, 'webp', null, [600, 400], null, null, false, FW_ImageServiceBase::RESIZE_MODE_COVER);
                 $oImageService->raw_create_image($oImageService->getBaseDirName().'/'.$image_name.'_s', 'webp', null, [180, 120], null, null, false, FW_ImageServiceBase::RESIZE_MODE_COVER);
                 
                 $image_upload = [
