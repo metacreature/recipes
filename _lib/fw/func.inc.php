@@ -98,7 +98,7 @@ function cloneObj($oObj)
 
 function mb_trim(&$sString)
 {
-    return trim($sString);
+    return trim($sString == null ? '' : $sString);
 }
 
 function xssProtect(&$sString)

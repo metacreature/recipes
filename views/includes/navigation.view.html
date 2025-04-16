@@ -11,7 +11,7 @@
         </a>
         <span class="user_name">
             <img src="/static/images/icons/person-circle-outline.svg" alt="">
-            <span><?php echo Controller_Base::get_user_name(); ?></span>
+            <span><?php $name = Controller_Base::get_user_name(); echo xssProtect($name); ?></span>
         </span>
 
     <?php } else  { ?>

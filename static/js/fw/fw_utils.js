@@ -154,3 +154,7 @@ var html_special_chars = function (text) {
 
   return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
+
+var nl2br = function(text) {
+	return text.replace(new RegExp("\n",'g'), '<br>');
+}

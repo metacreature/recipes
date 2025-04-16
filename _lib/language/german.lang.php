@@ -48,6 +48,8 @@ define('LANG_RECIPE_LIST_LOAD_DETAIL', 'Etwas ist schiefgelaufen!');
 define('LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE', 'oder');
 
 
+define('LANG_RECIPE_EDITOR_BACK', 'Zurück');
+define('LANG_RECIPE_EDITOR_ADD_NEW', 'Neues Rezept hinzufügen');
 define('LANG_SELECT2_SELECT', 'Auswählen');
 define('LANG_RECIPE_EDITOR_IMAGE', 'Bild');
 define('LANG_RECIPE_EDITOR_DEL_IMAGE', 'Bild löschen');

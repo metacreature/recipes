@@ -11,7 +11,7 @@ class Model_Recipe extends Model_Base{
             category_id,
             category_name
             FROM tbl_category
-            ORDER BY category_name ASC;');
+            ORDER BY category_id ASC;');
 
         $row_list = $this->_db->getAssocResults();
         $data = [];
@@ -26,7 +26,7 @@ class Model_Recipe extends Model_Base{
             tag_id,
             tag_name
             FROM tbl_tag
-            ORDER BY tag_name ASC;');
+            ORDER BY tag_id ASC;');
 
         $row_list = $this->_db->getAssocResults();
         $data = [];
@@ -56,7 +56,7 @@ class Model_Recipe extends Model_Base{
             unit_id,
             unit_name
             FROM tbl_unit
-            ORDER BY unit_name ASC;');
+            ORDER BY unit_id ASC;');
 
         $row_list = $this->_db->getAssocResults();
         $data = [];
@@ -69,6 +69,17 @@ class Model_Recipe extends Model_Base{
     protected function _create_in_query($field_name, $values) {
         if (!empty($values) && is_array($values)) {
             return ' AND ' . $field_name . ' IN (' . implode(',', array_fill(0, count($values), '?')) . ') ';
+        }
+        return null;
+    }
+
+    protected function _create_and_query($field_name, $table_name, $values) {
+        if (is_array($values)) {
+            $ret = '';
+            foreach($values as $i) {
+                $ret .= ' AND EXISTS (SELECT recipe_id FROM ' . $table_name . ' WHERE ' . $field_name . ' = ? AND recipe_id = tbl_recipe.recipe_id) ';
+            }
+            return $ret;
         }
         return null;
     }
@@ -87,8 +98,8 @@ class Model_Recipe extends Model_Base{
     function list($user_id, $user_ids, $category_ids, $tag_ids, $ingredients_ids, $name, $limit = null, $offset = null) {
         $query = $this->_create_in_query('user_id', $user_ids)
             . $this->_create_in_query('category_id', $category_ids)
-            . $this->_create_in_query('tag_id', $tag_ids)
-            . $this->_create_in_query('ingredients_id', $ingredients_ids)
+            . $this->_create_and_query('tag_id', 'tbl_recipe_tag', $tag_ids)
+            . $this->_create_and_query('ingredients_id', 'tbl_recipe_ingredients', $ingredients_ids)
             . (!empty($name) && strlen($name) > 1 ? " AND recipe_name LIKE CONCAT ('%', ?, '%') " : '');
 
 
@@ -102,12 +113,12 @@ class Model_Recipe extends Model_Base{
         );
 
         $join = '';
-        if (!empty($tag_ids)) {
+        /*if (!empty($tag_ids)) {
             $join .= ' INNER JOIN tbl_recipe_tag USING (recipe_id) ';
         }
         if (!empty($ingredients_ids)) {
             $join .= ' INNER JOIN tbl_recipe_ingredients USING (recipe_id) ';
-        }
+        }*/
 
         $this->_db->executePreparedQuery('SELECT 
                 tbl_recipe.recipe_id as recipe_id,
@@ -174,7 +185,7 @@ class Model_Recipe extends Model_Base{
                 tbl_unit.unit_name as unit_name, 
                 tbl_ingredients.ingredients_name as ingredients_name 
             FROM tbl_recipe_ingredients 
-            INNER JOIN tbl_unit USING (unit_id) 
+            LEFT JOIN tbl_unit USING (unit_id) 
             INNER JOIN tbl_ingredients USING (ingredients_id) 
             WHERE tbl_recipe_ingredients.recipe_id = ? ORDER BY tbl_recipe_ingredients.nr ASC;',
             [$recipe_id]);
@@ -276,7 +287,11 @@ class Model_Recipe extends Model_Base{
         if (empty($ingredients_list)) return;
 
         $ingredients_name_list = array_values(array_unique(array_column($ingredients_list, 'ingredients_name')));
-        $unit_name_list = array_values(array_unique(array_column($ingredients_list, 'unit_name')));
+        $unit_name_list = array_unique(array_column($ingredients_list, 'unit_name'));
+        function not_empty($val) {
+            return !empty($val);
+        }
+        $unit_name_list = array_values(array_filter($unit_name_list, 'not_empty'));
 
         $this->_db->executePreparedQuery('INSERT IGNORE INTO tbl_ingredients (ingredients_name) 
             VALUES (' . implode('),(', array_fill(0, count($ingredients_name_list), '?')) . ')',
@@ -293,7 +308,7 @@ class Model_Recipe extends Model_Base{
             $cnt++;
             $values[] = $recipe_id;
             $values[] = $cnt;
-            $values[] = str_replace(',', '.', $row['quantity']);
+            $values[] = $row['quantity'] == '' ? null : str_replace(',', '.', $row['quantity']);
             $values[] = $row['is_alternative'];
             $values[] = $row['ingredients_name'];
             $values[] = $row['unit_name'];

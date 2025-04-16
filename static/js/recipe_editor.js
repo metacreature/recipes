@@ -76,8 +76,6 @@ $(function() {
     $('#add_step').on("click", addStep);
     $('#steps_list .btn_remove').on("click", removeStep);
 
-    
-
     // image
 
     function loadImage(image_name) {
@@ -116,6 +114,7 @@ $(function() {
             ingredients_list = data.ingredients_list;
 
             $('#recipe_editor input[name="recipe_id"]').val(data.recipe_id);
+            $('#recipe_editor input[name="del_image"]').prop('checked', false);
             loadImage(data.image_name);
             tagify.whitelist = data.tag_list;
             $('#ingredients_list input[data-type="ingredients_unit"]').combobox('update_list', data.unit_list);

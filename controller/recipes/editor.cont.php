@@ -41,7 +41,6 @@ class Controller_Recipes_Editor extends Controller_Base
             ->setExtensions('jpg','jpeg','png','webp');
         $form->addFormField('Checkbox', 'del_image', false, null, false);
         
-
         $form->resolveRequest($request);
 
         $cnt = 0;
@@ -49,10 +48,19 @@ class Controller_Recipes_Editor extends Controller_Base
         while($cnt < $cnt_ingeredients) {
             $cnt++;
             $form->addFormField('Checkbox', 'ingredients_is_alternative_'.$cnt, false, '', false);
-            $form->addFormField('Text', 'ingredients_quantity_'.$cnt, false, '', true)
-            ->setRegex('#^[0-9]+([,.][0-9])?$#');;
-            $form->addFormField('Text', 'ingredients_unit_'.$cnt, false, '', true);
+            $form->addFormField('Text', 'ingredients_quantity_'.$cnt, false, '', false)
+                ->setRegex('#^(([1-9][0-9]*)|([0-9]+[.,][0-9]+))?$#');
+            $form->addFormField('Text', 'ingredients_unit_'.$cnt, false, '', false);
             $form->addFormField('Text', 'ingredients_name_'.$cnt, false, '', true);
+        }
+        $form->resolveRequest($request);
+        $cnt = 0;
+        while($cnt < $cnt_ingeredients) {
+            $cnt++;
+            if($form->getValue('ingredients_quantity_'.$cnt) != '' || $form->getValue('ingredients_unit_'.$cnt) != ''){
+                $form->getField('ingredients_quantity_'.$cnt)->setMandatory(true);
+                $form->getField('ingredients_unit_'.$cnt)->setMandatory(true);
+            }
         }
 
         $cnt = 0;
@@ -140,6 +148,7 @@ class Controller_Recipes_Editor extends Controller_Base
                 $oImageService = new FW_ImageServiceGallery('recipes', HIDDEN_IMAGEFOLDER_SECURE, array());
                 $image_name = uniqid();
                 
+                
                 $arrUploadedImage = $form->getValue('image');
                 $arrUploadedImage = reset($arrUploadedImage);
                 $res_img = $oImageService->upload($arrUploadedImage['tmp_name'], $image_name, false);
@@ -156,7 +165,7 @@ class Controller_Recipes_Editor extends Controller_Base
                     'image_name' => $image_name
                 ];
             }
-
+            
             $recipe_obj = new Model_Recipe($this->_db);
             $res = $recipe_obj->save(
                 Controller_Base::get_user_id(),

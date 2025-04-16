@@ -72,8 +72,8 @@ CREATE TABLE tbl_recipe_ingredients (
   recipe_id INT UNSIGNED NOT NULL,
   ingredients_id INT UNSIGNED NOT NULL,
   nr INT NOT NULL,
-  quantity FLOAT NOT NULL,
-  unit_id INT UNSIGNED NOT NULL,
+  quantity FLOAT NULL,
+  unit_id INT UNSIGNED NULL,
   is_alternative TINYINT(1) NOT NULL,
   FOREIGN KEY (recipe_id) REFERENCES tbl_recipe (recipe_id),
   FOREIGN KEY (ingredients_id) REFERENCES tbl_ingredients (ingredients_id),
@@ -81,10 +81,11 @@ CREATE TABLE tbl_recipe_ingredients (
 );
 
 
-INSERT INTO tbl_category (category_name) VALUES ("Cocktail"), ("Suppe"), ("Hauptgericht"), ("Mehlspeise");
+INSERT INTO tbl_category (category_name) VALUES ("Cocktail"), ("Suppe"), ("Hauptspeise"), ("Nachspeise"), ("Kekse"), ("Gebäck");
 
 INSERT INTO tbl_unit (unit_name, locked) VALUES
 ('Kilo', 1),
+('dag', 1),
 ('Gramm', 1),
 ('Liter', 1),
 ('Centiliter', 1),

@@ -1,5 +1,14 @@
 
-var slideshow = function(jquery_selector,slideshow_ajax_url, id_name, renderSlide) {
+var slideshow_init = {};
+var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSlide, onChangeStateForward) {
+    if (slideshow_init[jquery_selector]) {
+        return;
+    }
+    slideshow_init[jquery_selector] = true;
+
+    if (!window.name) {
+        window.name = 'slideshow_' + Date.now();
+    }
     
     if (!$('#focushelper').length) {
         $('body').prepend('<a href="javascript:;" id="focushelper" tabindex="-1"></a>');
@@ -10,15 +19,6 @@ var slideshow = function(jquery_selector,slideshow_ajax_url, id_name, renderSlid
     var slideshow_cache = {};
     var has_touchevents = "ontouchstart" in document.documentElement;
     var focushelper_node  = $('#focushelper');
-
-    var prev = null;
-    var initSlideshowNavigation = function() {
-        var href = $(this).attr('href');
-        if (prev) 
-            slideshow_navigation[prev].next = href;
-        slideshow_navigation[href] = {prev: prev, next: null};
-        prev = href;
-    }
 
     var stopAjax = function() {
         try{
@@ -44,7 +44,7 @@ var slideshow = function(jquery_selector,slideshow_ajax_url, id_name, renderSlid
         });
     }
 
-    var loadSlideshowSlide = function (id, next) 
+    var loadSlideshowSlide = function (id, next, historyadd) 
     {
         stopAjax();
         removeSlides();
@@ -83,9 +83,14 @@ var slideshow = function(jquery_selector,slideshow_ajax_url, id_name, renderSlid
                 'complete': removeSlides
             });
         }
-        
+
         var history_url = document.location.href.replace(new RegExp('[#]' + id_name + '=[0-9]+$','g'),'');
-        history.replaceState({}, '', history_url + '#' + id_name + '=' + id);
+        if (historyadd) {
+            history.pushState({'slideshow': 'open'}, '', history_url + '#' + id_name + '=' + id);
+            $.cookie(window.name + '_historyadd_' + id_name, 1);
+        } else {
+            history.replaceState({'slideshow': 'open'}, '', history_url + '#' + id_name + '=' + id);
+        }
 
         if (slideshow_cache[id]) {
             renderSlide(slideshow_cache[id], node);
@@ -112,7 +117,7 @@ var slideshow = function(jquery_selector,slideshow_ajax_url, id_name, renderSlid
         return node;
     }
 
-    var openSlideshow = function(id, noanimate) 
+    var openSlideshow = function(id, noanimate, historyadd) 
     {
         if (!$('#slideshow').length) {
             var scroll_top = $(document).scrollTop();
@@ -174,14 +179,21 @@ var slideshow = function(jquery_selector,slideshow_ajax_url, id_name, renderSlid
         }
         
         $('#slideshow').find('.inner').html('');
-        loadSlideshowSlide(id, true);
+        var prev = null;
+        slideshow_navigation = {};
+        $(jquery_selector).each(function() {
+            var href = $(this).attr('href');
+            if (prev) 
+                slideshow_navigation[prev].next = href;
+            slideshow_navigation[href] = {prev: prev, next: null};
+            prev = href;
+        });
+        loadSlideshowSlide(id, true, historyadd);
     }
 
-    var closeSlideshow = function (empty_slideshow_cache) 
+    var closeSlideshow = function (empty_slideshow_cache, perform_back) 
     {
         $('body').removeClass('slideshow_opened');
-
-        history.replaceState({}, '', document.location.href.replace(new RegExp('[#]' + id_name + '=[0-9]+$', 'g'),''))
         if (empty_slideshow_cache) {
             slideshow_cache = {};
         }
@@ -196,6 +208,14 @@ var slideshow = function(jquery_selector,slideshow_ajax_url, id_name, renderSlid
                     $('#slideshow').remove();
                 }
             });
+        }
+        if ($.cookie(window.name + '_historyadd_' + id_name)) {
+            $.removeCookie(window.name + '_historyadd_' + id_name);
+            if (perform_back) {
+                history.back();
+            }
+        } else {
+            history.replaceState({}, '', document.location.href.replace(new RegExp('[#]' + id_name + '=[0-9]+$', 'g'),''));
         }
     }
 
@@ -223,7 +243,7 @@ var slideshow = function(jquery_selector,slideshow_ajax_url, id_name, renderSlid
         var id = $(this).attr('href');
         if ($('#slideshow').length) 
             return;
-        openSlideshow(id);
+        openSlideshow(id, false, true);
     }
 
     var onClickSlideshowClose = function(e) 
@@ -232,7 +252,24 @@ var slideshow = function(jquery_selector,slideshow_ajax_url, id_name, renderSlid
         if (!$('#slideshow').data('opened')) 
             return;
         stopAjax();
-        closeSlideshow(false);
+        closeSlideshow(false, true);
+    }
+
+    var onPopState = function(e) {
+        e.preventDefault();
+        if (e.state && e.state.slideshow == 'open') {
+            if (onChangeStateForward) {
+                onChangeStateForward(e);
+            }
+            if (onLoadSlideshow()) {
+                $.cookie(window.name + '_historyadd_' + id_name, 1);
+            }
+        } else {
+            if (!$('#slideshow').data('opened')) 
+                return;
+            stopAjax();
+            closeSlideshow(false, false);
+        }
     }
 
     var onHoverSlideshowBtn = function(e) {
@@ -258,15 +295,17 @@ var slideshow = function(jquery_selector,slideshow_ajax_url, id_name, renderSlid
         }
         if (new RegExp('#' + id_name + '=[0-9]+$').test(document.location.href)) {
             var id = document.location.href.split('#' + id_name + '=')[1];
-            var node = $(document).find('a[href="'+id+'"]');
+            var node = $(jquery_selector + '[href="'+id+'"]');
             if (node.length == 1) {
-                openSlideshow(id, true);
+                openSlideshow(id, true, false);
                 return true;
             }
         }
         return false;
     }
     
-    $(jquery_selector).each(initSlideshowNavigation).click(onClickThumb);
+    $(jquery_selector).click(onClickThumb);
+    window.addEventListener('popstate', onPopState);
+	$(document).on('click', jquery_selector, onClickThumb);
     onLoadSlideshow(id_name);
 }

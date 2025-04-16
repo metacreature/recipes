@@ -1,10 +1,16 @@
 <?php require_once (DOCUMENT_ROOT . '/views/includes/header.view.html'); ?>
 <?php require_once (DOCUMENT_ROOT . '/views/includes/navigation.view.html'); ?>
 
+<div id="recipe_editor_header">
+    <a href="javascript: history.back();">&lt; <?php echo LANG_RECIPE_EDITOR_BACK; ?></a>
+    <a href="/recipes/editor"><?php echo LANG_RECIPE_EDITOR_ADD_NEW; ?> &gt;</a>
+</div>
+
 <div id="recipe_editor">
     <?php 
     $form->setColMd(2,10);
     echo $form->printStartTag();
+
     echo '<div class="col-lg-7">';
     echo    '<div class="ajax-form-response"></div>';
     echo    $form->printLine('public', LANG_RECIPE_EDITOR_PUBLIC);
