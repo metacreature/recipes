@@ -5,12 +5,15 @@ require_once ('fw/func.inc.php');
 require_once ('fw/FW_ErrorLogger.static.php');
 require_once ('fw/FW_MySQLDataBaseLayer.class.php');
 
-require_once ('language/german.lang.php');
-
 // settings
 define('SETTINGS_LANDING_PAGE', 'recipes/list');
-define('SETTINGS_ALLOW_REGISTER', false);
+define('SETTINGS_ALLOW_REGISTER', true);
 define('SETTINGS_LIST_REQUIRES_LOGIN', false);
+define('SETTINGS_DEFAULT_LANG', 'de');
+define('SETTINGS_AVAILABLE_LANG', [
+	'de' => 'Deutsch',
+	'en' => 'English',
+]);
 
 
 

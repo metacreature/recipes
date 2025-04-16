@@ -3,6 +3,28 @@
         <img src="/static/images/logo.svg" alt="">
     </a>
 
+    <?php if (count(SETTINGS_AVAILABLE_LANG) > 1) { ?>
+        <div class="language">
+            <select id="select_language">
+                <?php 
+                foreach(SETTINGS_AVAILABLE_LANG as $key => $value) {
+                    if (SELECTED_LANG == $key) {
+                        echo '<option value="' . $key . '" selected>'. $value . '</option>';
+                    } else {
+                        echo '<option value="' . $key . '">'. $value . '</option>';
+                    }
+                } 
+                ?>
+            </select>
+            <script>
+                $('#select_language').change(function(e){
+                    $.cookie('selected_lang', $(this).val(), { expires : 3650, path: '/'});
+                    self.location.reload();
+                });
+            </script>
+        </div>
+    <?php } ?>
+
     <?php if (Controller_Base::is_login()) { ?>
 
         <a class="logout" href="<?php echo WEB_URL . '/user/login/logout'; ?>">

@@ -14,7 +14,7 @@
     echo '  <div class="field_wrapper">' . $form->printInput('recipe_name') . '</div>';
     echo '  <div class="clear"></div>';
     echo '</div>';
-    echo $form->printSubmit('<img src="/static/images/icons/search-sharp.svg">', 'search', '/recipes/list/list');
+    echo $form->printSubmit('<img src="/static/images/icons/search-sharp.svg"  alt="">', 'search', '/recipes/list/list');
     echo '<div class="clear"></div>';
     echo $form->printEndTag();
     ?>
@@ -22,7 +22,7 @@
 
 <div id="recipe_list">
     <a class="entry add_recipe" href="/recipes/editor">
-        <img src="/static/images/icons/add-circle-outline.svg">
+        <img src="/static/images/icons/add-circle-outline.svg" alt="">
         <span><?php echo LANG_RECIPE_LIST_ADD; ?></span>
     </a>
 
@@ -54,7 +54,11 @@
     });
     $('input[name="recipe_name"]').attr('placeholder', "<?php echo LANG_RECIPE_LIST_FILTER_NAME; ?>");
 
-    var recipe_detail_ingredients_alternative = "<?php echo LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE; ?>"
+    var LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE = "<?php echo LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE; ?>";
+    var LANG_RECIPE_LIST_DELETE_CONFIRM_TITLE = "<?php echo LANG_RECIPE_LIST_DELETE_CONFIRM_TITLE; ?>";
+    var LANG_RECIPE_LIST_DELETE_CONFIRM_TEXT = "<?php echo LANG_RECIPE_LIST_DELETE_CONFIRM_TEXT; ?>";
+    var LANG_RECIPE_LIST_DELETE_CONFIRM_CONFIRM = "<?php echo LANG_RECIPE_LIST_DELETE_CONFIRM_CONFIRM; ?>";
+    var LANG_RECIPE_LIST_DELETE_CONFIRM_CANCEL = "<?php echo LANG_RECIPE_LIST_DELETE_CONFIRM_CANCEL; ?>";
 
 </script>
 

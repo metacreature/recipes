@@ -87,7 +87,7 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
         var history_url = document.location.href.replace(new RegExp('[#]' + id_name + '=[0-9]+$','g'),'');
         if (historyadd) {
             history.pushState({'slideshow': 'open'}, '', history_url + '#' + id_name + '=' + id);
-            $.cookie(window.name + '_historyadd_' + id_name, 1);
+            $.cookie(window.name + '_historyadd_' + id_name, 1, {path: '/'});
         } else {
             history.replaceState({'slideshow': 'open'}, '', history_url + '#' + id_name + '=' + id);
         }
@@ -210,7 +210,7 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
             });
         }
         if ($.cookie(window.name + '_historyadd_' + id_name)) {
-            $.removeCookie(window.name + '_historyadd_' + id_name);
+            $.removeCookie(window.name + '_historyadd_' + id_name, {path: '/'});
             if (perform_back) {
                 history.back();
             }
@@ -262,7 +262,7 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
                 onChangeStateForward(e);
             }
             if (onLoadSlideshow()) {
-                $.cookie(window.name + '_historyadd_' + id_name, 1);
+                $.cookie(window.name + '_historyadd_' + id_name, 1, {path: '/'});
             }
         } else {
             if (!$('#slideshow').data('opened')) 
@@ -278,6 +278,9 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
 
 
     $(document).on('keydown', function(e) {
+        if ($('body').hasClass('blockkeyactions')) {
+            return;
+        }
         if (e.originalEvent.repeat || !$('#slideshow').data('opened')) {
         } else if(e.which === 27) {
             onClickSlideshowClose(e);

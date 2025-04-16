@@ -131,7 +131,7 @@ class Model_Recipe extends Model_Base{
             INNER JOIN tbl_category USING (category_id)
             INNER JOIN tbl_user USING (user_id)
             '. $join.'
-            WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?)'
+            WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) AND deleted = 0 '
             . $query 
             .'GROUP BY 
                 tbl_recipe.recipe_id,
@@ -146,6 +146,18 @@ class Model_Recipe extends Model_Base{
         );
 
         return $this->_db->getAssocResults();
+    }
+
+    function setdelete($recipe_id, $user_id) {
+        $this->_db->executePreparedQuery('UPDATE tbl_recipe SET 
+            deleted = 1,
+            last_edited = NOW()
+        WHERE recipe_id = ? AND user_id = ? AND deleted = 0;', 
+        [$recipe_id, $user_id]);
+        if ($this->_db->getAffectedRows() == 1) {
+            return true;
+        }
+        return false;
     }
 
     function get($recipe_id, $user_id) {
@@ -163,7 +175,7 @@ class Model_Recipe extends Model_Base{
             FROM tbl_recipe 
             INNER JOIN tbl_category USING (category_id)
             INNER JOIN tbl_user USING (user_id)
-            WHERE recipe_id = ? AND (public = 1 OR user_id = ?);', 
+            WHERE recipe_id = ? AND (public = 1 OR user_id = ?) AND deleted = 0;', 
             [(int) $recipe_id, (int) $user_id]);
         $recipe = $this->_db->fetchAssoc();
         if (!$recipe) {
@@ -212,7 +224,7 @@ class Model_Recipe extends Model_Base{
                     persons = ?, 
                     original_text = ?,
                     last_edited = NOW()
-                WHERE recipe_id = ? AND user_id = ?;', 
+                WHERE recipe_id = ? AND user_id = ? AND deleted = 0;', 
                 [$public, $category_id, $recipe_name, $persons, $original_text, $recipe_id, $user_id]);
                 if ($this->_db->getAffectedRows() != 1) {
                     $this->_db->rollback();
@@ -251,10 +263,10 @@ class Model_Recipe extends Model_Base{
         }
 
         if ($del_image) {
-            $this->_db->executePreparedQuery('UPDATE tbl_recipe SET image_name = NULL, orig_image_name = NULL  WHERE recipe_id = ?;', 
+            $this->_db->executePreparedQuery('UPDATE tbl_recipe SET image_name = NULL, orig_image_name = NULL  WHERE recipe_id = ? AND deleted = 0;', 
                 [$recipe_id]);
         } elseif($image_upload) {
-            $this->_db->executePreparedQuery('UPDATE tbl_recipe SET image_name = ?, orig_image_name = ? WHERE recipe_id = ?;', 
+            $this->_db->executePreparedQuery('UPDATE tbl_recipe SET image_name = ?, orig_image_name = ? WHERE recipe_id = ? AND deleted = 0;', 
                 [$image_upload['image_name'], $image_upload['orig_image_name'], $recipe_id]);
         }
         

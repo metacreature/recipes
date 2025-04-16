@@ -2,6 +2,14 @@
 
 require_once ('_lib/global.inc.php');
 
+// language
+$selected_lang = SETTINGS_DEFAULT_LANG;
+if (!empty($_COOKIE['selected_lang']) && !empty(SETTINGS_AVAILABLE_LANG[$_COOKIE['selected_lang']])) {
+	$selected_lang = $_COOKIE['selected_lang'];
+}
+require_once (DOCUMENT_ROOT . '/language/' . $selected_lang . '.lang.php');
+define('SELECTED_LANG', $selected_lang);
+
 $db = FW_MySQLDataBaseLayer::singleton();
 ignore_user_abort(true);
 

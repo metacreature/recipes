@@ -643,6 +643,26 @@ body{
 	margin-right: 0px;
 	margin-top: -3px;
 }
+#header .language{
+	float: right;
+	margin-top: 17px;
+	margin-left: 20px;
+}
+#header .language select{
+	border-radius: 0;
+	border: 1px solid black;
+	background-color: transparent;
+	font-size: 16px;
+}
+#header .language select option:checked{
+	font-weight: bold;
+}
+
+::picker(select) {
+	border-radius: 0;
+	border: 1px solid black;
+	background-color: hsl(36, 52%, 56%);
+}
 
 /* login and register */
 .center_box_login{
@@ -826,7 +846,7 @@ body.slideshow_opened #recipe_list{
 	line-height: 30px;
 	font-weight: bold;
 	padding-bottom: 0px;
-	width: calc(100% - 40px);
+	width: calc(100% - 120px);
 }
 .recipe_detail .recipe_name img{
 	width: 20px;
@@ -837,21 +857,49 @@ body.slideshow_opened #recipe_list{
 }
 .recipe_detail .tags{
 	font-size: 14px;
-	width: calc(100% - 40px);
+	width: calc(100% - 120px);
 }
 .recipe_detail .user_name{
 	padding-bottom: 20px;
 	font-size: 14px;
-	width: calc(100% - 40px);
+	width: calc(100% - 120px);
 }
-.recipe_detail .edit{
+.recipe_detail .edit_buttons{
 	position: absolute;
 	top: 20px;
 	right: 20px;
+	width: 100px;
 }
-.recipe_detail .edit img{
+.recipe_detail .edit_buttons a{
+	float: right;
+}
+.recipe_detail .edit_buttons a.delete{
+	margin-right: 15px;
+	background-color: #fd6161;
+	border-color: #fd6161;
+}
+.recipe_detail .edit_buttons a.delete:hover{
+	background-color: red;
+	border-color: red;
+}
+.recipe_detail .edit_buttons img{
 	width: 20px;
 	height: 20px;
+}
+.jconfirm-content{
+	font-size: 16px;
+}
+.recipe_deleted img{
+	display: block;
+	width: 60px;
+	height: 60px;
+	margin: 30px auto;
+}
+.recipe_deleted span{
+	display: block;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
 }
 .recipe_detail .wrapper{
 	padding-bottom: 20px;

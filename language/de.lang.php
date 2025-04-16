@@ -17,10 +17,10 @@ define('LANG_NAVIGATION_REGISTER', 'registrieren');
 define('LANG_REGISTER_HDL', 'Registrieren');
 define('LANG_REGISTER_USERNAME', 'Benutzername');
 define('LANG_REGISTER_EMAIL', 'E-Mail');
-define('LANG_REGISTER_PASSWORD', 'Password');
-define('LANG_REGISTER_PASSWORD_ERROR', 'Password muß mindestens je einen Großbuchstaben, Kleinbuchstaben, und Sonderzeichen haben!');
-define('LANG_REGISTER_REPEAT_PASSWORD', 'Password wiederholen');
-define('LANG_REGISTER_REPEAT_PASSWORD_ERROR', 'Password nicht identisch!');
+define('LANG_REGISTER_PASSWORD', 'Passwort');
+define('LANG_REGISTER_PASSWORD_ERROR', 'Passwort muß mindestens je einen Großbuchstaben, Kleinbuchstaben, Zahl und Sonderzeichen haben!');
+define('LANG_REGISTER_REPEAT_PASSWORD', 'Passwort wiederholen');
+define('LANG_REGISTER_REPEAT_PASSWORD_ERROR', 'Passwort nicht identisch!');
 define('LANG_REGISTER_SAVE', 'Registrieren');
 define('LANG_REGISTER_INVALID', 'Bitte überprüfen Sie ihre Eingabe!');
 define('LANG_REGISTER_FAIL_EMAIL', 'E-Mail schon vorhanden!');
@@ -31,7 +31,7 @@ define('CHECK_LOGIN_ERROR_NOT_LOGIN', 'Sie sind nicht eingeloggt');
 
 define('LANG_LOGIN_HDL', 'Login');
 define('LANG_LOGIN_EMAIL', 'E-Mail');
-define('LANG_LOGIN_PASSWORD', 'Password');
+define('LANG_LOGIN_PASSWORD', 'Passwort');
 define('LANG_LOGIN_SAVE', 'Login');
 define('LANG_LOGIN_FAIL', 'Login fehlgeschlagen!');
 define('LANG_LOGIN_SUCCESS', 'Login erfolgreich!');
@@ -44,8 +44,15 @@ define('LANG_RECIPE_LIST_FILTER_INGREDIENTS', 'Zutaten');
 define('LANG_RECIPE_LIST_FILTER_NAME', 'Name');
 define('LANG_RECIPE_LIST_FILTER_ERROR', 'Etwas ist schiefgelaufen!');
 define('LANG_RECIPE_LIST_ADD', 'Rezept hinzfügen');
-define('LANG_RECIPE_LIST_LOAD_DETAIL', 'Etwas ist schiefgelaufen!');
+define('LANG_RECIPE_LIST_LOAD_DETAIL_ERROR', 'Etwas ist schiefgelaufen!');
 define('LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE', 'oder');
+
+
+define('LANG_RECIPE_LIST_DELETE_CONFIRM_TITLE', 'Löschen?');
+define('LANG_RECIPE_LIST_DELETE_CONFIRM_TEXT', 'Wollen Sie das Rezept {recipe_name} wirklich löschen?');
+define('LANG_RECIPE_LIST_DELETE_CONFIRM_CONFIRM', 'Ja');
+define('LANG_RECIPE_LIST_DELETE_CONFIRM_CANCEL', 'Nein');
+define('LANG_RECIPE_LIST_DELETE_ERROR', 'Etwas ist schiefgelaufen!');
 
 
 define('LANG_RECIPE_EDITOR_BACK', 'Zurück');

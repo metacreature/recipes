@@ -45,9 +45,10 @@ CREATE TABLE tbl_recipe (
   public TINYINT(1) NOT NULL,
   persons TINYINT UNSIGNED NOT NULL,
   original_text TEXT,
-  last_edited  DATETIME NOT NULL,
   orig_image_name VARCHAR(255) NOT NULL,
   image_name VARCHAR(255) NOT NULL,
+  deleted TINYINT(1) NOT NULL default 0,
+  last_edited  DATETIME NOT NULL,
   PRIMARY KEY (recipe_id),
   FOREIGN KEY (category_id) REFERENCES tbl_category (category_id),
   INDEX public (public, user_id)

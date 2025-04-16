@@ -89,6 +89,9 @@ $.fn.ajax_form = function(options) {
 
 $.fn.ajax_form.init_press_save = function(form, button) {
 	var pressSave = function (event) {
+		if ($('body').hasClass('blockkeyactions')) {
+            return;
+        }
 		if (event.which == 83 && event.ctrlKey) {
 			var target = $(event.target);
 			if (target.hasClass('form-control') && target.closest('form')[0] == form[0]) {

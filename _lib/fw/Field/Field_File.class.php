@@ -225,6 +225,7 @@ class Field_File extends Field_Base
         $arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
 
         $arrAttributes['type'] = 'file';
+        unset($arrAttributes['autocomplete']);
 
         if ($this->_arrExtensions) {
             $arrAttributes['accept'] = '.' . implode(',.', $this->_arrExtensions);

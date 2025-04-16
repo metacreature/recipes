@@ -96,7 +96,7 @@ class Controller_Recipes_List extends Controller_Base
     function get() {
         $form = new FW_Ajax_Form('detail_form', false);
         if (empty($_POST['recipe_id']) || !preg_match('#^\d+$#', $_POST['recipe_id'])) {
-            return $form->getFormError(LANG_RECIPE_LIST_LOAD_DETAIL);
+            return $form->getFormError(LANG_RECIPE_LIST_LOAD_DETAIL_ERROR);
         }
         $recipe_obj = new Model_Recipe($this->_db);
         $data = $recipe_obj->get(
@@ -106,6 +106,22 @@ class Controller_Recipes_List extends Controller_Base
         if (is_array($data)) {
             return $form->getFormSuccess('', ['data'=>$data]);
         }
-        return $form->getFormError(LANG_RECIPE_LIST_LOAD_DETAIL);
+        return $form->getFormError(LANG_RECIPE_LIST_LOAD_DETAIL_ERROR);
+    }
+
+    function delete() {
+        $form = new FW_Ajax_Form('detail_form', false);
+        if (empty($_POST['recipe_id']) || !preg_match('#^\d+$#', $_POST['recipe_id'])) {
+            return $form->getFormError(LANG_RECIPE_LIST_DELETE_ERROR);
+        }
+        $recipe_obj = new Model_Recipe($this->_db);
+        $res = $recipe_obj->setdelete(
+            $_POST['recipe_id'],
+            Controller_Base::get_user_id()
+        );
+        if ($res) {
+            return $form->getFormSuccess('', []);
+        }
+        return $form->getFormError(LANG_RECIPE_LIST_DELETE_ERROR);
     }
 }
