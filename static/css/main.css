@@ -890,7 +890,7 @@ body.slideshow_opened #recipe_list{
 	width: calc(100% - 120px);
 }
 .recipe_detail .user_name{
-	padding-bottom: 20px;
+	padding-bottom: 10px;
 	font-size: 14px;
 	width: calc(100% - 120px);
 }
@@ -915,6 +915,9 @@ body.slideshow_opened #recipe_list{
 .recipe_detail .edit_buttons img{
 	width: 20px;
 	height: 20px;
+}
+.recipe_detail .edit_buttons a.edit{
+	margin-bottom: 10px;
 }
 .jconfirm-content{
 	font-size: 16px;
@@ -1164,4 +1167,36 @@ body.slideshow_opened #recipe_list{
 	padding-top: 0;
 	padding-bottom: 0;
 	margin-top: 0px;
+}
+
+@media print {
+	#slideshow_header,
+	#header,
+	#recipe_list_filter,
+	#recipe_list,
+	#slideshow .recipe_detail .edit_buttons{
+		display: none !important;
+	}
+	body,
+	#slideshow .body,
+	#slideshow .inner,
+	#slideshow .slide,
+	#slideshow .recipe_detail{
+		background-color: transparent!important;
+		height: auto !important;
+	}
+	#slideshow .recipe_detail .wrapper > img{
+		width: 240px !important;
+    	height: 160px !important;
+		float: left !important;
+	}
+	#slideshow .recipe_detail .wrapper_ingredients{
+		padding-top: 0px !important;
+		padding-left: 20px !important;
+	}
+	#slideshow .recipe_detail .wrapper_ingredients td{
+		padding-top: 0px !important;
+		padding-bottom: 0px !important;
+	}
+
 }

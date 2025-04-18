@@ -149,13 +149,16 @@ $(function() {
 
         var html = '';
         html += '<div class="recipe_detail">';
-
+        
+        html += '<div class="edit_buttons">';
         if(data.editable) {
-            html += '<div class="edit_buttons">';
             html += '<a class="btn edit" href="/recipes/editor?recipe_id=' + data.recipe_id + '"><img src="/static/images/icons/build-outline.svg" alt=""></a>';
             html += '<a class="btn delete" href=""><img src="/static/images/icons/trash-outline.svg" alt=""></a>';
-            html += '</div>';
+            html += '<div class="clear"></div>';
         }
+        html +=     '<a class="btn print" href="javascript: window.print();"><img src="/static/images/icons/print-outline.svg" alt=""></a>';
+        html += '</div>';
+        
 
         html += '<div class="recipe_name">';
         if (!row.public) {
