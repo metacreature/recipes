@@ -25,6 +25,19 @@
 
 */
 
+try{
+	if (top != self) {
+		if (web_url && document.location.href.indexOf(web_url) !== 0) {
+			top.location.href = web_url;
+		} else {
+			top.location.href = self.location.href;
+		}
+	}
+	if (web_url && document.location.href.indexOf(web_url) !== 0) {
+		top.location.href = web_url;
+	}
+} catch(e) {}
+
 var array_keys = function(obj) {
 	try{
 		ret = Object.keys(obj);
