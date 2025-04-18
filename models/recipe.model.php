@@ -289,7 +289,7 @@ class Model_Recipe extends Model_Base{
         }
 
         if ($del_image) {
-            $this->_db->executePreparedQuery('UPDATE tbl_recipe SET image_name = NULL, orig_image_name = NULL  WHERE recipe_id = ? AND deleted = 0;', 
+            $this->_db->executePreparedQuery("UPDATE tbl_recipe SET image_name = '', orig_image_name = ''  WHERE recipe_id = ? AND deleted = 0;", 
                 [$recipe_id]);
         } elseif($image_upload) {
             $this->_db->executePreparedQuery('UPDATE tbl_recipe SET image_name = ?, orig_image_name = ? WHERE recipe_id = ? AND deleted = 0;', 
