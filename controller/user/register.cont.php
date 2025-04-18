@@ -20,32 +20,8 @@ class Controller_User_Register extends Controller_Base
         $form->addFormField('Text', 'user_name', false, '', true)
             ->setMinLength(6);
         $form->addFormField('Email', 'email', false, '', true);
-        $form->addFormField('Password', 'password', false, '', true)
-            ->setMinLength(8)
-            ->setFieldErrors(['external' => LANG_REGISTER_PASSWORD_ERROR]);
-        $form->addFormField('Password', 'password_confirmation', false, '', true)
-            ->setFieldErrors(['external' => LANG_REGISTER_REPEAT_PASSWORD_ERROR]);
+        $this->_add_create_password_fields($form);
         return $form;
-    }
-
-    protected function _validate_form($form) {
-        $valid = $form->validate();
-        $password = $form->getField('password');
-        if ($password->isValid()) {
-            foreach( ['[a-z]', '[A-Z]', '[0-9]', '[^a-zA-Z0-9 \t\r\n]'] as $regex) {
-                if (!preg_match('#' . $regex . '#', $password->getValue())) {
-                    $password->setErrorCode('external');
-                    $valid = false;
-                }
-            }
-        }
-        
-        $password_confirmation = $form->getField('password_confirmation');
-        if ($password_confirmation->getValue() !== $password->getValue()) {
-            $password_confirmation->setErrorCode('external');
-            $valid = false;
-        }
-        return $valid;
     }
 
     function view() {
@@ -57,7 +33,7 @@ class Controller_User_Register extends Controller_Base
     function save() {
         $form = $this->_get_form();
         $form->resolveRequest();
-        if ($this->_validate_form($form)) {
+        if ($this->_validate_create_password_form($form)) {
             $user_obj = new Model_User($this->_db);
             $res = $user_obj->create(
                 $form->getValue('user_name'),
@@ -68,6 +44,6 @@ class Controller_User_Register extends Controller_Base
             } 
             return $form->getFormError(LANG_REGISTER_FAIL_EMAIL);
         } 
-        return $form->getFormError(LANG_REGISTER_INVALID); 
+        return $form->getFormError(LANG_FORM_INVALID); 
     }
 }

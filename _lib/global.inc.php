@@ -5,20 +5,28 @@ require_once ('fw/func.inc.php');
 require_once ('fw/FW_ErrorLogger.static.php');
 require_once ('fw/FW_MySQLDataBaseLayer.class.php');
 
+define('TEST_SERVER', strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+
 // settings
-define('SETTINGS_LANDING_PAGE', 'recipes/list');
+define('SETTINGS_LANDING_PAGE', '/recipes/list');
 define('SETTINGS_ALLOW_REGISTER', true);
 define('SETTINGS_LIST_REQUIRES_LOGIN', false);
 define('SETTINGS_DEFAULT_LANG', 'de');
 define('SETTINGS_AVAILABLE_LANG', [
 	'de' => 'Deutsch',
-	'en' => 'English',
+	//'en' => 'English',
 ]);
+
+
+// Email-config
+define('EMAIL_FROM_NAME', 'Recipes by Metacreature');
+define('EMAIL_FROM_MAIL', 'no-reply@metacreature.com');
+define('EMAIL_RETURN_PATH', 'metacreature@metacreature.com');
+define('EMAIL_GREETING_NAME', 'Metacreature');
 
 
 
 // FW-Config
-define('TEST_SERVER', strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
 define('USER_TIMEZONE', 'Europe/Vienna');
 define('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT'].(TEST_SERVER ? '' : '/rezepte'));
 define('GALLERY_ROOT', DOCUMENT_ROOT . '/gallery');

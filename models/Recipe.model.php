@@ -151,7 +151,8 @@ class Model_Recipe extends Model_Base{
     function setdelete($recipe_id, $user_id) {
         $this->_db->executePreparedQuery('UPDATE tbl_recipe SET 
             deleted = 1,
-            last_edited = NOW()
+            last_edited = NOW(),
+            cnt_update = cnt_update + 1
         WHERE recipe_id = ? AND user_id = ? AND deleted = 0;', 
         [$recipe_id, $user_id]);
         if ($this->_db->getAffectedRows() == 1) {
@@ -223,7 +224,8 @@ class Model_Recipe extends Model_Base{
                     recipe_name = ?, 
                     persons = ?, 
                     original_text = ?,
-                    last_edited = NOW()
+                    last_edited = NOW(),
+                    cnt_update = cnt_update + 1
                 WHERE recipe_id = ? AND user_id = ? AND deleted = 0;', 
                 [$public, $category_id, $recipe_name, $persons, $original_text, $recipe_id, $user_id]);
                 if ($this->_db->getAffectedRows() != 1) {

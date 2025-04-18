@@ -13,19 +13,26 @@
     <?php 
     echo $form->printStartTag();
     echo '<div class="ajax-form-response"></div>';
-    echo $form->printLine('email', LANG_LOGIN_EMAIL);
-    echo $form->printLine('password', LANG_LOGIN_PASSWORD);
+    echo $form->printLine('email', LANG_FIELD_USER_EMAIL);
+    echo $form->printLine('password', LANG_FIELD_USER_PASSWORD);
     echo $form->printSubmitLine(LANG_LOGIN_SAVE, 'save', '/user/login/save');
     echo $form->printEndTag();
     ?>
+    <div class="button-line form-group row">
+        <label class="control-label col-md-4 hidden-xs hidden-sm">&nbsp;</label>
+        <div class="button-wrapper col-xs-12 col-md-8">
+            <a href="/user/password/request"><?php echo LANG_LOGIN_FORGOTTEN; ?></a>
+        </div>
+        <div class="clear"></div>
+    </div>
 
 </div>
 
 <script>
-    $('.register_form').ajax_form({
+    $('.login_form').ajax_form({
         'success': function(form, button, data) {
             if (data.success) {
-                top.location.replace('<?php echo !empty($_GET['target']) ? str_replace("'", "\\'", $_GET['target']) : '/' . SETTINGS_LANDING_PAGE; ?>');
+                top.location.replace('<?php echo !empty($_GET['target']) ? str_replace("'", "\\'", $_GET['target']) :  SETTINGS_LANDING_PAGE; ?>');
             }
         }
     });

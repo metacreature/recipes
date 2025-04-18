@@ -13,6 +13,7 @@ class Field_Password extends Field_Text
         $arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
 
         $arrAttributes['value'] = null;
+        $arrAttributes['autocomplete'] = 'new-password';
 
         return $arrAttributes;
     }

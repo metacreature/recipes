@@ -42,6 +42,33 @@ class Controller_Base
         }
     }
 
+    protected function _add_create_password_fields($form) {
+        $form->addFormField('Password', 'password', false, '', true)
+            ->setMinLength(8)
+            ->setFieldErrors(['external' => LANG_FIELD_USER_PASSWORD_ERROR]);
+        $form->addFormField('Password', 'password_confirmation', false, '', true)
+            ->setFieldErrors(['external' => LANG_FIELD_USER_REPEAT_PASSWORD_ERROR]);
+    }
+
+    protected function _validate_create_password_form($form) {
+        $valid = $form->validate();
+        $password = $form->getField('password');
+        if ($password->isValid()) {
+            foreach( ['[a-z]', '[A-Z]', '[0-9]', '[^a-zA-Z0-9 \t\r\n]'] as $regex) {
+                if (!preg_match('#' . $regex . '#', $password->getValue())) {
+                    $password->setErrorCode('external');
+                    $valid = false;
+                }
+            }
+        }
+        $password_confirmation = $form->getField('password_confirmation');
+        if ($password_confirmation->getValue() !== $password->getValue()) {
+            $password_confirmation->setErrorCode('external');
+            $valid = false;
+        }
+        return $valid;
+    }
+
     protected function _logout() {
         @session_destroy();
     }

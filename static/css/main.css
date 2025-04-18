@@ -1,5 +1,8 @@
 @CHARSET "UTF-8";
 
+a, a:hover, a:active, a:visited{
+	color: black;
+}
 
 a.anchor {
 	display: block;
@@ -340,7 +343,7 @@ div.combobox_dd div.active{
 	padding: 15px 0px 0px 0px;
 	color: #000;
 	overflow: hidden;
-	background-color: hsl(36, 52%, 56%);
+	background-color: #c99a54;
 }
 
 #slideshow_header {
@@ -437,7 +440,7 @@ div.combobox_dd div.active{
 
 #slideshow_header a:focus span.btn::before, #slideshow_header a:focus span.btn::after,
 #slideshow_header a:hover span.btn::before, #slideshow_header a:hover span.btn::after {
-	border-color: hsl(36, 52%, 56%);
+	border-color: #c99a54;
 }
 
 #slideshow_header a span.area{
@@ -607,7 +610,7 @@ tag.tagify__tag{
 
 body{
 	font-size: 12px;
-	background-color: hsl(36, 52%, 56%);
+	background-color: #c99a54;
 	padding: 0px !important;
 }
 
@@ -658,21 +661,20 @@ body{
 	font-weight: bold;
 }
 
-::picker(select) {
-	border-radius: 0;
-	border: 1px solid black;
-	background-color: hsl(36, 52%, 56%);
-}
-
 /* login and register */
-.center_box_login{
+.center_box_login,
+.center_box_forgotten,
+.center_box_profile{
 	width: 80%;
 	max-width: 500px;
 	padding: 10px;
 	border: 1px solid black;
 	border-radius: 6px;
 	margin: 20px auto;
-	
+}
+.center_box_profile{
+	width: 90%;
+	max-width: 600px;
 }
 .center_box_login .ajax-form-response:has(.ajax-form-success) {
 	display: none !important;
@@ -771,7 +773,7 @@ body.slideshow_opened #recipe_list{
 	border-radius: 5px;
 	color: black !important;
 	text-decoration: none !important;
-	background-color: hsl(36, 38%, 69%);
+	background-color: #ceb692;
 	flex-shrink: 0;
 	flex-grow: 0;
 }

@@ -194,6 +194,6 @@ class Controller_Recipes_Editor extends Controller_Base
             } 
             return $form->getFormError(LANG_RECIPE_EDITOR_FAIL);
         } 
-        return $form->getFormError(LANG_RECIPE_EDITOR_INVALID); 
+        return $form->getFormError(LANG_FORM_INVALID); 
     }
 }

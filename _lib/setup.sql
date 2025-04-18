@@ -4,6 +4,8 @@ CREATE TABLE tbl_user (
   user_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(32) NOT NULL,
+  last_edited  DATETIME NOT NULL,
+  cnt_update INT UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (user_id),
   UNIQUE KEY email (email)
 );
@@ -49,6 +51,7 @@ CREATE TABLE tbl_recipe (
   image_name VARCHAR(255) NOT NULL,
   deleted TINYINT(1) NOT NULL default 0,
   last_edited  DATETIME NOT NULL,
+  cnt_update INT UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (recipe_id),
   FOREIGN KEY (category_id) REFERENCES tbl_category (category_id),
   INDEX public (public, user_id)

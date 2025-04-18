@@ -1,5 +1,5 @@
 <div id="header">
-    <a class="logo" href="<?php echo WEB_URL . '/' . SETTINGS_LANDING_PAGE ?>">
+    <a class="logo" href="<?php echo SETTINGS_LANDING_PAGE ?>">
         <img src="/static/images/logo.svg" alt="">
     </a>
 
@@ -27,25 +27,25 @@
 
     <?php if (Controller_Base::is_login()) { ?>
 
-        <a class="logout" href="<?php echo WEB_URL . '/user/login/logout'; ?>">
+        <a class="logout" href="/user/login/logout">
             <img src="/static/images/icons/exit-outline.svg" alt="">
             <span><?php echo LANG_NAVIGATION_LOGOUT; ?></span>
         </a>
-        <span class="user_name">
+        <a class="user_name" href="/user/profile">
             <img src="/static/images/icons/person-circle-outline.svg" alt="">
             <span><?php $name = Controller_Base::get_user_name(); echo xssProtect($name); ?></span>
-        </span>
+        </a>
 
     <?php } else  { ?>
 
-        <a class="login" href="<?php echo WEB_URL . '/user/login'; ?>">
+        <a class="login" href="/user/login">
             <img src="/static/images/icons/enter-outline.svg" alt="">
             <span><?php echo LANG_NAVIGATION_LOGIN; ?></span>
         </a>
 
         
         <?php if (SETTINGS_ALLOW_REGISTER) { ?>
-            <a class="register" href="<?php echo WEB_URL . '/user/register'; ?>">
+            <a class="register" href="/user/register">
                 <img src="/static/images/icons/enter-outline.svg" alt="">
                 <span><?php echo LANG_NAVIGATION_REGISTER; ?></span>
             </a>

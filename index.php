@@ -28,7 +28,7 @@ if ($url && preg_match('#^[a-z_\/]+$#', $url) && file_exists('controller/' . $ur
 	$controller_file = 'controller/' . $controller_request;
 	$function = $slashpos === false ? '' : substr($url, $slashpos + 1);
 } else if (!$controller_request) {
-	$controller_file = 'controller/' . SETTINGS_LANDING_PAGE;
+	$controller_file = 'controller' . SETTINGS_LANDING_PAGE;
 	$function = 'view';
 } else {
 	header('HTTP/1.0 403 Forbidden');
