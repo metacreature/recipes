@@ -127,6 +127,7 @@ class Controller_User_Password extends Controller_Base
                     $mail->Subject = LANG_PASSWORD_REQUEST_SUBJECT;
                     $mail->Body = $message;
                     $mail->AltBody = $mail->html2text($message, true);
+                    $mail->CharSet = "UTF-8";
                     $mail->send();
                 } catch (Exception $e) {}
             }

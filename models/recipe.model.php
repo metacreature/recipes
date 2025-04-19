@@ -234,7 +234,7 @@ class Model_Recipe extends Model_Base{
         $this->_db->executePreparedQuery('SELECT tbl_tag.tag_name 
             FROM tbl_recipe_tag 
             INNER JOIN tbl_tag USING (tag_id) 
-            WHERE tbl_recipe_tag.recipe_id = ? ORDER BY tbl_tag.tag_name ASC;',
+            WHERE tbl_recipe_tag.recipe_id = ? ORDER BY tbl_tag.tag_id ASC;',
             [$recipe_id]);
         $recipe['tag_list'] = array_column($this->_db->getAssocResults(), 'tag_name');
 
