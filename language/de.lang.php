@@ -117,3 +117,4 @@ define('LANG_RECIPE_EDITOR_SAVE', 'Speichern');
 define('LANG_RECIPE_EDITOR_FAIL', 'Speichern fehlgeschlagen!');
 define('LANG_RECIPE_EDITOR_FAIL_IMAGE', 'Bildupload fehlgeschlagen!');
 define('LANG_RECIPE_EDITOR_SUCCESS', 'Speichern erfolgreich!');
+define('LANG_RECIPE_EDITOR_PARSE', 'Parse Original-Text');

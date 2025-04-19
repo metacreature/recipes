@@ -101,7 +101,8 @@ class Controller_Recipes_Editor extends Controller_Base
     function view() {
         $form_values = array(
             'cnt_ingredients' => 1,
-            'cnt_step' => 1
+            'cnt_step' => 1,
+            'public' => 1
         );
         
         $recipe_obj = new Model_Recipe($this->_db);

@@ -85,20 +85,24 @@ CREATE TABLE tbl_recipe_ingredients (
 );
 
 
-INSERT INTO tbl_category (category_name) VALUES ("Cocktail"), ("Suppe"), ("Hauptspeise"), ("Nachspeise"), ("Kekse"), ("Gebäck");
+INSERT INTO tbl_category (category_name) VALUES ("Cocktail"), ("Suppe"), ("Hauptspeise"), ("Nachspeise"), ("Kekse"), ("Gebäck"), ("Saucen") ;
 
 INSERT INTO tbl_unit (unit_name, locked) VALUES
-('Kilo', 1),
+('Kg', 1),
 ('dag', 1),
-('Gramm', 1),
-('Liter', 1),
-('Centiliter', 1),
-('Milliliter', 1),
+('g', 1),
+('l', 1),
+('cl', 1),
+('ml', 1),
+('EL', 1),
+('TL', 1),
 ('Stück', 1),
 ('Bund', 1),
-('Esslöffel', 1),
-('Teelöffel', 1),
-('Prise', 1);
+('Prise', 1),
+('Tube', 1),
+('Portion', 1),
+('Becher', 1),
+('Flasche', 1);
 
 INSERT INTO tbl_tag (tag_name, locked) VALUES
 ('schnell', 1),

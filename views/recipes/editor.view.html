@@ -116,6 +116,13 @@
     echo        '</div>';
     echo    '</div>';
     echo    $form->printLine('original_text', LANG_RECIPE_EDITOR_ORIGINAL, null, 'original_text');
+    echo    '<div class="button-line form-group row">';
+    echo        '<label class="col-md-2 control-label hidden-xs hidden-sm hidden-lg">&nbsp;</label>';
+    echo        '<div class="field-wrapper col-xs-12 col-md-10">';
+    echo            '<a href="" class="btn" id="parse_original_text">' . LANG_RECIPE_EDITOR_PARSE . '</a>';
+    echo            '<div class="clear"></div>';
+    echo        '</div>';
+    echo    '</div>';
     echo '</div>';
     echo '<div class="clear"></div>';
     echo '<div class="col-lg-7">';
@@ -139,5 +146,6 @@
 </script>
 
 <script src='/static/js/recipe_editor.js'></script>
+<script src='/static/js/recipe_editor_parser.js'></script>
 
 <?php require_once (DOCUMENT_ROOT . '/views/includes/footer.view.html'); ?>

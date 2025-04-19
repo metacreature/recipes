@@ -117,3 +117,4 @@ define('LANG_RECIPE_EDITOR_SAVE', 'save');
 define('LANG_RECIPE_EDITOR_FAIL', 'Save failed!');
 define('LANG_RECIPE_EDITOR_FAIL_IMAGE', 'Imageupload failed!');
 define('LANG_RECIPE_EDITOR_SUCCESS', 'Saved succeesfully!');
+define('LANG_RECIPE_EDITOR_PARSE', 'parse original text');
