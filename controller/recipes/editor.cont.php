@@ -117,7 +117,7 @@ class Controller_Recipes_Editor extends Controller_Base
                 $cnt = 0;
                 foreach ($recipe['ingredients_list'] as $nr => $row) {
                     $cnt++;
-                    $form_values['step_description_'.$cnt] = $row['is_alternative'];
+                    $form_values['ingredients_is_alternative_'.$cnt] = $row['is_alternative'];
                     $form_values['ingredients_quantity_'.$cnt] = $row['quantity'];
                     $form_values['ingredients_unit_'.$cnt] = $row['unit_name'];
                     $form_values['ingredients_name_'.$cnt] = $row['ingredients_name'];

@@ -113,7 +113,7 @@ class Controller_User_Password extends Controller_Base
                 $change_url .= '&ts=' . $timestamp . '&s=' . $this->_gen_key($data['user_id'], $data['email'], $timestamp);
                 $user_name = $data['user_name'];
 
-                require_once (DOCUMENT_ROOT . '/views/user/password.request.email.'.SELECTED_LANG.'.html');
+                require_once (DOCUMENT_ROOT . '/emails/password.request.email.'.SELECTED_LANG.'.html');
                 $message = ob_get_contents();
                 ob_clean();
 

@@ -25,27 +25,12 @@
 
 */
 
-var unit_translator = {
-    'Stück': /^(Stück|stk|stk\.|st|st\.)$/i,
-    'Bund': /^(Bund)$/i,
-    'Prise': /^(Prise)$/i,
-    'Tube': /^(Tube)$/i,
-    'Portion': /^(Portion)$/i,
-    'Becher': /^(Becher)$/i,
-    'Flasche': /^(Flasche)$/i,
-    'Kg': /^(Kg|Kilo|Kilogramm)$/i,
-    'dag': /^(dag|Deka|Dekagramm)$/i,
-    'cl': /^(cl|Centiliter)$/i,
-    'ml': /^(ml|Milliliter)$/i,
-    'EL': /^(el|Esslöffel)$/i,
-    'TL': /^(tl|Teelöffel)$/i,
-    'g': /^(g|Gramm)$/i,
-    'l': /^(L|Liter)$/i,
-};
+
 
 $(function() {
 
     var parse_quantity = function(quantity) {
+        quantity = quantity.replace('¼', '1/4').replace('½', '1/2').replace('¾', '3/4');
         quantity = quantity.trim().split(/[ \t]+/);
         var ret = '';
         if (quantity[0].match(/\//)) {
@@ -67,8 +52,8 @@ $(function() {
 
     var parse_unit = function(unit) {
         unit = unit.trim();
-        for (repl in unit_translator) {
-            if (unit.match(unit_translator[repl])) {
+        for (repl in ingredients_parser_unit_translator) {
+            if (unit.match(ingredients_parser_unit_translator[repl])) {
                 return repl;
             }
         }
@@ -76,8 +61,10 @@ $(function() {
     }
 
     var parse_ingredenties = function(line) {
-        var or = line.match(new RegExp('^(or|oder|alter[a-z\.]*)[ \t]', 'i')) ? true : false;
-        line = line.replace(new RegExp('^(or|oder|alter[a-z\.]*)[ \t]', 'i'), '').trim();
+        let fields = Array.from(addIngredients().find('input'));
+
+        var or = line.match(ingredients_parser_or) ? true : false;
+        line = line.replace(ingredients_parser_or, '').trim();
 
         var quantity = line.match(new RegExp('^(([0-9,./ \t]+)([^0-9,./ \t]))'));
         var unit = '';
@@ -94,8 +81,6 @@ $(function() {
             quantity = '';
         }
 
-        let fields = Array.from(addIngredients().find('input'));
-        console.log(fields);
         if (or) {
             $(fields[0]).prop( "checked", true );
         }
@@ -131,7 +116,7 @@ $(function() {
             original_text_block[i] = data;
         }
 
-        $('#recipe_name').val(original_text_block[0]);
+        $('#recipe_name').val(original_text_block[0].replace(new RegExp('^(<xxpxx>)+', 'g'), ' '));
         original_text_block.shift();
 
         var persons = original_text_block[0].match(new RegExp('^([^0-9><]*([0-9]+)[^0-9><]*)$'));
