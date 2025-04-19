@@ -1,6 +1,6 @@
 <?php
 /*
- File: Recipe.model.php
+ File: recipe.model.php
  Copyright (c) 2025 Clemens K. (https://github.com/metacreature)
  
  MIT License
@@ -185,6 +185,28 @@ class Model_Recipe extends Model_Base{
         return false;
     }
 
+    function delete($recipe_id, $user_id, $clean_refs = true) {
+        $this->_db->executePreparedQuery('SELECT * FROM tbl_recipe WHERE recipe_id = ? AND user_id = ?;', 
+            [$recipe_id, $user_id]);
+        if ($this->_db->fetchAssoc()) {
+            $this->_db->begin();
+            try{
+                $this->_clean_recipe_refs($recipe_id);
+                if ($clean_refs) {
+                    $this->clean_refs();
+                }
+                $this->_db->executePreparedQuery('DELETE FROM tbl_recipe WHERE recipe_id = ? AND user_id = ?;', 
+                    [$recipe_id, $user_id]);
+            } catch (Exception $e) {
+                $this->_db->rollback();
+                return false;
+            }
+            $this->_db->commit();
+            return true;
+        }
+        return false;
+    }
+
     function get($recipe_id, $user_id) {
         $this->_db->executePreparedQuery('SELECT 
             tbl_recipe.recipe_id as recipe_id,
@@ -261,7 +283,7 @@ class Model_Recipe extends Model_Base{
                 $this->_save_tag_list($recipe_id, $tag_list);
                 $this->_save_ingredients_list($recipe_id, $ingredients_list);
                 $this->_save_step_list($recipe_id, $step_list);
-                $this->_clean_refs();
+                $this->clean_refs();
 
             } else {
                 $this->_db->executePreparedQuery('INSERT INTO tbl_recipe SET 
@@ -383,7 +405,7 @@ class Model_Recipe extends Model_Base{
         $this->_db->executePreparedQuery('DELETE FROM tbl_recipe_step WHERE recipe_id = ?', [$recipe_id]);
     }
     
-    protected function _clean_refs() {
+    function clean_refs() {
         $this->_db->executeQuery('DELETE FROM tbl_tag 
             WHERE locked = 0 AND tag_id NOT IN (SELECT tag_id FROM tbl_recipe_tag GROUP BY tag_id)');
         $this->_db->executeQuery('DELETE FROM tbl_ingredients 

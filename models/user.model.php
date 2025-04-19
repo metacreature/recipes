@@ -1,6 +1,6 @@
 <?php
 /*
- File: User.model.php
+ File: user.model.php
  Copyright (c) 2025 Clemens K. (https://github.com/metacreature)
  
  MIT License

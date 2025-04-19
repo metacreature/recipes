@@ -147,7 +147,21 @@ $('.recipe_editor_form').ajax_form({
         tagify.whitelist = data.tag_list;
         $('#ingredients_list input[data-type="ingredients_unit"]').combobox('update_list', data.unit_list);
         $('#ingredients_list input[data-type="ingredients_name"]').combobox('update_list', data.ingredients_list);
+
+        serialized_form = $('.recipe_editor_form').serialize();
     }
 });
 
-
+var serialized_form;
+$(function() {
+    setTimeout(function() { // coz of tagify
+        serialized_form = $('.recipe_editor_form').serialize();
+    }, 500);
+});
+window.onbeforeunload = function(e) {
+    if (serialized_form && serialized_form != $('.recipe_editor_form').serialize()) {
+        e.preventDefault();
+        return true;
+    }
+    return;
+};
