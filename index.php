@@ -24,8 +24,11 @@
  SOFTWARE.
 */
 
-
-require_once ('_lib/global.inc.php');
+// FW-Includes
+require_once ('_lib/fw/func.inc.php');
+require_once ('_lib/fw/FW_ErrorLogger.static.php');
+require_once ('_lib/fw/FW_MySQLDataBaseLayer.class.php');
+require_once ('_lib/settings.inc.php');
 
 // language
 $selected_lang = SETTINGS_DEFAULT_LANG;

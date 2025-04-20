@@ -53,6 +53,7 @@
 
 <script>
     $('.register_form').ajax_form({
+        'default_error': form_default_error,
         'success': function(form, button, data) {
             if (data.success) {
                 top.location.replace('/user/login');

@@ -150,10 +150,13 @@ $.fn.ajax_form.ajax_form_complete = function(form, button, options, data, status
 		if (settings.error) {
 			settings.error(form, button, null);
 		}
-		
+		let error_message = 'Es ist ein Fehler aufgetreten! Bitte versuche es später noch einmal!'
+		if (settings.default_error) {
+			error_message = settings.default_error;
+		}
 		form.find(".field-error").remove();
 		form.find(".field-line").removeClass('line-error');
-		form.find(".ajax-form-response").html('<span class="ajax-form-error">Es ist ein Fehler aufgetreten! Bitte versuche es später noch einmal!</span>').show();
+		form.find(".ajax-form-response").html('<span class="ajax-form-error">'+error_message+'</span>').show();
 		button.removeClass("btn-loading");
 		
 	} else if (data.success && data.redirect_url) {
@@ -297,6 +300,7 @@ $.fn.ajax_form.submit_form = function(form, button, options) {
 }
 
 $.fn.ajax_form.defaults = {
+	default_error: null,
 	submit_btn: null,
 	beforesubmit: null,
 	success: null,

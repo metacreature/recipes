@@ -252,6 +252,7 @@ $(function() {
     // form
 
     $('.filter_form').ajax_form({
+        'default_error': form_default_error,
         'success': function(form, button, data) {
             if (data.success) {
                 if ($('.filter_form input[name="recipe_name"]').val() == ''){

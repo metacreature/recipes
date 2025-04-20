@@ -34,6 +34,7 @@ define('LANG_FORMFIELD_ERRORS', array(
     'mandatory' => 'Eingabe erforderlich!'
 ));
 define('LANG_FORM_INVALID', 'Bitte überprüfen Sie ihre Eingabe!');
+define('LANG_FORM_DEFAULT_ERROR', 'Es ist ein Fehler aufgetreten! Bitte versuche es später noch einmal!');
 
 define('LANG_FIELD_USER_USERNAME', 'Benutzername');
 define('LANG_FIELD_USER_EMAIL', 'E-Mail');
@@ -118,3 +119,21 @@ define('LANG_RECIPE_EDITOR_FAIL', 'Speichern fehlgeschlagen!');
 define('LANG_RECIPE_EDITOR_FAIL_IMAGE', 'Bildupload fehlgeschlagen!');
 define('LANG_RECIPE_EDITOR_SUCCESS', 'Speichern erfolgreich!');
 define('LANG_RECIPE_EDITOR_PARSE', 'Parse Original-Text');
+define('LANG_RECIPE_ORIGINAL_TEXT_PLACEHOLDER', 'Palatschinken
+
+für 8 Personen
+
+1 Kg Mehl
+2 Liter Milch
+8 Stück Eier
+Maiskeimöl
+oder Rapsöl
+
+Milch und Eier mit Handmixer vermischen und danach
+unter ständigem mixen das Mehl langsam hinzugeben.
+Für 1h stehen lassen.
+
+Den Teig, mit einem Suppenschöpfer portioniert, in eine 
+auf Stufe 8 vorgeheizte Pfanne mit etwas Öl geben 
+und durch schwenken der Pfanne verteilen. 
+Wenn die Oberseite nicht mehr flüssig ist wenden.');

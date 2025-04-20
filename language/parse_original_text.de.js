@@ -25,13 +25,14 @@
 
 var ingredients_parser_unit_translator = {
     'Stück': /^(Stück|stk|stk\.|st|st\.)$/i,
-    'Tasse': /^(Tasse)$/i,
     'Bund': /^(Bund)$/i,
+    'Stängel': /^(Stängel)$/i,
     'Prise': /^(Prise)$/i,
     'Tube': /^(Tube)$/i,
     'Portion': /^(Portion)$/i,
     'Becher': /^(Becher)$/i,
     'Flasche': /^(Flasche)$/i,
+    'Tasse': /^(Tasse)$/i,
     'Kg': /^(Kg|Kilo|Kilogramm)$/i,
     'dag': /^(dag|Deka|Dekagramm)$/i,
     'cl': /^(cl|Centiliter)$/i,
@@ -39,7 +40,7 @@ var ingredients_parser_unit_translator = {
     'EL': /^(el|Esslöffel)$/i,
     'TL': /^(tl|Teelöffel)$/i,
     'g': /^(g|Gramm)$/i,
-    'l': /^(L|Liter)$/i,
+    'L': /^(L|Liter)$/i,
 };
 
-var ingredients_parser_or = /^(or|oder|alter[a-z\.]*)[ \t]/i;
+var ingredients_parser_or = /^(od\.|oder|alter[a-z\.]*)[ \t]/i;

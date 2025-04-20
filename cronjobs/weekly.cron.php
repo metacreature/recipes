@@ -23,8 +23,10 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 */
-
-require_once ('../_lib/global.inc.php');
+require_once ('../_lib/fw/func.inc.php');
+require_once ('../_lib/fw/FW_ErrorLogger.static.php');
+require_once ('../_lib/fw/FW_MySQLDataBaseLayer.class.php');
+require_once ('../_lib/settings.inc.php');
 require_once ('../models/recipe.model.php');
 
 

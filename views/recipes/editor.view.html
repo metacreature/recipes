@@ -138,6 +138,7 @@
         width: '100%',
         minimumResultsForSearch: 10
     });
+    $('#original_text').attr('placeholder', '<?php echo preg_replace("#[\n]#", "\\\\n", preg_replace("#[\r]#", "", LANG_RECIPE_ORIGINAL_TEXT_PLACEHOLDER)); ?>');
     
     var unit_list = <?php echo json_encode($unit_list); ?>;
     var ingredients_list = <?php echo json_encode($ingredients_list); ?>;

@@ -132,6 +132,7 @@ tagify = new Tagify(input, {
 // submit
 
 $('.recipe_editor_form').ajax_form({
+    'default_error': form_default_error,
     'beforesubmit': function(form, button) {
         beforeSubmitIngredients();
         beforeSubmitStep();

@@ -79,11 +79,12 @@
 
 <script>
     $('.profile_form').ajax_form({
+        'default_error': form_default_error,
         success: function(){
             $('#header .user_name span').html($('.profile_form #user_name').val());
         }
     });
-    $('.email_form, .password_form').ajax_form({});
+    $('.email_form, .password_form').ajax_form({'default_error': form_default_error});
 </script>
 
 <?php require_once (DOCUMENT_ROOT . '/views/includes/footer.view.html'); ?>

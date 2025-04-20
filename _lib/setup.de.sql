@@ -91,18 +91,20 @@ INSERT INTO tbl_unit (unit_name, locked) VALUES
 ('Kg', 1),
 ('dag', 1),
 ('g', 1),
-('l', 1),
+('L', 1),
 ('cl', 1),
 ('ml', 1),
 ('EL', 1),
 ('TL', 1),
 ('Stück', 1),
 ('Bund', 1),
+('Stängel', 1),
 ('Prise', 1),
 ('Tube', 1),
 ('Portion', 1),
 ('Becher', 1),
-('Flasche', 1);
+('Flasche', 1),
+('Tasse', 1);
 
 INSERT INTO tbl_tag (tag_name, locked) VALUES
 ('schnell', 1),

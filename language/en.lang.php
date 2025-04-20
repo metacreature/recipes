@@ -34,6 +34,7 @@ define('LANG_FORMFIELD_ERRORS', array(
     'mandatory' => 'Value required!'
 ));
 define('LANG_FORM_INVALID', 'Please evaluate your input!');
+define('LANG_FORM_DEFAULT_ERROR', 'Something went wrong! Please try it again later!');
 
 define('LANG_FIELD_USER_USERNAME', 'Username');
 define('LANG_FIELD_USER_EMAIL', 'E-Mail');
@@ -118,3 +119,21 @@ define('LANG_RECIPE_EDITOR_FAIL', 'Save failed!');
 define('LANG_RECIPE_EDITOR_FAIL_IMAGE', 'Imageupload failed!');
 define('LANG_RECIPE_EDITOR_SUCCESS', 'Saved succeesfully!');
 define('LANG_RECIPE_EDITOR_PARSE', 'parse original text');
+define('LANG_RECIPE_ORIGINAL_TEXT_PLACEHOLDER', 'Pancakes
+
+for 8 people
+
+1 kg flour
+2 liters milk
+8 piece eggs
+Corn oil
+or rapeseed oil
+
+Mix the milk and eggs with a hand mixer and then slowly add the flour
+while constantly mixing.
+Leave to stand for 1 hour.
+
+Using a soup ladle, portion the batter into a 
+pan preheated to level 8 with a little oil 
+and spread by swirling the pan. 
+Turn when the top is no longer liquid.');

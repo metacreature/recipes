@@ -1,6 +1,6 @@
 <?php
 /*
- File: global.inc.php
+ File: settings.inc.php
  Copyright (c) 2025 Clemens K. (https://github.com/metacreature)
  
  MIT License
@@ -23,12 +23,6 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 */
-
-
-// FW-Includes
-require_once ('fw/func.inc.php');
-require_once ('fw/FW_ErrorLogger.static.php');
-require_once ('fw/FW_MySQLDataBaseLayer.class.php');
 
 define('TEST_SERVER', strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
 

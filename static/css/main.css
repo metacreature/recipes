@@ -860,6 +860,7 @@ body.slideshow_opened #recipe_list{
 	font-weight: bold;
 	font-size: 14px;
 	line-height: 17px;
+	text-transform: uppercase;
 }
 
 /* recipe detail */
@@ -877,6 +878,7 @@ body.slideshow_opened #recipe_list{
 	font-weight: bold;
 	padding-bottom: 0px;
 	width: calc(100% - 120px);
+	text-transform: uppercase;
 }
 .recipe_detail .recipe_name img{
 	width: 20px;
