@@ -126,9 +126,9 @@ class Field_Text extends Field_Base
         return $this->_checkError();
     }
 
-    protected function _getAttributes($arrAttributes, $bFormDisabled)
+    protected function _getAttributes($arrAttributesAdd, $bFormDisabled)
     {
-        $arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
+        $arrAttributes = parent::_getAttributes($arrAttributesAdd, $bFormDisabled);
 
         $arrAttributes['type'] = $this->_sType;
         $arrAttributes['value'] = $this->_mValue;
@@ -138,6 +138,9 @@ class Field_Text extends Field_Base
         }
         if ($this->_iMaxLength) {
             $arrAttributes['maxlength'] = $this->_iMaxLength;
+        }
+        if (is_array($arrAttributesAdd) && !empty($arrAttributesAdd['autocomplete'])) {
+            $arrAttributes['autocomplete'] = $arrAttributesAdd['autocomplete'];
         }
         return $arrAttributes;
     }

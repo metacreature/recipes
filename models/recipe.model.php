@@ -283,7 +283,6 @@ class Model_Recipe extends Model_Base{
                 $this->_save_tag_list($recipe_id, $tag_list);
                 $this->_save_ingredients_list($recipe_id, $ingredients_list);
                 $this->_save_step_list($recipe_id, $step_list);
-                $this->clean_refs();
 
             } else {
                 $this->_db->executePreparedQuery('INSERT INTO tbl_recipe SET 
@@ -309,6 +308,8 @@ class Model_Recipe extends Model_Base{
             $this->_db->rollback();
             return;
         }
+
+        $this->clean_refs();
 
         if ($del_image) {
             $this->_db->executePreparedQuery("UPDATE tbl_recipe SET image_name = '', orig_image_name = ''  WHERE recipe_id = ? AND deleted = 0;", 
@@ -411,6 +412,6 @@ class Model_Recipe extends Model_Base{
         $this->_db->executeQuery('DELETE FROM tbl_ingredients 
             WHERE ingredients_id NOT IN (SELECT ingredients_id FROM tbl_recipe_ingredients GROUP BY ingredients_id)');
         $this->_db->executeQuery('DELETE FROM tbl_unit 
-            WHERE locked = 0 AND unit_id NOT IN (SELECT unit_id FROM tbl_recipe_ingredients GROUP BY unit_id)');
+            WHERE locked = 0 AND unit_id NOT IN (SELECT unit_id FROM tbl_recipe_ingredients WHERE unit_id IS NOT NULL GROUP BY unit_id)');
     }
 }
