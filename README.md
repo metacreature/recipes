@@ -51,6 +51,11 @@ In `language/parse_original_text.{your language-code}.js` you will have to chang
 ## Usage
 
 ## Preview
-![list](docs/list.png)<br />
-![slideshow](docs/slideshow.png)<br />
+List including search-functionality via ajax
+![list](docs/list.png)<br /><br />
+
+View the details in a slideshow
+![slideshow](docs/slideshow.png)<br /><br />
+
+The editor including a parser to fill the form from a continuous text and Recommendations for units and ingredients if you want to fill it manually
 ![editor](docs/editor.png)<br /><br />
