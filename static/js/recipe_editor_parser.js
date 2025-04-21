@@ -47,7 +47,7 @@ $(function() {
             }
             ret += eval(quantity[1]);
         }
-        return Math.round(ret *100) / 100;
+        return Math.round(ret *1000) / 1000;
     }
 
     var parse_unit = function(unit) {

@@ -61,7 +61,7 @@ function beforeSubmitIngredients() {
 }
 
 $('#add_ingredients').on("click", addIngredients);
-$('#ingredients_list .btn_remove').on("click", removeIngredients);
+$(document).on('click', '#ingredients_list .btn_remove', removeIngredients);
 
 $('#ingredients_list input[data-type="ingredients_unit"]').combobox({list: unit_list});
 $('#ingredients_list input[data-type="ingredients_name"]').combobox({list: ingredients_list});
@@ -102,7 +102,7 @@ function beforeSubmitStep() {
 }
 
 $('#add_step').on("click", addStep);
-$('#steps_list .btn_remove').on("click", removeStep);
+$(document).on('click', '#steps_list .btn_remove', removeStep);
 
 // image
 

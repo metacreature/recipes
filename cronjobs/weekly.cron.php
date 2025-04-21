@@ -29,6 +29,8 @@ require_once ('../_lib/fw/FW_MySQLDataBaseLayer.class.php');
 require_once ('../_lib/settings.inc.php');
 require_once ('../models/recipe.model.php');
 
+ini_set('max_execution_time', 3600);
+
 
 $db = FW_MySQLDataBaseLayer::singleton();
 $recipe_obj = new Model_Recipe($db);
@@ -52,6 +54,11 @@ $db->optimizeTables([
 ]);
 
 // clean images 
+$image_list = scandir(GALLERY_ROOT . '/recipes');
+$orig_image_list = scandir(GALLERY_ROOT . '/recipes/_orig_' . HIDDEN_IMAGEFOLDER_SECURE);
+
+sleep(5);
+
 $db_list = [];
 $db->executeQuery('SELECT orig_image_name, image_name FROM tbl_recipe WHERE orig_image_name != "";');
 foreach($db->getAssocResults() as $row) {
@@ -60,14 +67,13 @@ foreach($db->getAssocResults() as $row) {
     $db_list[$row['image_name'].'.webp'] = true;
 }
 
-$image_list = scandir(GALLERY_ROOT . '/recipes');
 foreach($image_list as $img) {
     if (preg_match('#\.webp$#', $img) && empty($db_list[$img])) {
         unlink(GALLERY_ROOT . '/recipes/' .$img);
     }
 }
-$image_list = scandir(GALLERY_ROOT . '/recipes/_orig_' . HIDDEN_IMAGEFOLDER_SECURE);
-foreach($image_list as $img) {
+
+foreach($orig_image_list as $img) {
     if (preg_match('#\.[a-zA-Z]{3,4}$#', $img) && empty($db_list[$img])) {
         unlink(GALLERY_ROOT . '/recipes/_orig_' . HIDDEN_IMAGEFOLDER_SECURE . '/' .$img);
     }
