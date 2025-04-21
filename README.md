@@ -78,7 +78,7 @@ The real magic is done at the ingredients (one per line!). If there is an altern
 The quantity can be a floating-number (eg. '1,5' or '1.5'), or an optional number followed by ¼, ½, ¾ or a fraction (eg '1 ½', '1 1/2', '1/3'). If there is a quantity, a unit is required. Be aware, that '1 fresh bunch of peppermint' will take 'fresh' as the unit and 'bunch of peppermint' as the ingredient.<br /><br />
 The unit will be replace to a predefined variant of it, eg. 'kilogram' will be replaced by 'kg'.<br /><br />
 Quantity and unit are optional, because in most recipes the amount of eg. salt is not defined.<br /><br />
-If the parsing of an ingredients-line fails, a line of empty form-fields will be added, in order to not accidentality miss an ingredient.<br />On top of this, if an unit or ingredient is already in the database it will be colored green, if not orange-red. This will help to find 'fresh' as a unit of '1 fresh bunch of peppermint' and 'Onion' instead of 'onions'. Its up to you if you want to use singular or plural, but its recommended not to use both variants for the search.
+If the parsing of an ingredients-line fails, a line of empty form-fields will be added, in order to not accidentality miss an ingredient.<br />On top of this, if a unit or ingredient is already in the database it will be colored green, if not orange-red. This will help to find 'fresh' as a unit of '1 fresh bunch of peppermint' and 'Onion' instead of 'onions' easily. Its up to you if you want to use singular or plural, but its recommended not to use both variants for the search.
 
 
 
