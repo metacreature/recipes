@@ -116,7 +116,7 @@ $(function() {
             original_text_block[i] = data;
         }
 
-        $('#recipe_name').val(original_text_block[0].replace(new RegExp('^(<xxpxx>)+', 'g'), ' '));
+        $('#recipe_name').val(original_text_block[0].replace(new RegExp('(<xxpxx>)+', 'g'), ' '));
         original_text_block.shift();
 
         var persons = original_text_block[0].match(new RegExp('^([^0-9><]*([0-9]+)[^0-9><]*)$'));

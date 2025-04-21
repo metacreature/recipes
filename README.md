@@ -29,7 +29,7 @@ And you will need a MySQL-Database with utf8_general_ci - charset. It should wor
 After you have downloaded or cloned the repo you have to open `_inc/settings.inc.php` and change the settings for your needs.
 Don't forget to change "SECURE_SALT" (for the passwords) and "HIDDEN_IMAGEFOLDER_SECURE" (for the images). HIDDEN_IMAGEFOLDER_SECURE should only contain lowercase alphanumeric characters, because it is used as a suffix for a folder-name.<br />
 Because there is no admin-interface you have to temporary set SETTINGS_ALLOW_REGISTER to 'true' to add a new user.<br /><br />
-Run `_lib/setup.sql` in eg. phpMyAdmin to create all tables
+Run `_lib/setup.sql` in eg. phpMyAdmin to create all tables.
 
 ### German or English:
 For German or English you have to set SETTINGS_DEFAULT_LANG to 'de' or 'en'. After that you have to execute either `_lib/setup.de.sql` or `_lib/setup.en.sql`. There are some inserts for category, tags and units you may want to fit for your needs. <br /><br />
@@ -49,8 +49,13 @@ In `language/parse_original_text.{your language-code}.js` you will have to chang
 
 
 ## Usage
+Everything
 
 ## Preview
+
+Login, of course with registration, forgotten password and editable user-profile
+![login](docs/login.png)<br /><br />
+
 List including search-functionality via ajax
 ![list](docs/list.png)<br /><br />
 

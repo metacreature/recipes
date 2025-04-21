@@ -123,7 +123,7 @@ define('LANG_RECIPE_ORIGINAL_TEXT_PLACEHOLDER', 'Pancakes
 
 for 8 people
 
-1 kg flour
+1kg flour
 2 liters milk
 8 piece eggs
 Corn oil

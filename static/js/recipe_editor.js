@@ -144,6 +144,8 @@ $('.recipe_editor_form').ajax_form({
 
         $('#recipe_editor input[name="recipe_id"]').val(data.recipe_id);
         $('#recipe_editor input[name="del_image"]').prop('checked', false);
+        var location = self.location.href.replace(/[?].*$/, '');
+        history.replaceState({}, '', location + '?recipe_id=' + data.recipe_id);
         loadImage(data.image_name);
         tagify.whitelist = data.tag_list;
         $('#ingredients_list input[data-type="ingredients_unit"]').combobox('update_list', data.unit_list);

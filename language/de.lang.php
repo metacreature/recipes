@@ -123,7 +123,7 @@ define('LANG_RECIPE_ORIGINAL_TEXT_PLACEHOLDER', 'Palatschinken
 
 für 8 Personen
 
-1 Kg Mehl
+1Kg Mehl
 2 Liter Milch
 8 Stück Eier
 Maiskeimöl

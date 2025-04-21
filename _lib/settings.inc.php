@@ -29,7 +29,7 @@ define('TEST_SERVER', strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
 // settings
 define('SETTINGS_ALLOW_REGISTER', true);
 define('SETTINGS_LIST_REQUIRES_LOGIN', false);
-define('SETTINGS_DEFAULT_LANG', 'de');
+define('SETTINGS_DEFAULT_LANG', 'en');
 
 
 // Email-config
