@@ -146,16 +146,15 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
     var openSlideshow = function(id, noanimate, historyadd) 
     {
         if (!$('#slideshow').length) {
-            var scroll_top = $(document).scrollTop();
 
-            var node = $('<div id="slideshow" data-opened="1" style="top: '+scroll_top+'px;">'+
+            var node = $('<div id="slideshow" data-opened="1" style="top: 0px; position: fixed;">'+
                         '<div id="slideshow_header">'+
                             '<a class="prev" href="#"><span class="btn"></span>'+(!has_touchevents ? '<span class="area"></span>' : '')+'</a>'+
                             '<a class="next" href="#"><span class="btn"></span>'+(!has_touchevents ? '<span class="area"></span>' : '')+'</a>'+
                             '<a class="close" href="#"><span class="btn"></span></a>'+
                         '</div>'+
                         '<div class="body"><div class="inner"></div><div class="clear"></div></div></div>');
-            $('body').append(node).scrollTop(scroll_top);
+            $('body').append(node);
 
             $('#slideshow_header .close').on('click', onClickSlideshowClose);
             $('#slideshow_header .prev').on('click', onClickSlideshowPrev);
@@ -187,21 +186,20 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
             var finish_anim = function() {
                 $('body').addClass('slideshow_opened');
                 node.css('top', 0).css('opacity', 1);
-                $(document).scrollTop(0);
                 if (node.find('> div > a:focus').length == 0) {
                     focushelper_node.focus();
                 }
             }
             
-            if (noanimate) {
+            //if (noanimate) {
                 finish_anim();
-            } else {
+            /*} else {
                 node.animate({'opacity': 1}, {
                     'duration': 300, 
                     'easing': 'linear',
                     'complete': finish_anim,
                 });
-            }
+            }*/
         }
         
         $('#slideshow').find('.inner').html('');

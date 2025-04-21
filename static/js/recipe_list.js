@@ -161,7 +161,7 @@ $(function() {
         
 
         html += '<div class="recipe_name">';
-        if (!row.public) {
+        if (parseInt(row.public) == 0) {
             html += '<img src="/static/images/icons/lock-closed.svg" class="private" alt="">';
         }
         html += html_special_chars(data.recipe_name);
