@@ -1,5 +1,5 @@
 
-INSERT INTO tbl_category (category_name) VALUES ("Cocktail"), ("Suppe"), ("Vorspeise"), ("Hauptspeise"), ("Nachspeise"), ("Snack"), ("Sauce"), ("Gebäck"), ("Kekse");
+INSERT INTO tbl_category (category_name) VALUES ("Cocktail"), ("Suppe"), ("Vorspeise"), ("Hauptspeise"), ("Mehlpeise"), ("Snack"), ("Sauce"), ("Gebäck"), ("Kekse");
 
 INSERT INTO tbl_unit (unit_name, locked) VALUES
 ('Kg', 1),

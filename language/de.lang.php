@@ -121,11 +121,11 @@ define('LANG_RECIPE_EDITOR_SUCCESS', 'Speichern erfolgreich!');
 define('LANG_RECIPE_EDITOR_PARSE', 'Parse Original-Text');
 define('LANG_RECIPE_ORIGINAL_TEXT_PLACEHOLDER', 'Palatschinken
 
-für 8 Personen
+für 12 Personen
 
-1Kg Mehl
-2 Liter Milch
-8 Stück Eier
+1 1/2 Kg Mehl
+3L Milch
+12 Stück Eier
 Maiskeimöl
 oder Rapsöl
 

@@ -121,11 +121,11 @@ define('LANG_RECIPE_EDITOR_SUCCESS', 'Saved succeesfully!');
 define('LANG_RECIPE_EDITOR_PARSE', 'parse original text');
 define('LANG_RECIPE_ORIGINAL_TEXT_PLACEHOLDER', 'Pancakes
 
-for 8 people
+for 12 people
 
-1kg flour
-2 liters milk
-8 piece eggs
+1 1/2 kg flour
+3L milk
+12 piece eggs
 Corn oil
 or rapeseed oil
 
