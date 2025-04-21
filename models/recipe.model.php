@@ -136,8 +136,8 @@ class Model_Recipe extends Model_Base{
             $this->_get_query_value($name)
         );
 
-        $join = '';
-        /*if (!empty($tag_ids)) {
+        /*$join = '';
+        if (!empty($tag_ids)) {
             $join .= ' INNER JOIN tbl_recipe_tag USING (recipe_id) ';
         }
         if (!empty($ingredients_ids)) {
@@ -153,17 +153,18 @@ class Model_Recipe extends Model_Base{
                 tbl_recipe.public as public
             FROM tbl_recipe 
             INNER JOIN tbl_category USING (category_id)
-            INNER JOIN tbl_user USING (user_id)
-            '. $join.'
-            WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) AND deleted = 0 '
+            INNER JOIN tbl_user USING (user_id)'
+            //. $join
+            .'WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) AND deleted = 0 '
             . $query 
-            .'GROUP BY 
+            /*.'GROUP BY 
                 tbl_recipe.recipe_id,
                 tbl_category.category_name,
                 tbl_recipe.recipe_name, 
                 tbl_recipe.image_name,
                 tbl_user.user_name, 
-                tbl_recipe.public'
+                tbl_recipe.public'*/
+            .'ORDER BY tbl_recipe.category_id, tbl_recipe.recipe_name'
             . ($limit ? ' LIMIT ' . (int)$limit : '')
             . ($offset ? ' OFFSET ' . (int)$offset : ''),
             $query_values
