@@ -85,8 +85,8 @@ $(function() {
             $(fields[0]).prop( "checked", true );
         }
         $(fields[1]).val(quantity);
-        $(fields[2]).val(unit);
-        $(fields[3]).val(line);
+        $(fields[2]).val(unit).change();
+        $(fields[3]).val(line).change();
     }
 
     var parse_original_text = function () {

@@ -80,7 +80,21 @@ $.fn.combobox = function(options, data) {
         node.keyup(function() {
         	$.fn.combobox.load_list(node, list_node, settings, true);
         	is_focused = true;
-        })
+        });
+		node.change(function() {
+			var data_list = node.data('data_list');
+			var val = node.val();
+			if (!is_empty(node.val())) {
+				if(!data_list.includes(val)) {
+					node.removeClass('combobox_ok').addClass('combobox_warning');
+				} else {
+					node.addClass('combobox_ok').removeClass('combobox_warning');
+				}
+			} else {
+				node.removeClass('combobox_ok').removeClass('combobox_warning');
+			}
+        	
+        });
     });
 }
 
@@ -90,7 +104,7 @@ $.fn.combobox.load_list = function (node, list_node, settings, show_dd) {
 	} else {
 		node.data('loaded', true);
 		if (node.data('data_list')) {
-			var data_list = node.data('data_list');
+			var data_list = Array.from(node.data('data_list'));
 			var i, ele;
 			list_node.html('');
 			for (i in data_list) {
@@ -101,13 +115,14 @@ $.fn.combobox.load_list = function (node, list_node, settings, show_dd) {
 				}
 			}
 
-			node.data('data_list', data_list);
+			node.data('data_list_lower', data_list);
 
 			list_node.find('div').mousedown(function(e) {
 				if (node.focus_timer) {
 					window.clearTimeout(node.focus_timer);
 					node.focus_timer = null;
 				}
+				node.addClass('combobox_ok').removeClass('combobox_warning');
 				node.val($(this).data('val'))
 				is_focused = false;
 				list_node.hide();
@@ -123,7 +138,8 @@ $.fn.combobox.load_list = function (node, list_node, settings, show_dd) {
 			data: {table: settings.table, col: settings.col, id: settings.id, field: node.attr('name')},
 			complete: function (xhr) {
 				if (xhr.responseJSON && typeof xhr.responseJSON.data != 'undefined') {
-					var data_list = xhr.responseJSON.data;
+					node.data('data_list', xhr.responseJSON.data);
+					var data_list = Array.from(xhr.responseJSON.data);
 					var i, ele;
 			    	for (i in data_list) {
 			    		ele = $('<div>'+html_special_chars(data_list[i].entry)+'</div>').data('val', data_list[i].entry);
@@ -134,13 +150,14 @@ $.fn.combobox.load_list = function (node, list_node, settings, show_dd) {
 							data_list[i] = data_list[i].entry;
 						}
 			    	}
-					node.data('data_list', data_list);
+					node.data('data_list_lower', data_list);
 					list_node.find('div').mousedown(function(e) {
 			        	if (node.focus_timer) {
 			        		window.clearTimeout(node.focus_timer);
 			        		node.focus_timer = null;
 			        	}
-			        	node.val($(this).data('val'))
+						node.addClass('combobox_ok').removeClass('combobox_warning');
+			        	node.val($(this).data('val'));
 			        	is_focused = false;
 			        	list_node.hide();
 			        });
@@ -157,6 +174,8 @@ $.fn.combobox.load_list = function (node, list_node, settings, show_dd) {
 $.fn.combobox.hideshow_options = function (node, list_node, show_dd) {
 	
 	var data_list = node.data('data_list');
+	var data_list_lower = node.data('data_list_lower');
+	var val = node.val();
 	var val_lower = node.val().toLowerCase();
 	
 	if (!is_empty(node.val())) {
@@ -171,7 +190,17 @@ $.fn.combobox.hideshow_options = function (node, list_node, show_dd) {
 		list_node.find('div').show();
 	}
 
-	if (is_empty(node.val()) || data_list.indexOf(val_lower) === -1) {
+	if (!is_empty(node.val())) {
+		if(!data_list.includes(val)) {
+			node.removeClass('combobox_ok').addClass('combobox_warning');
+		} else {
+			node.addClass('combobox_ok').removeClass('combobox_warning');
+		}
+	} else {
+		node.removeClass('combobox_ok').removeClass('combobox_warning');
+	}
+
+	if (is_empty(node.val()) || data_list_lower.indexOf(val_lower) === -1) {
     	list_node.find('div').removeClass('active');
     	if (show_dd) {
     		list_node.show();
@@ -179,7 +208,7 @@ $.fn.combobox.hideshow_options = function (node, list_node, show_dd) {
 		list_node.scrollTop(0);
 		return;
 	}
-	if (data_list.indexOf(val_lower) > -1) {
+	if (data_list_lower.indexOf(val_lower) > -1) {
     	list_node.find('div').removeClass('active').each(function() {
 			if ($(this).data('val').toLowerCase() == val_lower) {
 				$(this).show().addClass('active');

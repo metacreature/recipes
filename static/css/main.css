@@ -319,6 +319,12 @@ div.combobox_wrapper{
 }
 input.combobox{
 }
+input.combobox.combobox_ok{
+	color: green;
+}
+input.combobox.combobox_warning{
+	color: orangered;
+}
 span.combobox_button{
 	position: absolute;
 	right: 2px;
@@ -937,6 +943,7 @@ body.slideshow_opened #recipe_list{
 	text-align: center;
 }
 .recipe_detail .wrapper{
+	margin-top: -15px;
 	padding-bottom: 20px;
 }
 .recipe_detail .wrapper > img{
@@ -946,14 +953,12 @@ body.slideshow_opened #recipe_list{
 	height: 300px;
 	box-sizing: border-box;
 	border: 1px solid black;
+	margin-top: 15px;
+	margin-right: 30px;
 }
 .recipe_detail .wrapper_ingredients{
 	float: left;
-	padding-left: 40px;
-}
-.recipe_detail .wrapper .wrapper_ingredients:first-child{
-	padding-top: 0px !important;
-	padding-left: 0px !important;
+	margin-top: 15px;
 }
 .recipe_detail .ingredients_list tr{
 	border-bottom: 0.5px solid black;
@@ -1024,18 +1029,6 @@ body.slideshow_opened #recipe_list{
 		width: 300px;
 		height: 200px;
 	}
-	.recipe_detail .wrapper .wrapper_ingredients{
-		padding-left: 20px;
-	}
-}
-@media(max-width: 850px) {
-	.recipe_detail .wrapper > img{
-		float: none;
-	}
-	.recipe_detail .wrapper .wrapper_ingredients{
-		padding-top: 20px;
-		padding-left: 0px;
-	}
 }
 @media(max-width: 500px) {
 	.recipe_detail .wrapper > img{
@@ -1045,7 +1038,7 @@ body.slideshow_opened #recipe_list{
 	.recipe_detail{
 		padding: 20px 10px 60px 10px;
 	}
-	.recipe_detail .edit{
+	.recipe_detail .edit_buttons{
 		right: 10px;
 	}
 }
