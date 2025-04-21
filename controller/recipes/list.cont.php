@@ -38,13 +38,20 @@ class Controller_Recipes_List extends Controller_Base
         }
     }
 
-    protected function _get_form() {
-        $user_obj = new Model_User($this->_db);
-        $recipe_obj = new Model_Recipe($this->_db);
-        $user_list = $user_obj->get_user_list_with_recipes(Controller_Base::get_user_id());
-        $category_list = $recipe_obj->get_category_list();
-        $tag_list = $recipe_obj->get_tag_list();
-        $ingredients_list = $recipe_obj->get_ingredients_list();
+    protected function _get_form($get_lists) {
+        if ($get_lists) {
+            $user_obj = new Model_User($this->_db);
+            $recipe_obj = new Model_Recipe($this->_db);
+            $user_list = $user_obj->get_user_list_with_recipes(Controller_Base::get_user_id());
+            $category_list = $recipe_obj->get_category_list();
+            $tag_list = $recipe_obj->get_tag_list();
+            $ingredients_list = $recipe_obj->get_ingredients_list();
+        } else {
+            $user_list = null;
+            $category_list = null;
+            $tag_list = null;
+            $ingredients_list = null;
+        }
 
         $form = new FW_Ajax_Form('filter_form', false);
 
@@ -53,20 +60,24 @@ class Controller_Recipes_List extends Controller_Base
         $form->addFormField('Hidden', 'page', false, 'x', true)
             ->setValue('0')
             ->setRegex('#^[0-9]+$#');
-        if (count($user_list) > 1) {
+        if ($user_list && count($user_list) > 1) {
             $form->addFormField('Select', 'user_id', false, 'x', false)
                 ->setList($user_list)
-                ->setMultiple(true);
+                ->setMultiple(true)
+                ->setRegex('#^[0-9]+$#');
         }
         $form->addFormField('Select', 'category_id', false, 'x', false)
                 ->setList($category_list)
-                ->setMultiple(true);
+                ->setMultiple(true)
+                ->setRegex('#^[0-9]+$#');
         $form->addFormField('Select', 'tag_id', false, 'x', false)
                 ->setList($tag_list)
-                ->setMultiple(true);
+                ->setMultiple(true)
+                ->setRegex('#^[0-9]+$#');
         $form->addFormField('Select', 'ingredients_id', false, 'x', false)
                 ->setList($ingredients_list)
-                ->setMultiple(true);
+                ->setMultiple(true)
+                ->setRegex('#^[0-9]+$#');
 
         $form->addFormField('Text', 'recipe_name', false, 'x', false);
 
@@ -74,7 +85,7 @@ class Controller_Recipes_List extends Controller_Base
     }
 
     function view() {
-        $form = $this->_get_form();
+        $form = $this->_get_form(true);
         $form->resolveRequest($_GET);
         $recipe_list = [];
         $recipe_obj = new Model_Recipe($this->_db);
@@ -94,7 +105,7 @@ class Controller_Recipes_List extends Controller_Base
     }
 
     function list() {
-        $form = $this->_get_form();
+        $form = $this->_get_form(false);
         $form->resolveRequest($_POST);
         
         if ($form->validate()) {
