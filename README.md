@@ -51,6 +51,6 @@ In `language/parse_original_text.{your language-code}.js` you will have to chang
 ## Usage
 
 ## Preview
-![list](docs/list.jpg)
-![slideshow](docs/slideshow.jpg)
-![editor](docs/editor.jpg)
+![list](docs/list.png)<br />
+![slideshow](docs/slideshow.png)<br />
+![editor](docs/editor.png)<br /><br />
