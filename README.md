@@ -33,7 +33,8 @@ Run `_lib/setup.sql` in eg. phpMyAdmin to create all tables.
 
 ### German or English:
 For German or English you have to set SETTINGS_DEFAULT_LANG to 'de' or 'en'. After that you have to execute either `_lib/setup.de.sql` or `_lib/setup.en.sql`. There are some inserts for category, tags and units you may want to fit for your needs. <br /><br />
-If you want to change the inserts for unit you have to change the 'ingredients_parser_unit_translator' in `language/parse_original_text.de.js` or `language/parse_original_text.en.js`. If a regular expression in this list matches it will be replaced by the keys. The keys of course have to match with the default-units in the database.
+If you want to change the inserts for unit you have to change the 'ingredients_parser_unit_translator' in `language/parse_original_text.de.js` or `language/parse_original_text.en.js`. If a regular expression in this list matches it will be replaced by the keys. The keys of course have to match with the default-units in the database.<br />
+I did my very best to find all abbreviation for the units transformed by 'ingredients_parser_unit_translator', but of course, maybe I have missed some. You can add them later
 
 ### Other languages:
 **First of all, it would be great to share your work with me.**<br /><br />
