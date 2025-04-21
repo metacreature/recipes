@@ -36,7 +36,7 @@ class Model_User extends Model_Base{
     function get_user_list_with_recipes($user_id) {
         $where = '';
         if ($user_id) {
-            $where = ' AND user_id != '. intval($user_id);
+            $where = ' OR user_id = '. intval($user_id);
         }
 
         $res = $this->_db->executeUnbufferedQuery('SELECT 

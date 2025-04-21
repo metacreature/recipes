@@ -53,7 +53,7 @@ class Controller_Recipes_List extends Controller_Base
         $form->addFormField('Hidden', 'page', false, 'x', true)
             ->setValue('0')
             ->setRegex('#^[0-9]+$#');
-        if (count($user_list) > 0) {
+        if (count($user_list) > 1) {
             $form->addFormField('Select', 'user_id', false, 'x', false)
                 ->setList($user_list)
                 ->setMultiple(true);
