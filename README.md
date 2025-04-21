@@ -73,18 +73,12 @@ Turn when the top is no longer liquid.
 ```
 <br />
 First of all the recipe name, followed by an optional information about the number of persons. Then of course the ingredients followed by the instruction-steps
-**The blocks have to be seperated with at least one empty line.**<br /><br />
-
+<b>The blocks have to be seperated with at least one empty line.</b><br /><br />
 The real magic is done at the ingredients (one per line!). If there is an alternate ingredient it should be in a seperate line prefixed with 'or'.<br /><br /> 
-
 The quantity can be a floating-number (eg. '1,5' or '1.5'), or an optional number followed by ¼, ½,¾ or a fraction (eg '1 ½', '1 1/2', '1/3'). If there is a quanitity, a unit is required. Be aware, that '1 fresh bunch of peppermint' will take 'fresh' as the unit and 'bunch of peppermint' as the ingredient.<br /><br />
-
-The unit will be replace to a predifed variant of it, eg. 'kilogram' will be replaced by 'kg'<br /><br />
-
+The unit will be replace to a predifed variant of it, eg. 'kilogram' will be replaced by 'kg'.<br /><br />
 Quanity and unit are optional, coz in most recipes the amount of eg. salt is not defined.<br /><br />
-
 If the parsing of an ingredients-line fails, a line of empty form-fileds will be added, in order to don't accidently miss an ingredient.<br />On top of this, if an unit or ingredient is allready in the database it will be colored green, if not orange-red. This will help to find 'fresh' as a unit of '1 fresh bunch of peppermint' and 'Onion' instead of 'onions'. Its up to you if you want to use singular or plural, but its recommeded not to use both variants for the search.
-
 
 
 
