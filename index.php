@@ -24,6 +24,22 @@
  SOFTWARE.
 */
 
+$time_start = microtime(true);
+
+function log_runtime() {
+	global $time_start;
+
+	if (DEBUG_EXECUTION_TIME) {
+		$time_end = microtime(true);
+		$time = round(($time_end - $time_start) * 1000);
+		$url = str_replace('"', '', $_SERVER['REQUEST_URI']);
+		$memory = round(memory_get_usage() / 1024);
+		$f = fopen("execution_time.log.csv", "a+");
+		fwrite($f, '"' . $url . '";' . $time . ';μs;' . $memory . ";kb\n");
+		fclose($close);
+	}
+}
+
 // FW-Includes
 require_once ('_lib/fw/func.inc.php');
 require_once ('_lib/fw/FW_ErrorLogger.static.php');
@@ -61,6 +77,7 @@ if ($url && preg_match('#^[a-z_\/]+$#', $url) && file_exists('controller/' . $ur
 } else {
 	header('HTTP/1.0 403 Forbidden');
 	require_once(DOCUMENT_ROOT . '/crawler.html');
+	log_runtime();
     exit;
 }
 
@@ -78,7 +95,6 @@ if ($function && preg_match('#^[a-z_]+$#', $function) && method_exists($obj_cont
 
 	if (is_string($result)) {
 		header('Location: ' . $result);
-		exit();
 	} elseif (is_array($result)) {
 		header('Content-Type: application/json; charset=utf-8');
 		echo json_encode($result);
@@ -91,12 +107,14 @@ if ($function && preg_match('#^[a-z_]+$#', $function) && method_exists($obj_cont
 		header('Pragma: no-cache');
 		ob_end_flush();
 	}
+	log_runtime();
+    exit;
 } else {
 	header('HTTP/1.0 403 Forbidden');
 	require_once(DOCUMENT_ROOT . '/crawler.html');
+	log_runtime();
     exit;
 }
 
-exit();
 
 
