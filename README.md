@@ -29,7 +29,9 @@ And you will need a MySQL-Database with utf8_general_ci - charset. It should wor
 After you have downloaded or cloned the repo you have to open `_inc/settings.inc.php` and change the settings for your needs.
 Don't forget to change "SECURE_SALT" (for the passwords) and "HIDDEN_IMAGEFOLDER_SECURE" (for the images). HIDDEN_IMAGEFOLDER_SECURE should only contain lowercase alphanumeric characters, because it is used as a suffix for a folder-name.<br />
 Because there is no admin-interface you have to temporary set SETTINGS_ALLOW_REGISTER to 'true' to add a new user.<br /><br />
-Run `_lib/setup.sql` in eg. phpMyAdmin to create all tables.
+Run `_lib/setup.sql` in eg. phpMyAdmin to create all tables.<br /><br />
+
+There is a cron-job (`cronjobs/weekly.cron.php`) which runs 'optimize tables', hard deletes recipes set to delete after 14 days and deletes unused images. I would recommend to run it weekly.
 
 ### German or English:
 For German or English you have to set SETTINGS_DEFAULT_LANG to 'de' or 'en'. After that you have to execute either `_lib/setup.de.sql` or `_lib/setup.en.sql`. There are some inserts for category, tags and units you may want to fit for your needs. <br /><br />
@@ -45,7 +47,7 @@ You have to copy following files and replace the language-code with yours:
 - _lib/setup.en.sql
 
 `language/{your language-code}.lang.php` and `emails/password.request.email.{your language-code}.html` are obvious.<br />
-The default-units in `_lib/setup.{your language-code}.sql` are tricky. The default-units have to match the 'ingredients_parser_unit_translator' list in `language/parse_original_text.{your language-code}.js`. If a regular expression in this list matches it will be replaced by the keys. You have to change the regular expressions to every possible variant of a unit. For eg. kilogram, there are 'kg', 'kilo' and 'kilogram' as a variant. Its recommended to use case-insensitive regular expressions<br /><br />
+The default-units in `_lib/setup.{your language-code}.sql` are tricky. The default-units have to match the 'ingredients_parser_unit_translator' list in `language/parse_original_text.{your language-code}.js`. If a regular expression in this list matches it will be replaced by the keys. You have to change the regular expressions to every possible variant of a unit. For eg. kilogram, there are 'kg', 'kilo' and 'kilogram' as a variant. Its c to use case-insensitive regular expressions<br /><br />
 In `language/parse_original_text.{your language-code}.js` you will have to change the regular expression for detecting an alternate ingredient (variable 'ingredients_parser_or') with all its variants.
 
 

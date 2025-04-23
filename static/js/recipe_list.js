@@ -212,7 +212,7 @@ $(function() {
         html += '</div>';
         node.html(html);
 
-        node.find('select').on('click', function() { 
+        node.find('select').on('change', function() { 
             node.find('.ingredients_list').html(createIngredients($(this).val(), data));
         });
         node.find('.edit_buttons a.delete').on('click', function(e) {
