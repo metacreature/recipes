@@ -119,7 +119,7 @@ class Model_Recipe extends Model_Base{
         return [];
     }
     
-    function list($user_id, $user_ids, $category_ids, $tag_ids, $ingredients_ids, $name, $limit = null, $offset = null) {
+    function list($user_id, $user_ids, $category_ids, $tag_ids, $ingredients_ids, $name, $sort, $limit = null, $offset = null) {
         $query = $this->_create_in_query('user_id', $user_ids)
             . $this->_create_in_query('category_id', $category_ids)
             . $this->_create_and_query('tag_id', 'tbl_recipe_tag', $tag_ids)
@@ -136,13 +136,20 @@ class Model_Recipe extends Model_Base{
             $this->_get_query_value($name)
         );
 
-        /*$join = '';
-        if (!empty($tag_ids)) {
-            $join .= ' INNER JOIN tbl_recipe_tag USING (recipe_id) ';
+        $sort_list = [
+            'tbl_recipe.category_id, tbl_recipe.recipe_name ASC',
+            'COALESCE(tbl_recipe.costs / tbl_recipe.persons, 2147483640) ASC, tbl_recipe.recipe_name ASC' ,
+            'COALESCE(tbl_recipe.costs / tbl_recipe.persons, -2147483640)  DESC, tbl_recipe.recipe_name ASC' ,
+            'COALESCE(tbl_recipe.duration, 2147483640) ASC, tbl_recipe.recipe_name ASC' ,
+            'COALESCE(tbl_recipe.duration, -2147483640)  DESC, tbl_recipe.recipe_name ASC',
+            'COALESCE(tbl_recipe.total_duration, 2147483640) ASC, tbl_recipe.recipe_name ASC' ,
+            'COALESCE(tbl_recipe.total_duration, -2147483640)  DESC, tbl_recipe.recipe_name ASC',
+        ];
+        if (!empty($sort) && !empty($sort_list[$sort])) {
+            $order = $sort_list[$sort];
+        } else {
+            $order = $sort_list[0];
         }
-        if (!empty($ingredients_ids)) {
-            $join .= ' INNER JOIN tbl_recipe_ingredients USING (recipe_id) ';
-        }*/
 
         $this->_db->executePreparedQuery('SELECT 
                 tbl_recipe.recipe_id as recipe_id,
@@ -157,17 +164,9 @@ class Model_Recipe extends Model_Base{
             FROM tbl_recipe 
             INNER JOIN tbl_category USING (category_id)
             INNER JOIN tbl_user USING (user_id)'
-            //. $join
             .'WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) AND deleted = 0 '
             . $query 
-            /*.'GROUP BY 
-                tbl_recipe.recipe_id,
-                tbl_category.category_name,
-                tbl_recipe.recipe_name, 
-                tbl_recipe.image_name,
-                tbl_user.user_name, 
-                tbl_recipe.public'*/
-            .'ORDER BY tbl_recipe.category_id, tbl_recipe.recipe_name'
+            .'ORDER BY '.$order
             . ($limit ? ' LIMIT ' . (int)$limit : '')
             . ($offset ? ' OFFSET ' . (int)$offset : ''),
             $query_values

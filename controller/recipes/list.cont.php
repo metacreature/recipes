@@ -57,9 +57,9 @@ class Controller_Recipes_List extends Controller_Base
 
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
         
-        $form->addFormField('Hidden', 'page', false, 'x', true)
-            ->setValue('0')
-            ->setRegex('#^[0-9]+$#');
+        $form->addFormField('Hidden', 'sort', false, 'x', false)
+            ->setRegex('#^[1-9]+$#');
+            
         if ($user_list && count($user_list) > 1) {
             $form->addFormField('Select', 'user_id', false, 'x', false)
                 ->setList($user_list)
@@ -97,8 +97,9 @@ class Controller_Recipes_List extends Controller_Base
                 $form->getValue('tag_id'),
                 $form->getValue('ingredients_id'),
                 $form->getValue('recipe_name'),
-                5000,
-                0
+                $form->getValue('sort'),
+                500000,
+                0,
             );
         }
         require_once (DOCUMENT_ROOT . '/views/recipes/list.view.html');
@@ -110,8 +111,6 @@ class Controller_Recipes_List extends Controller_Base
         
         if ($form->validate()) {
             $recipe_obj = new Model_Recipe($this->_db);
-            $offset = 50 * intval($form->getValue('page'));
-            $offset = $offset > 0 ? $offset - 1 : 0;
             $data = $recipe_obj->list(
                 Controller_Base::get_user_id(),
                 $form->getValue('user_id'),
@@ -119,8 +118,9 @@ class Controller_Recipes_List extends Controller_Base
                 $form->getValue('tag_id'),
                 $form->getValue('ingredients_id'),
                 $form->getValue('recipe_name'),
-                5000,
-                $offset
+                $form->getValue('sort'),
+                500000,
+                0
             );
             if (is_array($data)) {
                 return $form->getFormSuccess('', ['data'=>$data]);

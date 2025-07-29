@@ -720,7 +720,7 @@ body{
 	padding: 10px 20px 0 20px;
 }
 #recipe_list_filter .filter_input_wrapper{
-	width: calc(100% - 30px);
+	width: calc(100% - 72px);
 	float: left;
 }
 #recipe_list_filter .field_wrapper{
@@ -742,7 +742,61 @@ body{
 #recipe_list_filter .count5 .field_wrapper{
 	width: calc(20% - 10px);
 }
+#recipe_list_filter .filter_button_wrapper{
+	width: 71px;
+	position: relative;
+	float: right;
+}
+#recipe_list_filter .filter_button_wrapper .btn{
+	float: left;
+	display: block;
+	padding: 5px;
+	height: 30px;
+	width: 30px;
+	margin-right: 0px;
+}
+#recipe_list_filter .filter_button_wrapper .btn:first-child{
+	margin-right: 10px;
+}
+#recipe_list_filter .filter_button_wrapper .btn img{
+	height: 20px;
+	width: 20px;
+}
+#recipe_list_filter #sort_popup{
+	padding: 1px 15px 8px 15px;
+	position: absolute;
+	background-color: #FFF;
+	border: 1px solid #000;
+	right: 0;
+	top: 30px;
+	z-index: 10;
+	display: none;
+	border-radius: 5px;
+}
+#recipe_list_filter #sort_popup a{
+	white-space: nowrap;
+	margin-top: 7px;
+	font-size: 16px;
+	display: block;
+}
+#recipe_list_filter #sort_popup a.active{
+	font-weight: bold;
+}
+
 @media(max-width: 1200px) {
+	#recipe_list_filter .filter_input_wrapper{
+		width: calc(100% - 31px);
+	}
+	#recipe_list_filter .filter_button_wrapper{
+		width: 30px;
+	}
+	#recipe_list_filter .filter_button_wrapper .btn:first-child{
+		margin-right: 0px;
+		margin-bottom: 10px;
+	}
+	#recipe_list_filter #sort_popup{
+		top: 70px;
+	}
 	#recipe_list_filter .count4 .field_wrapper,
 	#recipe_list_filter .count5 .field_wrapper{
 		width: calc(50% - 10px);
@@ -766,18 +820,6 @@ body{
 		display: hidden;
 	}
 }
-#recipe_list_filter .btn-ajax-submit{
-	float: right;
-	display: block;
-	padding: 5px;
-	height: 30px;
-	width: 30px;
-	margin-right: 0px;
-}
-#recipe_list_filter .btn-ajax-submit img{
-	height: 20px;
-	width: 20px;
-}
 #recipe_list_filter .field_wrapper .fieldtext{
 	height: 30px;
 	font-size: 12px;
@@ -785,6 +827,8 @@ body{
 #recipe_list_filter .field_wrapper textarea{
 	margin-top: 6px;
 }
+
+
 
 /* recipe_list */
 #recipe_list{

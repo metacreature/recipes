@@ -40,7 +40,20 @@
     echo '  <div class="field_wrapper">' . $form->printInput('recipe_name') . '</div>';
     echo '  <div class="clear"></div>';
     echo '</div>';
-    echo $form->printSubmit('<img src="/static/images/icons/search-sharp.svg"  alt="">', 'search', '/recipes/list/list');
+    echo '<div class="filter_button_wrapper">';
+    echo    $form->printSubmit('<img src="/static/images/icons/search-sharp.svg"  alt="">', 'search', '/recipes/list/list');
+    echo '  <a href="#" class="btn sort"><span><img src="/static/images/icons/swap-vertical-sharp.svg" alt=""></span></a>';
+    echo '  <div id="sort_popup">';
+    echo '      <a href="">' . LANG_RECIPE_LIST_SORT_NAME . '</a>';
+    echo '      <a href="1">' . LANG_RECIPE_LIST_SORT_COSTS . ' ˄</a>';
+    echo '      <a href="2">' . LANG_RECIPE_LIST_SORT_COSTS . ' ˅</a>';
+    echo '      <a href="3">' . LANG_RECIPE_LIST_SORT_DURATION . ' ˄</a>';
+    echo '      <a href="4">' . LANG_RECIPE_LIST_SORT_DURATION . ' ˅</a>';
+    echo '      <a href="5">' . LANG_RECIPE_LIST_SORT_TOTAL_DURATION . ' ˄</a>';
+    echo '      <a href="6">' . LANG_RECIPE_LIST_SORT_TOTAL_DURATION . ' ˅</a>';
+    echo '  </div>';
+    echo '  <div class="clear"></div>';
+    echo '</div>';
     echo '<div class="clear"></div>';
     echo $form->printEndTag();
     ?>

@@ -282,10 +282,12 @@ $(function() {
                 if ($('.filter_form input[name="recipe_name"]').val() == ''){
                     $('.filter_form input[name="recipe_name"]').prop('disabled', true);
                 }
-                $('.filter_form input[name="page"]').prop('disabled', true);
+                if ($('.filter_form input#sort').val() == ''){
+                    $('.filter_form input#sort').prop('disabled', true);
+                }
                 var query_string = form.serialize();
                 $('.filter_form input[name="recipe_name"]').prop('disabled', false);
-                $('.filter_form input[name="page"]').prop('disabled', false);
+                $('.filter_form input#sort').prop('disabled', false);
 
                 var href = self.location.href.replace(/[#].*$/, '').replace(/\?.*$/, '');
                 history.replaceState({}, '', href + (query_string ? '?' + query_string : ''));
@@ -298,9 +300,7 @@ $(function() {
             button.removeClass('pagination');
         },
         'beforesubmit': function(form, button) {
-            if (!button.hasClass('pagination')) {
-                $('.filter_form input[name="page"]').val(0);
-            }
+            
         },
     });
 
@@ -308,4 +308,35 @@ $(function() {
     $('.filter_form select, .filter_form input[name="recipe_name"]').on('change', function(){
         $('.filter_form').submit();
     });
+
+    $('#recipe_list_filter #sort_popup a').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('.filter_form #sort').val($(this).attr('href'));
+        sort_close();
+        $('.filter_form').submit();
+    });
+
+    var sort_open = function () {
+        $('#recipe_list_filter #sort_popup a').removeClass('active');
+        $('#recipe_list_filter #sort_popup a[href="' + $('.filter_form input#sort').val() + '"]').addClass('active')
+        $('#recipe_list_filter #sort_popup').show();
+    }
+    var sort_close = function () {
+        $('#recipe_list_filter #sort_popup').hide();
+    }
+    $('#recipe_list_filter .btn.sort').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if ($('#recipe_list_filter #sort_popup').is(':hidden')) {
+            sort_open();
+        } else {
+            sort_close();
+        }
+    });
+    document.addEventListener('click', function(e) {
+        sort_close();
+    })
+
+    
 });
