@@ -150,7 +150,10 @@ class Model_Recipe extends Model_Base{
                 tbl_recipe.recipe_name as recipe_name, 
                 tbl_recipe.image_name as image_name, 
                 tbl_user.user_name as user_name, 
-                tbl_recipe.public as public
+                tbl_recipe.public as public,
+                tbl_recipe.costs / tbl_recipe.persons as costs_pp, 
+                tbl_recipe.duration as duration, 
+                tbl_recipe.total_duration as total_duration
             FROM tbl_recipe 
             INNER JOIN tbl_category USING (category_id)
             INNER JOIN tbl_user USING (user_id)'
@@ -219,6 +222,9 @@ class Model_Recipe extends Model_Base{
             tbl_user.user_name as user_name, 
             tbl_recipe.public as public,
             tbl_recipe.persons as persons,
+            tbl_recipe.costs as costs, 
+            tbl_recipe.duration as duration, 
+            tbl_recipe.total_duration as total_duration,
             tbl_recipe.original_text as original_text
             FROM tbl_recipe 
             INNER JOIN tbl_category USING (category_id)
@@ -260,8 +266,12 @@ class Model_Recipe extends Model_Base{
         return $recipe;
     }
 
-    function save($user_id, $recipe_id, $public, $category_id, $recipe_name, $persons, $original_text, $tag_list, $ingredients_list, $step_list, $del_image, $image_upload) {
+    function save($user_id, $recipe_id, $public, $category_id, $recipe_name, $persons, $costs, $duration, $total_duration, $original_text, $tag_list, $ingredients_list, $step_list, $del_image, $image_upload) {
         
+        $costs = $costs == '' ? null : str_replace(',', '.', $costs);
+        $duration = $duration == '' ? null : $duration;
+        $total_duration = $total_duration == '' ? null :  $total_duration;
+
         $this->_db->begin();
         try{
             if ($recipe_id) {
@@ -270,11 +280,14 @@ class Model_Recipe extends Model_Base{
                     category_id = ?, 
                     recipe_name = ?, 
                     persons = ?, 
+                    costs = ?, 
+                    duration = ?, 
+                    total_duration = ?, 
                     original_text = ?,
                     last_edited = NOW(),
                     cnt_update = cnt_update + 1
                 WHERE recipe_id = ? AND user_id = ? AND deleted = 0;', 
-                [$public, $category_id, $recipe_name, $persons, $original_text, $recipe_id, $user_id]);
+                [$public, $category_id, $recipe_name, $persons, $costs, $duration, $total_duration, $original_text, $recipe_id, $user_id]);
                 if ($this->_db->getAffectedRows() != 1) {
                     $this->_db->rollback();
                     return;
@@ -291,10 +304,13 @@ class Model_Recipe extends Model_Base{
                     category_id = ?, 
                     recipe_name = ?, 
                     persons = ?, 
+                    costs = ?, 
+                    duration = ?, 
+                    total_duration = ?, 
                     original_text = ?,
                     last_edited = NOW(),
                     user_id = ?;', 
-                [$public, $category_id, $recipe_name, $persons, $original_text, $user_id]);
+                [$public, $category_id, $recipe_name, $persons, $costs, $duration, $total_duration, $original_text, $user_id]);
                 if ($this->_db->getAffectedRows() != 1) {
                     $this->_db->rollback();
                     return;

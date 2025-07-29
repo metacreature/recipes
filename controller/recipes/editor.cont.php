@@ -60,6 +60,12 @@ class Controller_Recipes_Editor extends Controller_Base
         $form->addFormField('Text', 'tag_list', false, null, true);
         $form->addFormField('Text', 'recipe_name', false, null, true);
         $form->addFormField('Text', 'persons', false, null, true)
+            ->setRegex('#^[1-9][0-9]*$#');
+        $form->addFormField('Text', 'costs', false, null, false)
+			->setRegex('#^(([1-9][0-9]*)|([0-9]+[.,][0-9]+))?$#');
+        $form->addFormField('Text', 'duration', false, null, false)
+            ->setRegex('#^[0-9]+$#');
+        $form->addFormField('Text', 'total_duration', false, null, false)
             ->setRegex('#^[0-9]+$#');
         $form->addFormField('Textarea', 'original_text', false, null, false);
         $form->addFormField('File', 'image', false, null, false)
@@ -200,6 +206,9 @@ class Controller_Recipes_Editor extends Controller_Base
                 $form->getValue('category_id'), 
                 $form->getValue('recipe_name'), 
                 $form->getValue('persons'), 
+                $form->getValue('costs'), 
+                $form->getValue('duration'), 
+                $form->getValue('total_duration'), 
                 $form->getValue('original_text'), 
                 $tag_list, $ingredients_list, $step_list, 
                 $form->getValue('del_image'),

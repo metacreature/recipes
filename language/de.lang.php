@@ -89,6 +89,10 @@ define('LANG_RECIPE_LIST_FILTER_ERROR', 'Etwas ist schiefgelaufen!');
 define('LANG_RECIPE_LIST_ADD', 'Rezept hinzfügen');
 define('LANG_RECIPE_LIST_LOAD_DETAIL_ERROR', 'Etwas ist schiefgelaufen!');
 define('LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE', 'oder');
+define('LANG_RECIPE_LIST_DETAIL_DURATION_UNIT', 'min');
+define('LANG_RECIPE_LIST_DETAIL_COSTS', 'Kosten p.P.');
+define('LANG_RECIPE_LIST_DETAIL_DURATION', 'Dauer');
+
 
 define('LANG_RECIPE_LIST_DELETE_CONFIRM_TITLE', 'Löschen?');
 define('LANG_RECIPE_LIST_DELETE_CONFIRM_TEXT', 'Wollen Sie das Rezept {recipe_name} wirklich löschen?');
@@ -108,6 +112,10 @@ define('LANG_RECIPE_EDITOR_CATEGORY', 'Kategorie');
 define('LANG_RECIPE_EDITOR_TAGLIST', 'Tags');
 define('LANG_RECIPE_EDITOR_NAME', 'Name');
 define('LANG_RECIPE_EDITOR_PERSONS', 'Anz. Personen');
+define('LANG_RECIPE_EDITOR_COSTS', 'Kosten');
+define('LANG_RECIPE_EDITOR_DURATION', 'Arbeitszeit');
+define('LANG_RECIPE_EDITOR_TOTAL_DURATION', 'Gesamtzeit');
+define('LANG_RECIPE_EDITOR_DURATION_UNIT', 'Minuten');
 define('LANG_RECIPE_EDITOR_INGREDIENTS', 'Zutaten');
 define('LANG_RECIPE_EDITOR_INGREDIENTS_IS_ALTERNATIVE', 'Oder');
 define('LANG_RECIPE_EDITOR_INGREDIENTS_QUANTITY', 'Menge');

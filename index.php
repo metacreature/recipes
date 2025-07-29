@@ -36,7 +36,7 @@ function log_runtime() {
 		$memory = round(memory_get_usage() / 1024);
 		$f = fopen("execution_time.log.csv", "a+");
 		fwrite($f, '"' . $url . '";' . $time . ';μs;' . $memory . ";kb\n");
-		fclose($close);
+		fclose($f );
 	}
 }
 

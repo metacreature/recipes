@@ -44,6 +44,9 @@
     echo    $form->printLine('tag_list', LANG_RECIPE_EDITOR_TAGLIST);
     echo    $form->printLine('recipe_name', LANG_RECIPE_EDITOR_NAME);
     echo    $form->printLine('persons', LANG_RECIPE_EDITOR_PERSONS);
+    echo    $form->printLine('costs', LANG_RECIPE_EDITOR_COSTS, ['placeholder' => SETTINGS_CURRENCY]);
+    echo    $form->printLine('duration', LANG_RECIPE_EDITOR_DURATION, ['placeholder' => LANG_RECIPE_EDITOR_DURATION_UNIT]);
+    echo    $form->printLine('total_duration', LANG_RECIPE_EDITOR_TOTAL_DURATION, ['placeholder' => LANG_RECIPE_EDITOR_DURATION_UNIT]);
 
     echo    '<div class="field-line form-group row line-mandatory ingredients_list_wrapper">';
     echo        '<label class="col-xs-12 col-md-2 control-label">'.LANG_RECIPE_EDITOR_INGREDIENTS.' *</label>';
@@ -148,7 +151,7 @@
     <?php require_once (DOCUMENT_ROOT . '/language/parse_original_text.' . SELECTED_LANG . '.js'); ?>
 </script>
 
-<script src='/static/js/recipe_editor.js'></script>
-<script src='/static/js/recipe_editor_parser.js'></script>
+<script src='/static/js/recipe_editor.js?v=2'></script>
+<script src='/static/js/recipe_editor_parser.js?v=2'></script>
 
 <?php require_once (DOCUMENT_ROOT . '/views/includes/footer.view.html'); ?>

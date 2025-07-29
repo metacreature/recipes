@@ -161,7 +161,7 @@ $(function() {
         
 
         html += '<div class="recipe_name">';
-        if (parseInt(row.public) == 0) {
+        if (parseInt(data.public) == 0) {
             html += '<img src="/static/images/icons/lock-closed.svg" class="private" alt="">';
         }
         html += html_special_chars(data.recipe_name);
@@ -174,7 +174,27 @@ $(function() {
         }
         html += '</div>';
 
+        
         html += '<div class="user_name">@ ' + html_special_chars(data.user_name) + '</div>';
+
+        if (data.costs || data.duration || data.total_duration) {
+            html += '<div class="numbers">';
+            if (data.costs) {
+                html += '<div class="costs">' + LANG_RECIPE_LIST_DETAIL_COSTS + ': '+(Math.round(data.costs/ data.persons * 100) / 100) + SETTINGS_CURRENCY + '</div>';
+            }
+            if (data.duration || data.total_duration) {
+                html += '<div class="duration">' + LANG_RECIPE_LIST_DETAIL_DURATION + ': ';
+                html += data.duration ? data.duration : '-';
+                html += '/';
+                html += data.total_duration ? data.total_duration : '-';
+                html += ' ' + LANG_RECIPE_LIST_DETAIL_DURATION_UNIT + '</div>';
+            }
+            html += '<div class="clear"></div>';
+            html += '</div>';
+        }
+
+        
+        html += '<div class="clear"></div>';
 
         html += '<div class="wrapper">';
         if (data.image_name) {
@@ -232,7 +252,11 @@ $(function() {
         for(row of recipe_list) {
             var html = '<a class="entry recipe_entry" href="'+row.recipe_id+'">';
                 html += '<div class="recipe_name">'+html_special_chars(row.recipe_name)+'</div>';
-                html += '<div class="category_name">'+row.category_name+'</div>';
+                html += '<div class="category_name">'+row.category_name;
+                if (row.costs_pp) {
+                    html += '<span>'+(Math.round(row.costs_pp * 100) / 100) + SETTINGS_CURRENCY +'</span>';
+                }
+                html += '</div>';
                 if (row.image_name) {
                     html += '<img src="/gallery/recipes/'+row.image_name+'_s.webp" class="recipe_img" alt="">';
                 } else {

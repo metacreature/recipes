@@ -862,6 +862,13 @@ body.slideshow_opened #recipe_list{
 	width: 182px;
 	text-overflow: ellipsis;
 }
+#recipe_list .entry .category_name span{
+	position: absolute;
+	right: 0;
+	top: 0;
+	display: block;
+	font-weight: bold;
+}
 #recipe_list .entry .recipe_name{
 	font-weight: bold;
 	font-size: 14px;
@@ -882,7 +889,7 @@ body.slideshow_opened #recipe_list{
 	font-size: 24px;
 	line-height: 30px;
 	font-weight: bold;
-	padding-bottom: 0px;
+	padding-bottom: 5px;
 	width: calc(100% - 120px);
 	text-transform: uppercase;
 }
@@ -898,10 +905,23 @@ body.slideshow_opened #recipe_list{
 	width: calc(100% - 120px);
 }
 .recipe_detail .user_name{
-	padding-bottom: 10px;
 	font-size: 14px;
 	width: calc(100% - 120px);
 }
+.recipe_detail .numbers{
+	margin-top: 5px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.recipe_detail .numbers .costs,
+.recipe_detail .numbers .duration{
+	white-space: nowrap;
+	float: left;
+}
+.recipe_detail .numbers .costs{
+	padding-right: 20px;
+}
+
 .recipe_detail .edit_buttons{
 	position: absolute;
 	top: 20px;
@@ -943,7 +963,6 @@ body.slideshow_opened #recipe_list{
 	text-align: center;
 }
 .recipe_detail .wrapper{
-	margin-top: -15px;
 	padding-bottom: 20px;
 }
 .recipe_detail .wrapper > img{
