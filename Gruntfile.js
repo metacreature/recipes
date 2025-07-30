@@ -18,7 +18,8 @@ module.exports = function(grunt) {
 				'static/external_libs/tagify-4.34.0/tagify.min.js': ['static/external_libs/tagify-4.34.0/tagify.js'],
 				'static/external_libs/jquery.cookie.min.js': ['static/external_libs/jquery.cookie.js'],
 				'static/external_libs/jquery_confirm/jquery-confirm.min.js': ['static/external_libs/jquery_confirm/jquery-confirm.js'],
-		      }
+				'static/js/main.min.js': ['static/js/main.js'],
+				}
 		    },
 		},
 		concat: {
@@ -38,6 +39,7 @@ module.exports = function(grunt) {
 				'static/external_libs/tagify-4.34.0/tagify.polyfills.min.js',
 				'static/external_libs/jquery.cookie.min.js',
 				'static/external_libs/jquery_confirm/jquery-confirm.min.js',
+				'static/js/main.min.js'
 			  ],
 		      dest: 'static/bundle.min.js',
 		    },
