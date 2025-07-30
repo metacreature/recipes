@@ -52,7 +52,7 @@ class Controller_User_Login extends Controller_Base
         $form = $this->_get_form();
         $form->resolveRequest();
         if ($form->validate($form)) {
-            $user_obj = new Model_User($this->_db);
+            $user_obj = new Model_User($this->_db, 0);
             $data = $user_obj->login($form->getValue('email'), $form->getValue('password'));
             if ($data) {
                 $_SESSION['login'] = true;

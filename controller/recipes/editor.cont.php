@@ -38,7 +38,7 @@ class Controller_Recipes_Editor extends Controller_Base
     }
 
     protected function _get_form($request) {
-        $recipe_obj = new Model_Recipe($this->_db);
+        $recipe_obj = new Model_Recipe($this->_db, Controller_Base::get_user_id());
         $category_list = $recipe_obj->get_category_list();
         $tag_list = $recipe_obj->get_tag_list();
         $ingredients_list = $recipe_obj->get_ingredients_list();
@@ -111,10 +111,10 @@ class Controller_Recipes_Editor extends Controller_Base
             'public' => 1
         );
         
-        $recipe_obj = new Model_Recipe($this->_db);
+        $recipe_obj = new Model_Recipe($this->_db, Controller_Base::get_user_id());
 
         if (!empty($_GET['recipe_id']) && is_numeric($_GET['recipe_id'])) {
-            $recipe = $recipe_obj->get($_GET['recipe_id'], Controller_Base::get_user_id());
+            $recipe = $recipe_obj->get($_GET['recipe_id']);
             if ($recipe) {
                 $form_values = $recipe;
                 $form_values['cnt_ingredients'] = count($recipe['ingredients_list']);
@@ -198,9 +198,8 @@ class Controller_Recipes_Editor extends Controller_Base
                 ];
             }
             
-            $recipe_obj = new Model_Recipe($this->_db);
+            $recipe_obj = new Model_Recipe($this->_db, Controller_Base::get_user_id());
             $res = $recipe_obj->save(
-                Controller_Base::get_user_id(),
                 $form->getValue('recipe_id'),
                 $form->getValue('public'), 
                 $form->getValue('category_id'), 

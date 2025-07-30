@@ -59,7 +59,7 @@ class Controller_User_Register extends Controller_Base
         $form = $this->_get_form();
         $form->resolveRequest();
         if ($this->_validate_create_password_form($form)) {
-            $user_obj = new Model_User($this->_db);
+            $user_obj = new Model_User($this->_db, 0);
             $res = $user_obj->create(
                 $form->getValue('user_name'),
                 $form->getValue('email'), 

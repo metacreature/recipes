@@ -8,6 +8,14 @@ const requestWakeLock = async () => {
   } catch (err) {
   }
 };
+
 $(function() {
     requestWakeLock();
-})
+});
+
+const handleVisibilityChange = async () => {
+  if (wakeLock !== null && document.visibilityState === 'visible') {
+    await requestWakeLock();
+  }
+};
+document.addEventListener('visibilitychange', handleVisibilityChange);

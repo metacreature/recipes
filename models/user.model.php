@@ -33,10 +33,10 @@ class Model_User extends Model_Base{
         return md5(SECURE_SALT . $password . SECURE_SALT . $password);
     }
 
-    function get_user_list_with_recipes($user_id) {
+    function get_user_list_with_recipes() {
         $where = '';
-        if ($user_id) {
-            $where = ' OR user_id = '. intval($user_id);
+        if ($this->_user_id) {
+            $where = ' OR user_id = '. intval($this->_user_id);
         }
 
         $res = $this->_db->executeUnbufferedQuery('SELECT 
@@ -55,10 +55,10 @@ class Model_User extends Model_Base{
         return $data;
     }
 
-    function get($user_id) {
+    function get() {
         $res = $this->_db->executePreparedQuery(
             'SELECT * FROM tbl_user WHERE user_id = ?;',
-            [$user_id]);
+            [$this->_user_id]);
         if ($res) {
             $data = $this->_db->fetchAssoc();
             if ($data) {
@@ -98,14 +98,14 @@ class Model_User extends Model_Base{
         }
     }
 
-    function forgotten_change($user_id, $email, $password) {
+    function forgotten_change($email, $password) {
         $res = $this->_db->executePreparedQuery(
             'UPDATE tbl_user SET 
                 password = ?,
                 last_edited = NOW(),
                 cnt_update = cnt_update + 1
             WHERE user_id = ? AND email = ?;',
-            [$this->_crypt_password($password), $user_id, $email]);
+            [$this->_crypt_password($password), $this->_user_id, $email]);
         if ($res) {
             if ($this->_db->getAffectedRows() == 1) {
                 return true;
@@ -114,14 +114,14 @@ class Model_User extends Model_Base{
         return false;
     }
 
-    function update_profile($user_id, $user_name) {
+    function update_profile($user_name) {
         $res = $this->_db->executePreparedQuery(
             'UPDATE tbl_user SET 
                 user_name = ?,
                 last_edited = NOW(),
                 cnt_update = cnt_update + 1
             WHERE user_id = ?;',
-            [$user_name, $user_id]);
+            [$user_name, $this->_user_id]);
         if ($res) {
             if ($this->_db->getAffectedRows() == 1) {
                 return true;
@@ -130,14 +130,14 @@ class Model_User extends Model_Base{
         return false;
     }
 
-    function update_email($user_id, $actual_password, $email) {
+    function update_email($actual_password, $email) {
         $res = $this->_db->executePreparedQuery(
             'UPDATE tbl_user SET 
                 email = ?,
                 last_edited = NOW(),
                 cnt_update = cnt_update + 1
             WHERE user_id = ? AND password = ?;',
-            [$email, $user_id, $this->_crypt_password($actual_password)]);
+            [$email, $this->_user_id, $this->_crypt_password($actual_password)]);
         if ($res) {
             if ($this->_db->getAffectedRows() == 1) {
                 return true;
@@ -146,14 +146,14 @@ class Model_User extends Model_Base{
         return false;
     }
 
-    function update_password($user_id, $actual_password, $password) {
+    function update_password($actual_password, $password) {
         $res = $this->_db->executePreparedQuery(
             'UPDATE tbl_user SET 
                 password = ?,
                 last_edited = NOW(),
                 cnt_update = cnt_update + 1
             WHERE user_id = ? AND password = ?;',
-            [$this->_crypt_password($password), $user_id, $this->_crypt_password($actual_password)]);
+            [$this->_crypt_password($password), $this->_user_id, $this->_crypt_password($actual_password)]);
         if ($res) {
             if ($this->_db->getAffectedRows() == 1) {
                 return true;

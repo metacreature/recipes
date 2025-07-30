@@ -31,6 +31,7 @@ class Model_Recipe extends Model_Base{
 
     
     function get_category_list() {
+
         $res = $this->_db->executeUnbufferedQuery('SELECT 
             category_id,
             category_name
@@ -46,11 +47,16 @@ class Model_Recipe extends Model_Base{
     }
 
     function get_tag_list() {
-        $res = $this->_db->executeUnbufferedQuery('SELECT 
+        
+        $res = $this->_db->executePreparedQuery('SELECT 
             tag_id,
             tag_name
             FROM tbl_tag
-            ORDER BY tag_id ASC;');
+            JOIN tbl_recipe_tag USING (tag_id)
+            JOIN tbl_recipe USING(recipe_id)
+            WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) AND tbl_recipe.deleted = 0 
+            ORDER BY tbl_tag.tag_id ASC;', 
+            [$this->_user_id]);
 
         $row_list = $this->_db->getAssocResults();
         $data = [];
@@ -61,11 +67,16 @@ class Model_Recipe extends Model_Base{
     }
 
     function get_ingredients_list() {
-        $res = $this->_db->executeUnbufferedQuery('SELECT
+
+        $res = $this->_db->executePreparedQuery('SELECT
             ingredients_id,
             ingredients_name
             FROM tbl_ingredients 
-            ORDER BY ingredients_name ASC;');
+            JOIN tbl_recipe_ingredients USING (ingredients_id)
+            JOIN tbl_recipe USING(recipe_id)
+            WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) AND tbl_recipe.deleted = 0 
+            ORDER BY tbl_ingredients.ingredients_name ASC;', 
+            [$this->_user_id]);
 
         $row_list = $this->_db->getAssocResults();
         $data = [];
@@ -76,11 +87,16 @@ class Model_Recipe extends Model_Base{
     }
 
     function get_unit_list() {
-        $res = $this->_db->executeUnbufferedQuery('SELECT 
+
+        $res = $this->_db->executePreparedQuery('SELECT 
             unit_id,
             unit_name
             FROM tbl_unit
-            ORDER BY unit_id ASC;');
+            JOIN tbl_recipe_ingredients USING (unit_id)
+            JOIN tbl_recipe USING(recipe_id)
+            WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) AND tbl_recipe.deleted = 0
+            ORDER BY tbl_unit.unit_id ASC;', 
+            [$this->_user_id]);
 
         $row_list = $this->_db->getAssocResults();
         $data = [];
@@ -101,7 +117,7 @@ class Model_Recipe extends Model_Base{
         if (is_array($values)) {
             $ret = '';
             foreach($values as $i) {
-                $ret .= ' AND EXISTS (SELECT recipe_id FROM ' . $table_name . ' WHERE ' . $field_name . ' = ? AND recipe_id = tbl_recipe.recipe_id) ';
+                $ret .= ' AND EXISTS (SELECT recipe_id FROM ' . $table_name . ' WHERE ' . $field_name . ' = ? AND ' . $table_name . '.recipe_id = tbl_recipe.recipe_id) ';
             }
             return $ret;
         }
@@ -119,16 +135,15 @@ class Model_Recipe extends Model_Base{
         return [];
     }
     
-    function list($user_id, $user_ids, $category_ids, $tag_ids, $ingredients_ids, $name, $sort, $limit = null, $offset = null) {
+    function list($user_ids, $category_ids, $tag_ids, $ingredients_ids, $name, $sort, $limit = null, $offset = null) {
         $query = $this->_create_in_query('user_id', $user_ids)
             . $this->_create_in_query('category_id', $category_ids)
             . $this->_create_and_query('tag_id', 'tbl_recipe_tag', $tag_ids)
             . $this->_create_and_query('ingredients_id', 'tbl_recipe_ingredients', $ingredients_ids)
             . (!empty($name) && strlen($name) > 1 ? " AND recipe_name LIKE CONCAT ('%', ?, '%') " : '');
 
-
         $query_values = array_merge(
-            [$user_id ? $user_id : 0],
+            [$this->_user_id],
             $this->_get_query_value($user_ids),
             $this->_get_query_value($category_ids),
             $this->_get_query_value($tag_ids),
@@ -175,22 +190,22 @@ class Model_Recipe extends Model_Base{
         return $this->_db->getAssocResults();
     }
 
-    function setdelete($recipe_id, $user_id) {
+    function setdelete($recipe_id) {
         $this->_db->executePreparedQuery('UPDATE tbl_recipe SET 
             deleted = 1,
             last_edited = NOW(),
             cnt_update = cnt_update + 1
         WHERE recipe_id = ? AND user_id = ? AND deleted = 0;', 
-        [$recipe_id, $user_id]);
+        [(int) $recipe_id, $this->_user_id]);
         if ($this->_db->getAffectedRows() == 1) {
             return true;
         }
         return false;
     }
 
-    function delete($recipe_id, $user_id, $clean_refs = true) {
+    function delete($recipe_id, $clean_refs = true) {
         $this->_db->executePreparedQuery('SELECT * FROM tbl_recipe WHERE recipe_id = ? AND user_id = ?;', 
-            [$recipe_id, $user_id]);
+            [(int)$recipe_id, $this->_user_id]);
         if ($this->_db->fetchAssoc()) {
             $this->_db->begin();
             try{
@@ -199,7 +214,7 @@ class Model_Recipe extends Model_Base{
                     $this->clean_refs();
                 }
                 $this->_db->executePreparedQuery('DELETE FROM tbl_recipe WHERE recipe_id = ? AND user_id = ?;', 
-                    [$recipe_id, $user_id]);
+                    [(int)$recipe_id, $this->_user_id]);
             } catch (Exception $e) {
                 $this->_db->rollback();
                 return false;
@@ -210,7 +225,7 @@ class Model_Recipe extends Model_Base{
         return false;
     }
 
-    function get($recipe_id, $user_id) {
+    function get($recipe_id) {
         $this->_db->executePreparedQuery('SELECT 
             tbl_recipe.recipe_id as recipe_id,
             tbl_recipe.category_id as category_id,
@@ -228,14 +243,14 @@ class Model_Recipe extends Model_Base{
             FROM tbl_recipe 
             INNER JOIN tbl_category USING (category_id)
             INNER JOIN tbl_user USING (user_id)
-            WHERE recipe_id = ? AND (public = 1 OR user_id = ?) AND deleted = 0;', 
-            [(int) $recipe_id, (int) $user_id]);
+            WHERE tbl_recipe.recipe_id = ? AND (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) AND tbl_recipe.deleted = 0;', 
+            [(int) $recipe_id, $this->_user_id]);
         $recipe = $this->_db->fetchAssoc();
         if (!$recipe) {
             return;
         }
 
-        $recipe['editable'] = $user_id == $recipe['user_id'];
+        $recipe['editable'] = $this->_user_id == $recipe['user_id'];
 
         $this->_db->executePreparedQuery('SELECT tbl_tag.tag_name 
             FROM tbl_recipe_tag 
@@ -265,7 +280,7 @@ class Model_Recipe extends Model_Base{
         return $recipe;
     }
 
-    function save($user_id, $recipe_id, $public, $category_id, $recipe_name, $persons, $costs, $duration, $total_duration, $original_text, $tag_list, $ingredients_list, $step_list, $del_image, $image_upload) {
+    function save($recipe_id, $public, $category_id, $recipe_name, $persons, $costs, $duration, $total_duration, $original_text, $tag_list, $ingredients_list, $step_list, $del_image, $image_upload) {
         
         $costs = $costs == '' ? null : str_replace(',', '.', $costs);
         $duration = $duration == '' ? null : $duration;
@@ -286,7 +301,7 @@ class Model_Recipe extends Model_Base{
                     last_edited = NOW(),
                     cnt_update = cnt_update + 1
                 WHERE recipe_id = ? AND user_id = ? AND deleted = 0;', 
-                [$public, $category_id, $recipe_name, $persons, $costs, $duration, $total_duration, $original_text, $recipe_id, $user_id]);
+                [$public, $category_id, $recipe_name, $persons, $costs, $duration, $total_duration, $original_text, (int) $recipe_id, $this->_user_id]);
                 if ($this->_db->getAffectedRows() != 1) {
                     $this->_db->rollback();
                     return;
@@ -309,7 +324,7 @@ class Model_Recipe extends Model_Base{
                     original_text = ?,
                     last_edited = NOW(),
                     user_id = ?;', 
-                [$public, $category_id, $recipe_name, $persons, $costs, $duration, $total_duration, $original_text, $user_id]);
+                [$public, $category_id, $recipe_name, $persons, $costs, $duration, $total_duration, $original_text, $this->_user_id]);
                 if ($this->_db->getAffectedRows() != 1) {
                     $this->_db->rollback();
                     return;

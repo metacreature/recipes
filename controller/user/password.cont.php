@@ -79,9 +79,8 @@ class Controller_User_Password extends Controller_Base
         usleep(rand(0, 900000));
 
         if ($form->getValue('s') == $this->_gen_key($form->getValue('user_id'), $form->getValue('email'), $form->getValue('ts'))) {
-            $user_obj = new Model_User($this->_db);
+            $user_obj = new Model_User($this->_db, $form->getValue('user_id'));
             $user_obj->forgotten_change(
-                $form->getValue('user_id'),
                 $form->getValue('email'), 
                 $form->getValue('password'));
         }
@@ -103,7 +102,7 @@ class Controller_User_Password extends Controller_Base
         usleep(rand(0, 900000));
 
         if ($form->validate($form)) {
-            $user_obj = new Model_User($this->_db);
+            $user_obj = new Model_User($this->_db, 0);
             $data = $user_obj->forgotten($form->getValue('email'));
             if ($data) {
 

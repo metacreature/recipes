@@ -33,12 +33,13 @@ ini_set('max_execution_time', 3600);
 
 
 $db = FW_MySQLDataBaseLayer::singleton();
-$recipe_obj = new Model_Recipe($db);
+$recipe_obj = new Model_Recipe($db, 0);
 
 // clean db 
 $db->executeQuery('SELECT recipe_id, user_id FROM tbl_recipe WHERE deleted = 1 AND last_edited < NOW() - INTERVAL 14 day');
 foreach($db->getAssocResults() as $row) {
-    $recipe_obj->delete($row['recipe_id'], $row['user_id'], false);
+    $recipe_obj->setUserId($row['user_id']);
+    $recipe_obj->delete($row['recipe_id'], false);
 }
 $recipe_obj->clean_refs();
 $db->optimizeTables([

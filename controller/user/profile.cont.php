@@ -60,8 +60,8 @@ class Controller_User_Profile extends Controller_Base
     }
 
     function view() {
-        $user_obj = new Model_User($this->_db);
-        $data = $user_obj->get(Controller_Base::get_user_id());
+        $user_obj = new Model_User($this->_db, Controller_Base::get_user_id());
+        $data = $user_obj->get();
         $profile_form = $this->_get_profile_form();
         $profile_form->resolveRequest($data);
         $email_form = $this->_get_email_form();
@@ -74,9 +74,8 @@ class Controller_User_Profile extends Controller_Base
         $form = $this->_get_profile_form();
         $form->resolveRequest();
         if ($form->validate()) {
-            $user_obj = new Model_User($this->_db);
+            $user_obj = new Model_User($this->_db, Controller_Base::get_user_id());
             $res = $user_obj->update_profile(
-                Controller_Base::get_user_id(),
                 $form->getValue('user_name'));
             if ($res) {
                 $_SESSION['user_name'] = $form->getValue('user_name');
@@ -91,9 +90,8 @@ class Controller_User_Profile extends Controller_Base
         $form = $this->_get_email_form();
         $form->resolveRequest();
         if ($form->validate()) {
-            $user_obj = new Model_User($this->_db);
+            $user_obj = new Model_User($this->_db, Controller_Base::get_user_id());
             $res = $user_obj->update_email(
-                Controller_Base::get_user_id(),
                 $form->getValue('actual_password'),
                 $form->getValue('email'));
             if ($res) {
@@ -108,9 +106,8 @@ class Controller_User_Profile extends Controller_Base
         $form = $this->_get_password_form();
         $form->resolveRequest();
         if ($this->_validate_create_password_form($form)) {
-            $user_obj = new Model_User($this->_db);
+            $user_obj = new Model_User($this->_db, Controller_Base::get_user_id());
             $res = $user_obj->update_password(
-                Controller_Base::get_user_id(),
                 $form->getValue('actual_password'),
                 $form->getValue('password'));
             if ($res) {
