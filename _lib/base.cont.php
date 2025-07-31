@@ -32,20 +32,41 @@ class Controller_Base
     protected $_db = null;
 
     function __construct($db) {
-        @session_start();
         $this->_db = $db;
+
+        @session_start();
+        if (empty($_SESSION['session_started'])) {
+            @session_destroy();
+            $id = uidmore() . hash('sha512', session_create_id() . uidmore() .  SECURE_SALT . $_SERVER['REMOTE_ADDR'] . mt_rand() . SECURE_SALT . mt_rand());
+            @session_id($id);
+            @session_start();
+        }
+        $_SESSION['session_started'] = true;
+
+        if (empty($_SESSION['login']) && !empty($_COOKIE['token']) && !empty($_COOKIE['token_uid'])) {
+            $user_obj = new Model_User($this->_db, Controller_Base::get_user_id());
+            $data = $user_obj->loginToken($_COOKIE['token'], $_COOKIE['token_uid']);
+            if ($data) {
+                $_SESSION['login'] = true;
+                $_SESSION['user_id'] = $data['user_id'];
+                $_SESSION['user_name'] = $data['user_name'];
+            } else {
+                setcookie("token", '', time() - SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
+                setcookie("token_uid", '', time() - SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
+            }
+        }
     }
 
     static function is_login() {
-        return !empty($_SESSION) && in_array('login', $_SESSION) && $_SESSION['login'];
+        return !empty($_SESSION) && !empty($_SESSION['login']);
     }
 
     static function get_user_id() {
-        return !empty($_SESSION) && in_array('user_id', $_SESSION) ? $_SESSION['user_id'] : 0;
+        return !empty($_SESSION) && !empty($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
     }
     
     static function get_user_name() {
-        return !empty($_SESSION) && in_array('user_name', $_SESSION) ? $_SESSION['user_name'] : '';
+        return !empty($_SESSION) && !empty($_SESSION['user_name']) ? $_SESSION['user_name'] : '';
     }
 
     protected function _check_login() {

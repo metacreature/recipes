@@ -34,17 +34,20 @@ function log_runtime() {
 		$time = round(($time_end - $time_start) * 1000);
 		$url = str_replace('"', '', $_SERVER['REQUEST_URI']);
 		$memory = round(memory_get_usage() / 1024);
-		$f = fopen("execution_time.log.csv", "a+");
+
+		$dirname = DOCUMENT_ROOT. '/_logs/';
+		$file_name = 'execution_time.'.hash('sha256', SECURE_SALT).'.log.csv';
+		$f = fopen($dirname .$file_name, "a+");
 		fwrite($f, '"' . $url . '";' . $time . ';μs;' . $memory . ";kb\n");
 		fclose($f );
 	}
 }
 
 // FW-Includes
+require_once ('_lib/settings.inc.php');
 require_once ('_lib/fw/func.inc.php');
 require_once ('_lib/fw/FW_ErrorLogger.static.php');
 require_once ('_lib/fw/FW_MySQLDataBaseLayer.class.php');
-require_once ('_lib/settings.inc.php');
 
 // language
 $selected_lang = SETTINGS_DEFAULT_LANG;
@@ -54,7 +57,7 @@ $selected_lang = SETTINGS_DEFAULT_LANG;
 define('SELECTED_LANG', $selected_lang);
 require_once (DOCUMENT_ROOT . '/language/' . SELECTED_LANG . '.lang.php');
 
-$db = FW_MySQLDataBaseLayer::singleton();
+$db = FW_MySQLDataBaseLayer::singleton(DEBUG_MODE);
 ignore_user_abort(true);
 
 // get request

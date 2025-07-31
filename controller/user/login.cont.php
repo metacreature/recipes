@@ -39,6 +39,7 @@ class Controller_User_Login extends Controller_Base
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
         $form->addFormField('Email', 'email', false, '', true);
         $form->addFormField('Password', 'password', false, '', true);
+        $form->addFormField('Checkbox', 'remember_login', false, '', false);
         return $form;
     }
 
@@ -58,6 +59,11 @@ class Controller_User_Login extends Controller_Base
                 $_SESSION['login'] = true;
                 $_SESSION['user_id'] = $data['user_id'];
                 $_SESSION['user_name'] = $data['user_name'];
+                if ($form->getValue('remember_login')) {
+                    $ret = $user_obj->addToken($form->getValue('password'));
+                    setcookie("token", $ret['token'], time() + SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
+                    setcookie("token_uid", $ret['token_uid'], time() + SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
+                }
                 return $form->getFormSuccess(LANG_LOGIN_SUCCESS);
             }
         }
@@ -66,6 +72,12 @@ class Controller_User_Login extends Controller_Base
     }
 
     function logout() {
+        if (!empty($_COOKIE['token']) && !empty($_COOKIE['token_uid'])) {
+            $user_obj = new Model_User($this->_db, Controller_Base::get_user_id());
+            $user_obj->removeToken($_COOKIE['token'], $_COOKIE['token_uid']);
+            setcookie("token", '', time() - SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
+            setcookie("token_uid", '', time() - SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
+        }
         @session_destroy();
         return WEB_URL . '?logout';
     }

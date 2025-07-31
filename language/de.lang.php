@@ -76,6 +76,7 @@ define('CHECK_LOGIN_ERROR_NOT_LOGIN', 'Sie sind nicht eingeloggt');
 
 define('LANG_LOGIN_HDL', 'Login');
 define('LANG_LOGIN_SAVE', 'Login');
+define('LANG_LOGIN_REMEMBER_LOGIN', 'Eingeloggt bleiben');
 define('LANG_LOGIN_FORGOTTEN', 'Passwort vergessen');
 define('LANG_LOGIN_FAIL', 'Login fehlgeschlagen!');
 define('LANG_LOGIN_SUCCESS', 'Login erfolgreich!');

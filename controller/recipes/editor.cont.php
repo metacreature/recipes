@@ -178,7 +178,7 @@ class Controller_Recipes_Editor extends Controller_Base
             $image_upload = null;
             if ($form->getValue('image') && !$form->getValue('del_image')) {
                 $oImageService = new FW_ImageServiceGallery('recipes', HIDDEN_IMAGEFOLDER_SECURE, array());
-                $image_name = uniqid();
+                $image_name = uidmore();
                 
                 
                 $arrUploadedImage = $form->getValue('image');

@@ -137,3 +137,9 @@ function preint_r($mValue)
     print_r($mValue);
     echo '</pre>';
 }
+
+function uidmore() {
+    $uid = uniqid('', true);
+    $uid = str_replace('.', '', $uid);
+    return substr($uid, 0, 22);
+}

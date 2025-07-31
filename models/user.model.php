@@ -29,10 +29,6 @@ require_once (DOCUMENT_ROOT . '/_lib/base.model.php');
 
 class Model_User extends Model_Base{
 
-    protected function _crypt_password($password) {
-        return hash('sha512', SECURE_SALT . $password . SECURE_SALT . $password);
-    }
-
     function get_user_list_with_recipes() {
         $where = '';
         if ($this->_user_id) {
@@ -55,6 +51,58 @@ class Model_User extends Model_Base{
         return $data;
     }
 
+    protected function _crypt_password($password) {
+        return hash('sha512', SECURE_SALT . $password . SECURE_SALT . $password);
+    }
+
+    protected function _calc_db_token($cookie_token) {
+        $ip = SETTINGS_REMEMBER_LOGIN_USE_IP ? $_SERVER['REMOTE_ADDR'] : '';
+        $user_agent = SETTINGS_REMEMBER_LOGIN_USE_USER_AGENT ? $_SERVER['HTTP_USER_AGENT'] : '';
+        return hash('sha512', SECURE_SALT . $_SERVER['HTTP_ACCEPT_LANGUAGE']. $cookie_token . $user_agent . $ip);
+    }
+
+    function addToken($password) {
+        $cookie_token = hash('sha512', uidmore() . SECURE_SALT . $this->_user_id . $this->_crypt_password($password) . $_SERVER['REMOTE_ADDR'] . mt_rand() . SECURE_SALT . mt_rand());
+        $db_token = $this->_calc_db_token($cookie_token);
+        $token_uid = uidmore();
+        $res = $this->_db->executePreparedQuery(
+            'INSERT INTO tbl_user_token (user_id, db_token, last_login) VALUES (?, ?, NOW());',
+            [$this->_user_id, $db_token.$token_uid]
+        );
+        return [
+            'token' => $cookie_token, 
+            'token_uid' => $token_uid
+        ];
+    }
+
+    function removeToken($cookie_token, $token_uid) {
+        if (!preg_match('#^[0-9a-f]+$#', $cookie_token . $token_uid)) {
+            return;
+        }
+        $db_token = $this->_calc_db_token($cookie_token);
+        $res = $this->_db->executePreparedQuery(
+            'DELETE FROM tbl_user_token WHERE db_token = ?;',
+            [$db_token.$token_uid]
+        );
+    }
+
+    function loginToken($cookie_token, $token_uid) {
+        if (!preg_match('#^[0-9a-f]+$#', $cookie_token .$token_uid)) {
+            return;
+        }
+        $db_token = $this->_calc_db_token($cookie_token);
+        $res = $this->_db->executePreparedQuery(
+            'SELECT * FROM tbl_user WHERE user_id IN (SELECT user_id FROM tbl_user_token WHERE db_token = ?);',
+            [$db_token.$token_uid]);
+        if ($res) {
+            $data = $this->_db->fetchAssoc();
+            if ($data) {
+                $this->setUserId($data['user_id']);
+                return $data;
+            }
+        }
+    }
+
     function get() {
         $res = $this->_db->executePreparedQuery(
             'SELECT * FROM tbl_user WHERE user_id = ?;',
@@ -74,6 +122,7 @@ class Model_User extends Model_Base{
         if ($res) {
             $data = $this->_db->fetchAssoc();
             if ($data) {
+                $this->setUserId($data['user_id']);
                 return $data;
             }
         }

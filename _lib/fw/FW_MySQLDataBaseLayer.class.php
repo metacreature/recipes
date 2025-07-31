@@ -24,7 +24,7 @@
  SOFTWARE.
 */
 
-
+define('FW_MySQLDataBaseLayer_file_name', 'DBQueries.'.hash('sha256', SECURE_SALT).'.log.html');
 
 class FW_MySQLDataBaseLayer
 {
@@ -55,6 +55,8 @@ class FW_MySQLDataBaseLayer
      * see _write
      */
     protected $_sDumpFolder = 'dump/';
+
+    static $sLogFileName = FW_MySQLDataBaseLayer_file_name;
 
     // =========== Member Variables =========== //
     protected $_bIsInit = false;
@@ -533,9 +535,9 @@ class FW_MySQLDataBaseLayer
     {
         if ($this->_bIsInit) {
             if (count($this->_arrLog)) {
-                FW_ErrorLogger::writeInfo('SQL Log: ' . count($this->_arrLog) . " Abfragen<br>\n<ul><li>" . implode("</li>\n<li>", $this->_arrLog) . '</li></ul>');
+                FW_ErrorLogger::writeInfo('SQL Log: ' . count($this->_arrLog) . " Abfragen<br>\n<ul><li>" . implode("</li>\n<li>", $this->_arrLog) . '</li></ul>', FW_MySQLDataBaseLayer::$sLogFileName);
             } else {
-                FW_ErrorLogger::writeInfo('SQL Log: 0 Abfragen');
+                FW_ErrorLogger::writeInfo('SQL Log: 0 Abfragen', FW_MySQLDataBaseLayer::$sLogFileName);
             }
         }
     }
@@ -543,7 +545,7 @@ class FW_MySQLDataBaseLayer
     protected function _logError()
     {
         if ($this->_bIsInit) {
-            FW_ErrorLogger::writeError("SQL Error:<br>\n" . $this->_sTempLog);
+            FW_ErrorLogger::writeError("SQL Error:<br>\n" . $this->_sTempLog, FW_MySQLDataBaseLayer::$sLogFileName);
         }
         $this->_sTempLog = '';
     }

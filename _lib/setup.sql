@@ -9,6 +9,13 @@ CREATE TABLE tbl_user (
   UNIQUE KEY email (email)
 );
 
+CREATE TABLE tbl_user_token(
+  user_id INT UNSIGNED NOT NULL,
+  db_token CHAR(150) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  last_login  DATETIME NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES tbl_user (user_id)
+);
+
 CREATE TABLE tbl_category (
   category_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   category_name VARCHAR(255) NOT NULL,

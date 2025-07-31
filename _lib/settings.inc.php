@@ -29,6 +29,9 @@ define('TEST_SERVER', strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
 // settings
 define('SETTINGS_ALLOW_REGISTER', true);
 define('SETTINGS_LIST_REQUIRES_LOGIN', false);
+define('SETTINGS_REMEMBER_LOGIN_USE_IP', false);
+define('SETTINGS_REMEMBER_LOGIN_USE_USER_AGENT', false);
+define('SETTINGS_REMEMBER_LOGIN_EXPIRE', 31536000);
 define('SETTINGS_DEFAULT_LANG', 'en');
 define('SETTINGS_CURRENCY', '€');
 
@@ -58,7 +61,7 @@ if (TEST_SERVER) {
 	
 	// error-logging
     define('DEBUG_MODE', true);
-	define('DEBUG_EXECUTION_TIME', false);
+	define('DEBUG_EXECUTION_TIME', true);
     ini_set('error_reporting', E_ALL);
     ini_set('display_errors', true);
 

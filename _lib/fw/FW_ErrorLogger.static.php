@@ -24,6 +24,7 @@
  SOFTWARE.
 */
 
+define('FW_ErrorLogger_file_name', 'ErrorLogger.'.hash('sha256', SECURE_SALT).'.log.html');
 
 
 class FW_ErrorLogger
@@ -66,21 +67,8 @@ class FW_ErrorLogger
      *
      * @static
      */
-    static $sLogFileName = 'ErrorLogger.werhewj.log.html';
+    static $sLogFileName = FW_ErrorLogger_file_name;
 
-    /**
-     * iParentPathLevels
-     * defines in which path the log is stored.
-     * To make it more flexible to use on other projects there are only parentlevels:
-     * 0 => wil store it in the same path the ErrorLogger is located
-     * 1 => wil store it in the parent path where the ErrorLogger is located
-     * 2 => wil store it in the parent path of the parent path where the ErrorLogger is located
-     * ...
-     * see _write
-     *
-     * @static
-     */
-    static $iParentPathLevels = 2;
 
     // =========== Member Variables =========== //
 
@@ -121,7 +109,7 @@ class FW_ErrorLogger
      * @param
      *            string sMeesage
      */
-    static function writeError($sMessage = '')
+    static function writeError($sMessage = '', $sFileName = null)
     {
         // gets and formats the callstack
         $arrRawCallStack = debug_backtrace(); // get CallStack
@@ -129,7 +117,7 @@ class FW_ErrorLogger
         $sPrettyPrintedCallStack = self::PrettyPrintCallStack($arrCleanedCallStack); // formats the CallStack-Array to a pretty String
 
         // writes the whole message to the log-file and/or database (depends on the function's content)
-        self::_write($sMessage, $sPrettyPrintedCallStack);
+        self::_write($sMessage, $sPrettyPrintedCallStack, $sFileName);
     }
 
     static function printInfo($sMessage = '')
@@ -138,9 +126,9 @@ class FW_ErrorLogger
         echo "\n</div><div style=\"clear:both;\"></div>\n";
     }
 
-    static function writeInfo($sMessage = '')
+    static function writeInfo($sMessage = '', $sFileName = null)
     {
-        self::_write($sMessage, '');
+        self::_write($sMessage, '', $sFileName);
     }
 
     // =========== Helper-Methods ============ //
@@ -220,7 +208,7 @@ class FW_ErrorLogger
      * @param
      *            string sMeesage
      */
-    static function _write($sMessage, $sPrettyPrintedCallStack)
+    static function _write($sMessage, $sPrettyPrintedCallStack, $sFileName = null)
     {
         // force LogInfile if the sql-query fails
         $bForceLogInFile = true;
@@ -251,13 +239,7 @@ class FW_ErrorLogger
         if (self::$bLogInFile || $bForceLogInFile) {
             try {
                 // prepares the path of the log-file
-                $sDirName = dirname(__FILE__);
-                $iCnt = 0;
-                while ($iCnt < self::$iParentPathLevels) {
-                    $sDirName = @dirname($sDirName);
-                    $iCnt ++;
-                }
-                $sDirName .= '/';
+                $sDirName = DOCUMENT_ROOT . '/_logs/';
 
                 // prepares the message
                 $sContentToWrite = "\n<div class=\"errorlogger\">\n	<b>" . date('d.m.Y - H:i:s') . "</b><br>\n	<i>" . $sMessage . "</i>\n";
@@ -265,9 +247,11 @@ class FW_ErrorLogger
                 $sContentToWrite .= "\n</div><div style=\"clear:both;\"></div>\n";
 
                 // writes the whole message to the log-file
-                $sFileContent = @file_get_contents($sDirName . self::$sLogFileName);
-                @file_put_contents($sDirName . self::$sLogFileName, $sContentToWrite . $sFileContent);
-                @chmod($sDirName . self::$sLogFileName, 0777);
+                $sFileName = ($sFileName ? $sFileName : self::$sLogFileName);
+                $sFileContent = @file_get_contents($sDirName . $sFileName);
+                @file_put_contents($sDirName . $sFileName, $sContentToWrite . $sFileContent);
+                @chmod($sDirName . $sFileName, 0777);
+                
             } catch (Exception $e) {}
         }
     }

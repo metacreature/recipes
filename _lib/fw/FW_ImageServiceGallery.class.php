@@ -75,7 +75,7 @@ class FW_ImageServiceGallery extends FW_ImageServiceBase
     
     function move_uploaded_image($upload_file_name) 
     {
-        $target_name = $this->_base_dirname . '/' . $this->_orig_subfolder_name . '/' . uniqid() . rand(1000, 9999);
+        $target_name = $this->_base_dirname . '/' . $this->_orig_subfolder_name . '/' . uidmore();
         $ret = $this->raw_move_uploaded_image($upload_file_name, $target_name);
         return self::trim_img_dir($ret);
     }

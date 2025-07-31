@@ -303,8 +303,6 @@ select.form-control {
 	margin-top: 3px;
 }
 
-
-
 /* tinymce */
 div.mce-fullscreen {
 	z-index: 1050 !important;
@@ -712,6 +710,17 @@ body{
 }
 .center_box_login .ajax-form-response:has(.ajax-form-success) {
 	display: none !important;
+}
+
+.field-wrapper input#remember_login{
+	float: left;
+	margin-right: 10px;
+}
+
+.field_wrapper label.control-label {
+	float: left;
+	display: block;
+	padding-top: 5px;
 }
 
 

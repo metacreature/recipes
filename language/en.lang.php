@@ -76,6 +76,7 @@ define('CHECK_LOGIN_ERROR_NOT_LOGIN', 'You are not loged in!');
 
 define('LANG_LOGIN_HDL', 'Login');
 define('LANG_LOGIN_SAVE', 'login');
+define('LANG_LOGIN_REMEMBER_LOGIN', 'stay logged in');
 define('LANG_LOGIN_FORGOTTEN', 'forgotten password');
 define('LANG_LOGIN_FAIL', 'Login failed!');
 define('LANG_LOGIN_SUCCESS', 'Login was successful!');

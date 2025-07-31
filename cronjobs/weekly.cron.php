@@ -23,10 +23,11 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 */
+
+require_once ('../_lib/settings.inc.php');
 require_once ('../_lib/fw/func.inc.php');
 require_once ('../_lib/fw/FW_ErrorLogger.static.php');
 require_once ('../_lib/fw/FW_MySQLDataBaseLayer.class.php');
-require_once ('../_lib/settings.inc.php');
 require_once ('../models/recipe.model.php');
 
 ini_set('max_execution_time', 3600);
@@ -42,8 +43,12 @@ foreach($db->getAssocResults() as $row) {
     $recipe_obj->delete($row['recipe_id'], false);
 }
 $recipe_obj->clean_refs();
+
+$db->executeQuery('DELETE FROM tbl_user_token WHERE last_login < NOW() - INTERVAL '.ceil(SETTINGS_REMEMBER_LOGIN_EXPIRE / 86400).' day');
+
 $db->optimizeTables([
     'tbl_user',
+    'tbl_user_token',
     'tbl_category',
     'tbl_tag',
     'tbl_ingredients',
