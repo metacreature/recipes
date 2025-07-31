@@ -30,7 +30,7 @@ require_once (DOCUMENT_ROOT . '/_lib/base.model.php');
 class Model_User extends Model_Base{
 
     protected function _crypt_password($password) {
-        return md5(SECURE_SALT . $password . SECURE_SALT . $password);
+        return hash('sha512', SECURE_SALT . $password . SECURE_SALT . $password);
     }
 
     function get_user_list_with_recipes() {

@@ -38,7 +38,7 @@ class Controller_User_Password extends Controller_Base
     }
 
     protected function _gen_key($user_id, $email, $timestamp) {
-        return md5($user_id . '_' . SECURE_SALT . $email . '_' . $timestamp . SECURE_SALT . $email);
+        return hash('sha512', $user_id . '_' . SECURE_SALT . $email . '_' . $timestamp . SECURE_SALT . $email);
     }
 
     protected function _get_forgotten_form() {

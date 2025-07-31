@@ -2,7 +2,7 @@ CREATE TABLE tbl_user (
   user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   user_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
-  password VARCHAR(32) NOT NULL,
+  password VARCHAR(128) NOT NULL,
   last_edited  DATETIME NOT NULL,
   cnt_update INT UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (user_id),
