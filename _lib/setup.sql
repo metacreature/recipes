@@ -9,12 +9,28 @@ CREATE TABLE tbl_user (
   UNIQUE KEY email (email)
 );
 
-CREATE TABLE tbl_user_token(
+CREATE TABLE tbl_user_remember(
   user_id INT UNSIGNED NOT NULL,
   db_token CHAR(150) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
-  last_login  DATETIME NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES tbl_user (user_id)
+  insert_timestamp  DATETIME NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES tbl_user (user_id),
+  INDEX db_token (db_token(10))
 );
+
+CREATE TABLE tbl_user_forgotten(
+  user_id INT UNSIGNED NOT NULL,
+  db_token CHAR(150) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  insert_timestamp  DATETIME NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES tbl_user (user_id),
+  INDEX db_token (db_token(10))
+);
+
+CREATE TABLE tbl_user_login_bruteforce(
+  email VARCHAR(255) NOT NULL,
+  insert_timestamp  DATETIME NOT NULL,
+  INDEX public (insert_timestamp)
+);
+
 
 CREATE TABLE tbl_category (
   category_id INT UNSIGNED NOT NULL AUTO_INCREMENT,

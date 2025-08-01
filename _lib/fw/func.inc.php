@@ -143,3 +143,14 @@ function uidmore() {
     $uid = str_replace('.', '', $uid);
     return substr($uid, 0, 22);
 }
+
+function create_user_token($dynamic_salt1 = '', $dynamic_salt2 = '') {
+    $token = hash('sha512', uidmore() . SECURE_SALT . $dynamic_salt1 . mt_rand() . $dynamic_salt2 . mt_rand() . SECURE_SALT . mt_rand());
+    $token_uid = uidmore();
+    return $token.$token_uid;
+}
+
+function create_db_token($token, $dynamic_salt = '') {
+    $token_uid = substr($token, -22);
+    return hash('sha512', $token . SECURE_SALT . $dynamic_salt).$token_uid;
+}

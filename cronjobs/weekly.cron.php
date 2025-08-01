@@ -44,11 +44,11 @@ foreach($db->getAssocResults() as $row) {
 }
 $recipe_obj->clean_refs();
 
-$db->executeQuery('DELETE FROM tbl_user_token WHERE last_login < NOW() - INTERVAL '.ceil(SETTINGS_REMEMBER_LOGIN_EXPIRE / 86400).' day');
+$db->executePreparedQuery('DELETE FROM tbl_user_remember WHERE insert_timestamp < NOW() - INTERVAL ? day', [SETTINGS_REMEMBER_LOGIN_EXPIRE]);
 
 $db->optimizeTables([
     'tbl_user',
-    'tbl_user_token',
+    'tbl_user_remember',
     'tbl_category',
     'tbl_tag',
     'tbl_ingredients',

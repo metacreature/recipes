@@ -60,9 +60,8 @@ class Controller_User_Login extends Controller_Base
                 $_SESSION['user_id'] = $data['user_id'];
                 $_SESSION['user_name'] = $data['user_name'];
                 if ($form->getValue('remember_login')) {
-                    $ret = $user_obj->addToken($form->getValue('password'));
-                    setcookie("token", $ret['token'], time() + SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
-                    setcookie("token_uid", $ret['token_uid'], time() + SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
+                    $user_token = $user_obj->addRememberToken($form->getValue('password'));
+                    setcookie("remember_token", $user_token, time() + SETTINGS_REMEMBER_LOGIN_EXPIRE * 86400, "/", WEB_DOMAIN);
                 }
                 return $form->getFormSuccess(LANG_LOGIN_SUCCESS);
             }
@@ -72,11 +71,10 @@ class Controller_User_Login extends Controller_Base
     }
 
     function logout() {
-        if (!empty($_COOKIE['token']) && !empty($_COOKIE['token_uid'])) {
+        if (!empty($_COOKIE['remember_token'])) {
             $user_obj = new Model_User($this->_db, Controller_Base::get_user_id());
-            $user_obj->removeToken($_COOKIE['token'], $_COOKIE['token_uid']);
-            setcookie("token", '', time() - SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
-            setcookie("token_uid", '', time() - SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
+            $user_obj->removeRememberToken($_COOKIE['remember_token']);
+            setcookie("remember_token", '', 1, "/", WEB_DOMAIN);
         }
         @session_destroy();
         return WEB_URL . '?logout';

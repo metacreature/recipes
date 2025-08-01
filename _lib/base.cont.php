@@ -37,22 +37,21 @@ class Controller_Base
         @session_start();
         if (empty($_SESSION['session_started'])) {
             @session_destroy();
-            $id = uidmore() . hash('sha512', session_create_id() . uidmore() .  SECURE_SALT . $_SERVER['REMOTE_ADDR'] . mt_rand() . SECURE_SALT . mt_rand());
+            $id = create_user_token(session_create_id(), $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'] );
             @session_id($id);
             @session_start();
         }
         $_SESSION['session_started'] = true;
 
-        if (empty($_SESSION['login']) && !empty($_COOKIE['token']) && !empty($_COOKIE['token_uid'])) {
+        if (empty($_SESSION['login']) && !empty($_COOKIE['remember_token'])) {
             $user_obj = new Model_User($this->_db, Controller_Base::get_user_id());
-            $data = $user_obj->loginToken($_COOKIE['token'], $_COOKIE['token_uid']);
+            $data = $user_obj->loginRememberToken($_COOKIE['remember_token']);
             if ($data) {
                 $_SESSION['login'] = true;
                 $_SESSION['user_id'] = $data['user_id'];
                 $_SESSION['user_name'] = $data['user_name'];
             } else {
-                setcookie("token", '', time() - SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
-                setcookie("token_uid", '', time() - SETTINGS_REMEMBER_LOGIN_EXPIRE, "/");
+                setcookie("remember_token", '', 1, "/", WEB_DOMAIN);
             }
         }
     }

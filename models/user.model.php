@@ -55,45 +55,36 @@ class Model_User extends Model_Base{
         return hash('sha512', SECURE_SALT . $password . SECURE_SALT . $password);
     }
 
-    protected function _calc_db_token($cookie_token) {
+    protected function _calc_remember_token($user_token) {
         $ip = SETTINGS_REMEMBER_LOGIN_USE_IP ? $_SERVER['REMOTE_ADDR'] : '';
         $user_agent = SETTINGS_REMEMBER_LOGIN_USE_USER_AGENT ? $_SERVER['HTTP_USER_AGENT'] : '';
-        return hash('sha512', SECURE_SALT . $_SERVER['HTTP_ACCEPT_LANGUAGE']. $cookie_token . $user_agent . $ip);
+        return create_db_token($user_token, $_SERVER['HTTP_ACCEPT_LANGUAGE']. $user_agent . $ip);
     }
 
-    function addToken($password) {
-        $cookie_token = hash('sha512', uidmore() . SECURE_SALT . $this->_user_id . $this->_crypt_password($password) . $_SERVER['REMOTE_ADDR'] . mt_rand() . SECURE_SALT . mt_rand());
-        $db_token = $this->_calc_db_token($cookie_token);
-        $token_uid = uidmore();
+    function addRememberToken($password) {
+        $user_token = create_user_token($this->_crypt_password($password),  $_SERVER['REMOTE_ADDR']);
+        $db_token = $this->_calc_remember_token($user_token);
+
         $res = $this->_db->executePreparedQuery(
-            'INSERT INTO tbl_user_token (user_id, db_token, last_login) VALUES (?, ?, NOW());',
-            [$this->_user_id, $db_token.$token_uid]
+            'INSERT INTO tbl_user_remember (user_id, db_token, insert_timestamp) VALUES (?, ?, NOW());',
+            [$this->_user_id, $db_token]
         );
-        return [
-            'token' => $cookie_token, 
-            'token_uid' => $token_uid
-        ];
+        return $user_token;
     }
 
-    function removeToken($cookie_token, $token_uid) {
-        if (!preg_match('#^[0-9a-f]+$#', $cookie_token . $token_uid)) {
-            return;
-        }
-        $db_token = $this->_calc_db_token($cookie_token);
+    function removeRememberToken($user_token) {
+        $db_token = $this->_calc_remember_token($user_token);
         $res = $this->_db->executePreparedQuery(
-            'DELETE FROM tbl_user_token WHERE db_token = ?;',
-            [$db_token.$token_uid]
+            'DELETE FROM tbl_user_remember WHERE db_token = ?;',
+            [$db_token]
         );
     }
 
-    function loginToken($cookie_token, $token_uid) {
-        if (!preg_match('#^[0-9a-f]+$#', $cookie_token .$token_uid)) {
-            return;
-        }
-        $db_token = $this->_calc_db_token($cookie_token);
+    function loginRememberToken($user_token) {
+        $db_token = $this->_calc_remember_token($user_token);
         $res = $this->_db->executePreparedQuery(
-            'SELECT * FROM tbl_user WHERE user_id IN (SELECT user_id FROM tbl_user_token WHERE db_token = ?);',
-            [$db_token.$token_uid]);
+            'SELECT * FROM tbl_user WHERE user_id IN (SELECT user_id FROM tbl_user_remember WHERE db_token = ? AND insert_timestamp > NOW() - INTERVAL ? day);',
+            [$db_token, SETTINGS_REMEMBER_LOGIN_EXPIRE]);
         if ($res) {
             $data = $this->_db->fetchAssoc();
             if ($data) {
