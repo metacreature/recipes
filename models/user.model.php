@@ -107,6 +107,19 @@ class Model_User extends Model_Base{
     }
 
     function login($email, $password) {
+
+        $cnt_bruteforce = 0;
+        $res = $this->_db->executePreparedQuery(
+            'SELECT count(*) as cnt FROM tbl_user_login_bruteforce WHERE email = ? AND insert_timestamp > NOW() - INTERVAL ? MINUTE;',
+            [$email, SETTINGS_LOGIN_BRUTEFORCE_EXPIRE * 60]);
+        if ($res) {
+            $data = $this->_db->fetchAssoc();
+            $cnt_bruteforce = $data['cnt'];
+            if ($cnt_bruteforce >= SETTINGS_LOGIN_BRUTEFORCE_CNT) {
+                return false;
+            }
+        }
+
         $res = $this->_db->executePreparedQuery(
             'SELECT * FROM tbl_user WHERE email = ? AND password = ?;',
             [$email, $this->_crypt_password($password)]);
@@ -114,8 +127,21 @@ class Model_User extends Model_Base{
             $data = $this->_db->fetchAssoc();
             if ($data) {
                 $this->setUserId($data['user_id']);
+                
+                $this->_db->executePreparedQuery(
+                    'DELETE FROM tbl_user_login_bruteforce WHERE email = ?;',
+                    [$email]);
+                    
                 return $data;
             }
+        }
+
+        $this->_db->executePreparedQuery(
+            'INSERT INTO tbl_user_login_bruteforce SET email = ?, insert_timestamp = NOW();',
+            [$email]);
+        
+        if ($cnt_bruteforce + 1 >= SETTINGS_LOGIN_BRUTEFORCE_CNT) {
+            return false;
         }
     }
 
@@ -133,21 +159,43 @@ class Model_User extends Model_Base{
         if ($res) {
             $data = $this->_db->fetchAssoc();
             if ($data) {
-                return $data;
+
+                $res = $this->_db->executePreparedQuery(
+                    'SELECT count(*) as cnt FROM tbl_user_forgotten WHERE user_id = ? AND insert_timestamp > NOW() - INTERVAL ? MINUTE;',
+                    [$data['user_id'], SETTINGS_FORGOTTEN_PASSWORD_EXPIRE]);
+                $data2 = $this->_db->fetchAssoc();
+                if ($data2['cnt'] >= 1) {
+                    return false;
+                }
+                $user_token = create_user_token($data['password'],  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
+                $db_token = create_db_token($user_token, $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
+                $res = $this->_db->executePreparedQuery(
+                    'INSERT INTO tbl_user_forgotten (user_id, db_token, insert_timestamp) VALUES (?, ?, NOW());',
+                    [$data['user_id'], $db_token]
+                );
+                return array_merge($data, ['user_token'  => $user_token]);
             }
         }
     }
 
-    function forgotten_change($email, $password) {
+    function forgotten_change($user_token, $password) {
+        $db_token = create_db_token($user_token, $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
         $res = $this->_db->executePreparedQuery(
             'UPDATE tbl_user SET 
                 password = ?,
                 last_edited = NOW(),
                 cnt_update = cnt_update + 1
-            WHERE user_id = ? AND email = ?;',
-            [$this->_crypt_password($password), $this->_user_id, $email]);
+            WHERE user_id IN (SELECT user_id FROM tbl_user_forgotten WHERE db_token = ? AND insert_timestamp > NOW() - INTERVAL ? MINUTE);',
+            [$this->_crypt_password($password), $db_token, SETTINGS_FORGOTTEN_PASSWORD_EXPIRE]);
         if ($res) {
             if ($this->_db->getAffectedRows() == 1) {
+                $this->_db->executePreparedQuery(
+                    'DELETE FROM tbl_user_login_bruteforce WHERE email IN
+                    (SELECT email FROM tbl_user WHERE user_id IN (SELECT user_id FROM tbl_user_forgotten WHERE db_token = ?));',
+                    [$db_token]);
+                $this->_db->executePreparedQuery(
+                    'DELETE FROM tbl_user_forgotten WHERE db_token = ?;',
+                    [$db_token]);
                 return true;
             }
         }

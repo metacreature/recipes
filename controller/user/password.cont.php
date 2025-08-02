@@ -37,10 +37,6 @@ class Controller_User_Password extends Controller_Base
         parent::__construct($db);
     }
 
-    protected function _gen_key($user_id, $email, $timestamp) {
-        return hash('sha512', $user_id . '_' . SECURE_SALT . $email . '_' . $timestamp . SECURE_SALT . $email);
-    }
-
     protected function _get_forgotten_form() {
         $form = new FW_Ajax_Form('forgotten_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
@@ -51,10 +47,7 @@ class Controller_User_Password extends Controller_Base
     protected function _get_change_form() {
         $form = new FW_Ajax_Form('password_change_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
-        $form->addFormField('Hidden', 'user_id', false, '', true);
-        $form->addFormField('Hidden', 'email', false, '', true);
-        $form->addFormField('Hidden', 'ts', false, '', true);
-        $form->addFormField('Hidden', 's', false, '', true);
+        $form->addFormField('Hidden', 'token', false, '', true);
         $this->_add_create_password_fields($form);
         return $form;
     }
@@ -68,9 +61,7 @@ class Controller_User_Password extends Controller_Base
     function change_submit() {
         $form = $this->_get_change_form();
         $form->resolveRequest();
-        if ($form->getValue('ts') < time() - 1800 || $form->getValue('ts') >= time()) {
-            return $form->getFormError(LANG_PASSWORD_CHANGE_ERROR_TIME);
-        }
+
         if (!$this->_validate_create_password_form($form)) {
             return $form->getFormError(LANG_FORM_INVALID);
         }
@@ -78,13 +69,12 @@ class Controller_User_Password extends Controller_Base
         sleep(rand(1, 5));
         usleep(rand(0, 900000));
 
-        if ($form->getValue('s') == $this->_gen_key($form->getValue('user_id'), $form->getValue('email'), $form->getValue('ts'))) {
-            $user_obj = new Model_User($this->_db, $form->getValue('user_id'));
-            $user_obj->forgotten_change(
-                $form->getValue('email'), 
-                $form->getValue('password'));
+        $user_obj = new Model_User($this->_db, 0);
+        $res = $user_obj->forgotten_change($form->getValue('token'), $form->getValue('password'));
+        if($res) {
+            return $form->getFormSuccess(LANG_PASSWORD_CHANGE_SUCCESS);
         }
-        return $form->getFormSuccess(LANG_PASSWORD_CHANGE_SUCCESS);
+        return $form->getFormError(LANG_PASSWORD_CHANGE_ERROR_TIME);
     }
 
 
@@ -106,10 +96,7 @@ class Controller_User_Password extends Controller_Base
             $data = $user_obj->forgotten($form->getValue('email'));
             if ($data) {
 
-                $timestamp = time();
-                $change_url = WEB_URL . '/user/password/change';
-                $change_url .= '?user_id=' . $data['user_id'] . '&email=' . rawurlencode($data['email']);
-                $change_url .= '&ts=' . $timestamp . '&s=' . $this->_gen_key($data['user_id'], $data['email'], $timestamp);
+                $change_url = WEB_URL . '/user/password/change?token=' .$data['user_token'];         
                 $user_name = $data['user_name'];
 
                 require_once (DOCUMENT_ROOT . '/emails/password.request.email.'.SELECTED_LANG.'.html');

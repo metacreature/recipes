@@ -45,10 +45,14 @@ foreach($db->getAssocResults() as $row) {
 $recipe_obj->clean_refs();
 
 $db->executePreparedQuery('DELETE FROM tbl_user_remember WHERE insert_timestamp < NOW() - INTERVAL ? day', [SETTINGS_REMEMBER_LOGIN_EXPIRE]);
+$db->executePreparedQuery('DELETE FROM tbl_user_forgotten WHERE insert_timestamp < NOW() - INTERVAL ? MINUTE', [SETTINGS_FORGOTTEN_PASSWORD_EXPIRE]);
+$db->executePreparedQuery('DELETE FROM tbl_user_login_bruteforce WHERE insert_timestamp < NOW() - INTERVAL ? MINUTE', [SETTINGS_LOGIN_BRUTEFORCE_EXPIRE * 60]);
 
 $db->optimizeTables([
     'tbl_user',
     'tbl_user_remember',
+    'tbl_user_forgotten',
+    'tbl_user_login_bruteforce',
     'tbl_category',
     'tbl_tag',
     'tbl_ingredients',

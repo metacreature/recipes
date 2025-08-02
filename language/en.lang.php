@@ -80,6 +80,7 @@ define('LANG_LOGIN_REMEMBER_LOGIN', 'stay logged in');
 define('LANG_LOGIN_FORGOTTEN', 'forgotten password');
 define('LANG_LOGIN_FAIL', 'Login failed!');
 define('LANG_LOGIN_SUCCESS', 'Login was successful!');
+define('LANG_LOGIN_BRUTE_FORCE', 'You have tried to login for  '.SETTINGS_LOGIN_BRUTEFORCE_CNT.' times. You are now blocked for '.SETTINGS_LOGIN_BRUTEFORCE_EXPIRE.' hour(s)!');
 
 
 define('LANG_RECIPE_LIST_FILTER_USER', 'User');

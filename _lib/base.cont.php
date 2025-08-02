@@ -34,10 +34,12 @@ class Controller_Base
     function __construct($db) {
         $this->_db = $db;
 
+        @session_name('session');
         @session_start();
         if (empty($_SESSION['session_started'])) {
             @session_destroy();
             $id = create_user_token(session_create_id(), $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'] );
+            @session_name('session');
             @session_id($id);
             @session_start();
         }

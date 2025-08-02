@@ -6,7 +6,7 @@ RewriteEngine on
 ErrorDocument 403 /crawler.html
 
 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "https://rezepte.metacreature.com"
+    Header set Access-Control-Allow-Origin "https://recipes.metacreature.com"
     Header unset Server
 </IfModule>
 

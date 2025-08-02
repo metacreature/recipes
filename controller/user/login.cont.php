@@ -64,6 +64,8 @@ class Controller_User_Login extends Controller_Base
                     setcookie("remember_token", $user_token, time() + SETTINGS_REMEMBER_LOGIN_EXPIRE * 86400, "/", WEB_DOMAIN);
                 }
                 return $form->getFormSuccess(LANG_LOGIN_SUCCESS);
+            } else if ($data === false)  {
+                return $form->getFormError(LANG_LOGIN_BRUTE_FORCE);
             }
         }
         return $form->getFormError(LANG_LOGIN_FAIL);
