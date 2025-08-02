@@ -45,6 +45,7 @@
     echo $form->printLine('email', LANG_FIELD_USER_EMAIL);
     echo $form->printLine('password', LANG_FIELD_USER_PASSWORD);
     echo $form->printLine('password_confirmation', LANG_FIELD_USER_REPEAT_PASSWORD);
+    echo $form->printButtonLine(LANG_GENEERATE_PASSWORD_BUTTON, 'generate_password');
     echo $form->printSubmitLine(LANG_REGISTER_SAVE, 'save', '/user/register/save');
     echo $form->printEndTag();
     ?>
@@ -59,6 +60,10 @@
                 top.location.replace('/user/login');
             }
         }
+    });
+
+    $('.generate_password').click(function() {
+        clickGenPassword('<?php echo LANG_GENEERATE_PASSWORD_POPUP_TITLE; ?>', '<?php echo LANG_GENEERATE_PASSWORD_POPUP_TEXT; ?>', '<?php echo LANG_GENEERATE_PASSWORD_POPUP_BUTTON; ?>');
     });
 </script>
 

@@ -43,6 +43,10 @@ define('LANG_FIELD_USER_PASSWORD_ERROR', 'Password must contain at minimum one u
 define('LANG_FIELD_USER_REPEAT_PASSWORD', 'Repeat password');
 define('LANG_FIELD_USER_REPEAT_PASSWORD_ERROR', 'Passwords don\'t match!');
 define('LANG_FIELD_USER_ACTUAL_PASSWORD', 'Actual password');
+define('LANG_GENEERATE_PASSWORD_BUTTON', 'Generate password');
+define('LANG_GENEERATE_PASSWORD_POPUP_TITLE', 'Generate password');
+define('LANG_GENEERATE_PASSWORD_POPUP_TEXT', 'The password was copied to your clipboard!');
+define('LANG_GENEERATE_PASSWORD_POPUP_BUTTON', 'OK');
 
 define('LANG_NAVIGATION_LOGIN', 'login');
 define('LANG_NAVIGATION_LOGOUT', 'logout');

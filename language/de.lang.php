@@ -43,6 +43,11 @@ define('LANG_FIELD_USER_PASSWORD_ERROR', 'Passwort mu√ü mindestens je einen Gro√
 define('LANG_FIELD_USER_REPEAT_PASSWORD', 'Passwort wiederholen');
 define('LANG_FIELD_USER_REPEAT_PASSWORD_ERROR', 'Passwort nicht identisch!');
 define('LANG_FIELD_USER_ACTUAL_PASSWORD', 'Aktuelles Passwort');
+define('LANG_GENEERATE_PASSWORD_BUTTON', 'Passwort generieren');
+define('LANG_GENEERATE_PASSWORD_POPUP_TITLE', 'Passwort generieren');
+define('LANG_GENEERATE_PASSWORD_POPUP_TEXT', 'Das Passwort wurde in die Zwischenablage kopiert!');
+define('LANG_GENEERATE_PASSWORD_POPUP_BUTTON', 'OK');
+
 
 define('LANG_NAVIGATION_LOGIN', 'login');
 define('LANG_NAVIGATION_LOGOUT', 'logout');

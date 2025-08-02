@@ -6,7 +6,7 @@ CREATE TABLE tbl_user (
   last_edited  DATETIME NOT NULL,
   cnt_update INT UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (user_id),
-  UNIQUE KEY email (email)
+  UNIQUE KEY LOWER(email)
 );
 
 CREATE TABLE tbl_user_remember(

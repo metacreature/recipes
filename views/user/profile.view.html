@@ -71,6 +71,7 @@
     echo $password_form->printLine('actual_password', LANG_FIELD_USER_ACTUAL_PASSWORD);
     echo $password_form->printLine('password', LANG_FIELD_USER_PASSWORD);
     echo $password_form->printLine('password_confirmation', LANG_FIELD_USER_REPEAT_PASSWORD);
+    echo $password_form->printButtonLine(LANG_GENEERATE_PASSWORD_BUTTON, 'generate_password');
     echo $password_form->printSubmitLine(LANG_PROFILE_SAVE, 'save', '/user/profile/update_password');
     echo $password_form->printEndTag();
     ?>
@@ -85,6 +86,9 @@
         }
     });
     $('.email_form, .password_form').ajax_form({'default_error': form_default_error});
+    $('.generate_password').click(function() {
+        clickGenPassword('<?php echo LANG_GENEERATE_PASSWORD_POPUP_TITLE; ?>', '<?php echo LANG_GENEERATE_PASSWORD_POPUP_TEXT; ?>', '<?php echo LANG_GENEERATE_PASSWORD_POPUP_BUTTON; ?>');
+    });
 </script>
 
 <?php require_once (DOCUMENT_ROOT . '/views/includes/footer.view.html'); ?>

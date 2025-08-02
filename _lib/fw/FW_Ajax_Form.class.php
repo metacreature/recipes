@@ -273,6 +273,21 @@ class FW_Ajax_Form
         return '<a href="#" '.($sEndpoint ? 'data-endpoint="' .$sEndpoint  . '"' : '').' class="btn btn-ajax-submit' . ($sClassName ? ' ' . $sClassName : ''). '"><span>' . $sDisplayValue . '</span></a>';
     }
 
+    function printButtonLine($sDisplayValue, $sClassName = null)
+    {
+        return '
+            <div class="button-line form-group row"><label class="control-label col-md-'.$this->_col_md_label.' hidden-xs hidden-sm">&nbsp;</label>' .
+            '<div class="button-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">' .
+                $this->printButton($sDisplayValue, $sClassName) . 
+                '</div><div class="clear"></div></div>';
+        
+    }
+
+    function printButton($sDisplayValue, $sClassName = null)
+    {
+        return '<a href="#" class="btn' . ($sClassName ? ' ' . $sClassName : ''). '"><span>' . $sDisplayValue . '</span></a>';
+    }
+
     function printLabel($sFieldName, $sLabel = null)
     {
         if (! array_key_exists($sFieldName, $this->_arrFormFields)) {
@@ -315,9 +330,9 @@ class FW_Ajax_Form
 
     function printLine($sFieldName, $sLabel = null, $arrFieldAttributes = null, $sLineClassNames = '')
     {
-        if (! array_key_exists($sFieldName, $this->_arrFormFields)) {
+        if (! $this->getField($sFieldName) || $this->getField($sFieldName)->getType() == 'Hidden') {
             return null;
-        }
+        } 
 
         $sClassName = 'field-line form-group row ';
         $sClassName .= $this->getLineClassName($sFieldName);

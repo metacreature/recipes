@@ -45,7 +45,7 @@ class Controller_Base
         }
         $_SESSION['session_started'] = true;
 
-        if (empty($_SESSION['login']) && !empty($_COOKIE['remember_token'])) {
+        if (SETTINGS_REMEMBER_LOGIN_ENABLED && empty($_SESSION['login']) && !empty($_COOKIE['remember_token'])) {
             $user_obj = new Model_User($this->_db, Controller_Base::get_user_id());
             $data = $user_obj->loginRememberToken($_COOKIE['remember_token']);
             if ($data) {
@@ -90,10 +90,12 @@ class Controller_Base
     }
 
     protected function _add_create_password_fields($form) {
-        $form->addFormField('Password', 'password', false, '', true)
+        $field_type = SETTINGS_ALLOW_USER_DEFINED_PASSWORDS ? 'Password' : 'Hidden';
+
+        $form->addFormField($field_type, 'password', false, '', true)
             ->setMinLength(8)
             ->setFieldErrors(['external' => LANG_FIELD_USER_PASSWORD_ERROR]);
-        $form->addFormField('Password', 'password_confirmation', false, '', true)
+        $form->addFormField($field_type, 'password_confirmation', false, '', true)
             ->setFieldErrors(['external' => LANG_FIELD_USER_REPEAT_PASSWORD_ERROR]);
     }
 

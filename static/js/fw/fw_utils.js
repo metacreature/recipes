@@ -78,7 +78,7 @@ var randInt = function (min, max)
 {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min +1)) + min; 
+  return Math.round(Math.random() * (max - min)) + min; 
 }
 
 function range(size, startAt) {
@@ -196,4 +196,73 @@ var html_special_chars = function (text) {
 
 var nl2br = function(text) {
 	return text.replace(new RegExp("\n",'g'), '<br>');
+}
+
+function shuffleString(str) {
+	return [...str].sort(()=>Math.random()-.5).join('');
+}
+
+function generatePassword(length) {
+	let charset_lowercase = 'abcdefghijklmnopqrstuvwxyz';
+	let charset_uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	let charset_number = '01234567890123456789';
+	let charset_special = '!"<>-_.,;:#*+~|§$%&/()=?';
+	let charset = shuffleString(shuffleString(charset_lowercase + charset_uppercase + charset_special + charset_number));
+
+	let password = '';
+
+	password += charset_lowercase.charAt(randInt(0, charset_lowercase.length -1));
+	password += charset_uppercase.charAt(randInt(0, charset_uppercase.length -1));
+	password += charset_number.charAt(randInt(0, charset_number.length -1));
+	password += charset_special.charAt(randInt(0, charset_special.length -1));
+
+    while(password.length < length) {
+		password += charset.charAt(randInt(0, charset.length -1));
+    }
+
+    return shuffleString(shuffleString(password));
+}
+
+function fallbackCopyTextToClipboard(text) {
+  
+}
+async function copyTextToClipboard(text) {
+	try {
+		let res = await navigator.clipboard.writeText(text).then(function() {
+			console.log('Async: Copying text to clipboard was successful!');
+			return true;
+		}, function(err) {
+			console.error('Async: Could not copy text to clipboard');
+			return false;
+		});
+		if (res) {
+			return true;
+		}
+	} catch (err) {}
+
+	var textArea = document.createElement("textarea");
+	textArea.value = text;
+
+	// Avoid scrolling to bottom
+	textArea.style.top = "-1000";
+	textArea.style.left = "-1000";
+	textArea.style.width = "100";
+	textArea.style.height = "100";
+	textArea.style.position = "fixed";
+
+	document.body.appendChild(textArea);
+	textArea.focus();
+	textArea.select();
+
+	try {
+		if(document.execCommand('copy')) {
+			document.body.removeChild(textArea);
+			console.log('Copying text to clipboard was successful!');
+			return true;
+		}
+	} catch (err) {}
+
+	document.body.removeChild(textArea);
+	console.error('Fallback: Could not copy text to clipboard');
+	return false;
 }

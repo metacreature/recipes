@@ -28,7 +28,9 @@ define('TEST_SERVER', strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
 
 // settings
 define('SETTINGS_ALLOW_REGISTER', true);
+define('SETTINGS_ALLOW_USER_DEFINED_PASSWORDS', true);
 define('SETTINGS_LIST_REQUIRES_LOGIN', false);
+define('SETTINGS_REMEMBER_LOGIN_ENABLED', false);
 define('SETTINGS_REMEMBER_LOGIN_USE_IP', false);
 define('SETTINGS_REMEMBER_LOGIN_USE_USER_AGENT', false);
 define('SETTINGS_REMEMBER_LOGIN_EXPIRE', 365);

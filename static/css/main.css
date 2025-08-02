@@ -723,6 +723,12 @@ body{
 	padding-top: 5px;
 }
 
+.generate_password{
+	margin-top: -1px !important; 
+	background-color: #9cce92;
+	border: 1px solid #9cce92;
+}
+
 
 /* recipe-list filter */
 #recipe_list_filter{

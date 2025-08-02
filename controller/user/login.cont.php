@@ -59,7 +59,7 @@ class Controller_User_Login extends Controller_Base
                 $_SESSION['login'] = true;
                 $_SESSION['user_id'] = $data['user_id'];
                 $_SESSION['user_name'] = $data['user_name'];
-                if ($form->getValue('remember_login')) {
+                if (SETTINGS_REMEMBER_LOGIN_ENABLED && $form->getValue('remember_login')) {
                     $user_token = $user_obj->addRememberToken($form->getValue('password'));
                     setcookie("remember_token", $user_token, time() + SETTINGS_REMEMBER_LOGIN_EXPIRE * 86400, "/", WEB_DOMAIN);
                 }
