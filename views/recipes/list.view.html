@@ -43,8 +43,8 @@
     echo '  <div class="clear"></div>';
     echo '</div>';
     echo '<div class="filter_button_wrapper">';
-    echo    $form->printSubmit('<img src="/static/images/icons/search-sharp.svg"  alt="">', 'search', '/recipes/list/list');
-    echo '  <a href="#" class="btn sort"><span><img src="/static/images/icons/swap-vertical-sharp.svg" alt=""></span></a>';
+    echo    $form->printSubmit('<img src="/static/images/icons/search-sharp.svg"  alt="'.LANG_RECIPE_LIST_BUTTON_SEARCH.'">', 'search', '/recipes/list/list');
+    echo '  <a href="#" class="btn sort"><span><img src="/static/images/icons/swap-vertical-sharp.svg" alt="'.LANG_RECIPE_LIST_BUTTON_SORT.'"></span></a>';
     echo '  <div id="sort_popup">';
     echo '      <a href="">' . LANG_RECIPE_LIST_SORT_NAME . '</a>';
     echo '      <a href="1">' . LANG_RECIPE_LIST_SORT_COSTS . ' ˄</a>';
@@ -94,6 +94,7 @@
         width: '100%'
     });
     $('input[name="recipe_name"]').attr('placeholder', "<?php echo LANG_RECIPE_LIST_FILTER_NAME; ?>");
+    
 
     var LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE = "<?php echo LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE; ?>";
     var LANG_RECIPE_LIST_DELETE_CONFIRM_TITLE = "<?php echo LANG_RECIPE_LIST_DELETE_CONFIRM_TITLE; ?>";

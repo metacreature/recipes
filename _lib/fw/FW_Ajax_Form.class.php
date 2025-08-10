@@ -299,11 +299,15 @@ class FW_Ajax_Form
         $sClassName .= $this->getLineClassName($sFieldName);
         $sClassName .= $sLineClassNames ? ' ' . $sLineClassNames : '';
 
-        $sLabel .= $sLabel && $oField->getMandatory() ? ' *' : '';
+        if ($sLabel) {
+            $sLabel .= $sLabel && $oField->getMandatory() ? ' *' : '';
+        } else {
+            $sLabel = '&nbsp;';
+        }
 
         return '
         <div class="' . mb_trim($sClassName) . '">
-            <label class="col-xs-12 col-md-'.$this->_col_md_label.' control-label" for="' . $sFieldName . '">' . $sLabel . '</label>
+            <label class="col-xs-12 col-md-'.$this->_col_md_label.' control-label" for="' . $sFieldName . '" aria-label-for="' . $sFieldName . '">' . $sLabel . '</label>
             <div class="field-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">
                 ' . $this->printInput($sFieldName, $arrFieldAttributes) . '
             </div>
@@ -329,7 +333,7 @@ class FW_Ajax_Form
             <div class="control-label col-md-' . $this->_col_md_label . ' hidden-xs hidden-sm">&nbsp;</div>
             <div class="field-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">
                 ' . $this->printInput($sFieldName, $arrFieldAttributes) . '
-                <label class="control-label" for="' . $sFieldName . '">' . $sLabel . '</label>
+                <label class="control-label" for="' . $sFieldName . '" aria-label-for="' . $sFieldName . '">' . $sLabel . '</label>
             </div>
             <div class="clear"></div>
         </div>';

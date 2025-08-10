@@ -107,7 +107,7 @@ class Model_Recipe extends Model_Base{
     }
 
     protected function _create_in_query($field_name, $values) {
-        if (!empty($values) && is_array($values)) {
+        if (is_array($values) && count($values) > 0) {
             return ' AND ' . $field_name . ' IN (' . implode(',', array_fill(0, count($values), '?')) . ') ';
         }
         return null;
@@ -125,14 +125,14 @@ class Model_Recipe extends Model_Base{
     }
 
     protected function _get_query_value($values) {
-        if (!empty($values) ) {
-            if(is_array($values)) {
-                return $values;
-            } else {
-                return [$values];
-            }
+        if (is_null($values)){
+            return [];
         }
-        return [];
+        if(is_array($values)) {
+            return $values;
+        } else {
+            return [$values];
+        }
     }
     
     function list($user_ids, $category_ids, $tag_ids, $ingredients_ids, $name, $sort, $limit = null, $offset = null) {
@@ -140,7 +140,7 @@ class Model_Recipe extends Model_Base{
             . $this->_create_in_query('category_id', $category_ids)
             . $this->_create_and_query('tag_id', 'tbl_recipe_tag', $tag_ids)
             . $this->_create_and_query('ingredients_id', 'tbl_recipe_ingredients', $ingredients_ids)
-            . (!empty($name) && strlen($name) > 1 ? " AND recipe_name LIKE CONCAT ('%', ?, '%') " : '');
+            . (!is_null($name) && strlen($name) >= 1 ? " AND recipe_name LIKE CONCAT ('%', ?, '%') " : '');
 
         $query_values = array_merge(
             [$this->_user_id],

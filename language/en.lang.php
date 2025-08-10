@@ -25,7 +25,8 @@
 */
  
 
-define('LANG_PAGE_TITLE', 'Rezepte');
+define('LANG_PAGE_TITLE', 'Metacreature\'s Reciepes');
+define('LANG_NAVIGATION_HOME', 'Home');
 define('LANG_FORMFIELD_ERRORS', array(
     'pattern' => 'Invalid value!',
     'external' => 'Invalid value!',
@@ -95,6 +96,8 @@ define('LANG_RECIPE_LIST_FILTER_TAG', 'Tag');
 define('LANG_RECIPE_LIST_FILTER_INGREDIENTS', 'Ingredients');
 define('LANG_RECIPE_LIST_FILTER_NAME', 'Name');
 define('LANG_RECIPE_LIST_FILTER_ERROR', 'Something went wrong!');
+define('LANG_RECIPE_LIST_BUTTON_SEARCH', 'Search');
+define('LANG_RECIPE_LIST_BUTTON_SORT', 'Sort');
 define('LANG_RECIPE_LIST_SORT_NAME', 'Name');
 define('LANG_RECIPE_LIST_SORT_COSTS', 'Costs');
 define('LANG_RECIPE_LIST_SORT_DURATION', 'Working time');

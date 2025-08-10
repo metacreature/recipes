@@ -60,9 +60,17 @@
         echo                '<div class="clear"></div>';
         echo            '</div>';
         echo            '<div class="ingredients_inputs">';
-        echo                $form->printInput('ingredients_quantity_'.$cnt, ['placeholder' => LANG_RECIPE_EDITOR_INGREDIENTS_QUANTITY]);
-        echo                $form->printInput('ingredients_unit_'.$cnt, ['data-type' => 'ingredients_unit', 'placeholder' => LANG_RECIPE_EDITOR_INGREDIENTS_UNIT]);
-        echo                $form->printInput('ingredients_name_'.$cnt, ['data-type' => 'ingredients_name', 'placeholder' => LANG_RECIPE_EDITOR_INGREDIENTS_NAME]);
+        echo                $form->printInput('ingredients_quantity_'.$cnt, [
+                                    'placeholder' => LANG_RECIPE_EDITOR_INGREDIENTS_QUANTITY, 
+                                    'aria-label' => LANG_RECIPE_EDITOR_INGREDIENTS_QUANTITY]);
+        echo                $form->printInput('ingredients_unit_'.$cnt, [
+                                    'data-type' => 'ingredients_unit', 
+                                    'placeholder' => LANG_RECIPE_EDITOR_INGREDIENTS_UNIT, 
+                                    'aria-label' => LANG_RECIPE_EDITOR_INGREDIENTS_UNIT]);
+        echo                $form->printInput('ingredients_name_'.$cnt, [
+                                    'data-type' => 'ingredients_name', 
+                                    'placeholder' => LANG_RECIPE_EDITOR_INGREDIENTS_NAME, 
+                                    'aria-label' => LANG_RECIPE_EDITOR_INGREDIENTS_NAME]);
         echo                '<div class="clear"></div>';
         echo            '</div>';
         echo            '<a class="btn btn_remove">-</a>';

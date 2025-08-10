@@ -37,7 +37,7 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
     }
     
     if (!$('#focushelper').length) {
-        $('body').prepend('<a href="javascript:;" id="focushelper" tabindex="-1"></a>');
+        $('body').prepend('<a href="javascript:;" id="focushelper" title="focushelper"></a>');
     }
 
     var active_ajax = null;

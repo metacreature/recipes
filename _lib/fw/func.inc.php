@@ -128,6 +128,9 @@ function mb_trim(&$sString)
 
 function xssProtect(&$sString)
 {
+    if (is_null($sString)) {
+        return '';
+    }
     return htmlspecialchars($sString, ENT_COMPAT, 'UTF-8');
 }
 

@@ -25,7 +25,9 @@
 */
  
 
-define('LANG_PAGE_TITLE', 'Rezepte');
+define('LANG_PAGE_TITLE', 'Metacreature\'s Rezepte');
+define('LANG_NAVIGATION_HOME', 'Home');
+
 define('LANG_FORMFIELD_ERRORS', array(
     'pattern' => 'Eingabe ungültig!',
     'external' => 'Eingabe ungültig!',
@@ -95,6 +97,8 @@ define('LANG_RECIPE_LIST_FILTER_TAG', 'Tag');
 define('LANG_RECIPE_LIST_FILTER_INGREDIENTS', 'Zutaten');
 define('LANG_RECIPE_LIST_FILTER_NAME', 'Name');
 define('LANG_RECIPE_LIST_FILTER_ERROR', 'Etwas ist schiefgelaufen!');
+define('LANG_RECIPE_LIST_BUTTON_SEARCH', 'Suchen');
+define('LANG_RECIPE_LIST_BUTTON_SORT', 'Sortieren');
 define('LANG_RECIPE_LIST_SORT_NAME', 'Name');
 define('LANG_RECIPE_LIST_SORT_COSTS', 'Kosten');
 define('LANG_RECIPE_LIST_SORT_DURATION', 'Arbeitszeit');
