@@ -282,10 +282,6 @@ class Model_Recipe extends Model_Base{
 
     function save($recipe_id, $public, $category_id, $recipe_name, $persons, $costs, $duration, $total_duration, $original_text, $tag_list, $ingredients_list, $step_list, $del_image, $image_upload) {
         
-        $costs = $costs == '' ? null : str_replace(',', '.', $costs);
-        $duration = $duration == '' ? null : $duration;
-        $total_duration = $total_duration == '' ? null :  $total_duration;
-
         $this->_db->begin();
         try{
             if ($recipe_id) {
@@ -400,7 +396,7 @@ class Model_Recipe extends Model_Base{
             $cnt++;
             $values[] = $recipe_id;
             $values[] = $cnt;
-            $values[] = $row['quantity'] == '' ? null : str_replace(',', '.', $row['quantity']);
+            $values[] = $row['quantity'];
             $values[] = $row['is_alternative'];
             $values[] = $row['ingredients_name'];
             $values[] = $row['unit_name'];

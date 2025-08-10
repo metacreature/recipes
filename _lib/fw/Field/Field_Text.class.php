@@ -35,39 +35,9 @@ class Field_Text extends Field_Base
 
     protected $_sPlaceholder;
 
-    protected $_iMinLength = null;
-
-    protected $_iMaxLength = null;
-
     function __construct($sName)
     {
         parent::__construct($sName);
-        $this->setFieldErrors(array(
-            'too_long' => 'input too long <br>(max {LENGTH}, actual {ACTUAL_LENGTH})',
-            'too_short' => 'input too short <br>(min {LENGTH}), actual {ACTUAL_LENGTH})'
-        ));
-    }
-
-    function getMinLength()
-    {
-        return $this->_iMinLength;
-    }
-
-    function setMinLength($iMinLength)
-    {
-        $this->_iMinLength = $iMinLength;
-        return $this;
-    }
-
-    function getMaxLength()
-    {
-        return $this->_iMaxLength;
-    }
-
-    function setMaxLength($iMaxLength)
-    {
-        $this->_iMaxLength = $iMaxLength;
-        return $this;
     }
 
     function getPlaceholder()
@@ -79,39 +49,6 @@ class Field_Text extends Field_Base
     {
         $this->_sPlaceholder = $sPlaceholder;
         return $this;
-    }
-
-    protected function _validateLength()
-    {
-        if ($this->_iMinLength && $this->_iMinLength > mb_strlen($this->_mValue)) {
-            $this->_bValid = false;
-            $this->_sErrorCode = 'too_short';
-            if (! $this->_sError) {
-                $this->_sError = str_replace(array(
-                    '{LENGTH}',
-                    '{ACTUAL_LENGTH}'
-                ), array(
-                    $this->_iMinLength,
-                    mb_strlen($this->_mValue)
-                ), $this->_arrFieldErrors['too_short']);
-            }
-            return false;
-        }
-        if ($this->_iMaxLength && $this->_iMaxLength < mb_strlen($this->_mValue)) {
-            $this->_bValid = false;
-            $this->_sErrorCode = 'too_long';
-            if (! $this->_sError) {
-                $this->_sError = str_replace(array(
-                    '{LENGTH}',
-                    '{ACTUAL_LENGTH}'
-                ), array(
-                    $this->_iMaxLength,
-                    mb_strlen($this->_mValue)
-                ), $this->_arrFieldErrors['too_long']);
-            }
-            return false;
-        }
-        return true;
     }
 
     function validate()

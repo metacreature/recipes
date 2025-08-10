@@ -30,7 +30,9 @@ define('LANG_FORMFIELD_ERRORS', array(
     'pattern' => 'Eingabe ungültig!',
     'external' => 'Eingabe ungültig!',
     'too_long' => 'Eingabe zu lang! (max {LENGTH}, aktuell {ACTUAL_LENGTH})',
-    'too_short' => 'Eingabe zu kurz! (min {LENGTH})',
+    'too_short' => 'Eingabe zu kurz! (min {LENGTH}, aktuell {ACTUAL_LENGTH})',
+    'min_number' => 'Wert darf nicht kleiner als {VALUE} sein!',
+    'max_number' => 'Wert darf nicht größer als {VALUE} sein!',
     'mandatory' => 'Eingabe erforderlich!'
 ));
 define('LANG_FORM_INVALID', 'Bitte überprüfen Sie ihre Eingabe!');

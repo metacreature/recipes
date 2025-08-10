@@ -291,6 +291,18 @@ select.form-control {
 	}
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .field-line #home_button,
 .field-line #seperate_page {
 	display: block;

@@ -30,7 +30,9 @@ define('LANG_FORMFIELD_ERRORS', array(
     'pattern' => 'Invalid value!',
     'external' => 'Invalid value!',
     'too_long' => 'Value is too long! (max {LENGTH}, actual {ACTUAL_LENGTH})',
-    'too_short' => 'Value is too short! (min {LENGTH})',
+    'too_short' => 'Value is too short! (min {LENGTH}, actual {ACTUAL_LENGTH})',
+    'min_number' => 'Value may not be smaller than {VALUE}!',
+    'max_number' => 'Value may not be bigger than {VALUE}!',
     'mandatory' => 'Value required!'
 ));
 define('LANG_FORM_INVALID', 'Please evaluate your input!');

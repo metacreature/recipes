@@ -229,7 +229,7 @@ class FW_Ajax_Form
         foreach ($this->_arrFormFields as $oField) {
             if ($oField instanceof Field_Hidden) {
                 $sReturn .= '
-            '.$oField->printInput();
+        '.$oField->printInput();
             } else if ($oField instanceof Field_File) {
                 $sEncType = ' enctype="multipart/form-data" ';
             }

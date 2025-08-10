@@ -61,12 +61,12 @@ class Controller_Recipes_Editor extends Controller_Base
         $form->addField('Text', 'recipe_name', true);
         $form->addField('Text', 'persons', true)
             ->setRegex('#^[1-9][0-9]*$#');
-        $form->addField('Text', 'costs', false)
-			->setRegex('#^(([1-9][0-9]*)|([0-9]+[.,][0-9]+))?$#');
-        $form->addField('Text', 'duration', false)
-            ->setRegex('#^[0-9]+$#');
-        $form->addField('Text', 'total_duration', false)
-            ->setRegex('#^[0-9]+$#');
+        $form->addField('Number', 'costs', false)
+			->setMinValue(1);
+        $form->addField('Integer', 'duration', false)
+			->setMinValue(1);
+        $form->addField('Integer', 'total_duration', false)
+			->setMinValue(1);
         $form->addField('Textarea', 'original_text', false);
         $form->addField('File', 'image', false)
             ->setExtensions('jpg','jpeg','png','webp');
@@ -79,8 +79,8 @@ class Controller_Recipes_Editor extends Controller_Base
         while($cnt < $cnt_ingeredients) {
             $cnt++;
             $form->addField('Checkbox', 'ingredients_is_alternative_'.$cnt, false);
-            $form->addField('Text', 'ingredients_quantity_'.$cnt, false)
-                ->setRegex('#^(([1-9][0-9]*)|([0-9]+[.,][0-9]+))?$#');
+            $form->addField('Number', 'ingredients_quantity_'.$cnt, false)
+			    ->setMinValue(0.01);
             $form->addField('Text', 'ingredients_unit_'.$cnt, false);
             $form->addField('Text', 'ingredients_name_'.$cnt, true);
         }

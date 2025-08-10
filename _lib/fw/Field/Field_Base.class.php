@@ -49,13 +49,19 @@ abstract class Field_Base
     protected $_sErrorCode = '';
 
     protected $_sRegEx = '';
+    
+    protected $_iMinLength = null;
+
+    protected $_iMaxLength = null;
 
     protected $_arrParams = array();
 
     protected $_arrFieldErrors = array(
         'mandatory' => 'input is required',
         'pattern' => 'invalid input',
-        'unknown' => 'unknown Error'
+        'unknown' => 'unknown Error',
+        'too_long' => 'input too long <br>(max {LENGTH}, actual {ACTUAL_LENGTH})',
+        'too_short' => 'input too short <br>(min {LENGTH}), actual {ACTUAL_LENGTH})'
     );
 
     function __construct($sName)
@@ -144,6 +150,27 @@ abstract class Field_Base
         return $this;
     }
     
+    function getMinLength()
+    {
+        return $this->_iMinLength;
+    }
+
+    function setMinLength($iMinLength)
+    {
+        $this->_iMinLength = $iMinLength;
+        return $this;
+    }
+
+    function getMaxLength()
+    {
+        return $this->_iMaxLength;
+    }
+
+    function setMaxLength($iMaxLength)
+    {
+        $this->_iMaxLength = $iMaxLength;
+        return $this;
+    }
     
     function getName()
     {
@@ -158,7 +185,8 @@ abstract class Field_Base
     function setValue($sValue)
     {
         $sValue = (string) $sValue;
-        $this->_mValue = mb_trim($sValue);
+        $sValue = mb_trim($sValue);
+        $this->_mValue = $sValue === '' ? null : $sValue;
         return $this;
     }
 
@@ -272,6 +300,42 @@ abstract class Field_Base
     {
         if ($this->_sRegEx && (string) $this->_mValue !== '' && ! preg_match($this->_sRegEx, (string) $this->_mValue)) {
             $this->setErrorCode('pattern');
+            return false;
+        }
+        return true;
+    }
+
+    protected function _validateLength()
+    {
+        if ((string) $this->_mValue === '') {
+            return true;
+        }
+        if ($this->_iMinLength && $this->_iMinLength > mb_strlen($this->_mValue)) {
+            $this->_bValid = false;
+            $this->_sErrorCode = 'too_short';
+            if (! $this->_sError) {
+                $this->_sError = str_replace(array(
+                    '{LENGTH}',
+                    '{ACTUAL_LENGTH}'
+                ), array(
+                    $this->_iMinLength,
+                    mb_strlen($this->_mValue)
+                ), $this->_arrFieldErrors['too_short']);
+            }
+            return false;
+        }
+        if ($this->_iMaxLength && $this->_iMaxLength < mb_strlen($this->_mValue)) {
+            $this->_bValid = false;
+            $this->_sErrorCode = 'too_long';
+            if (! $this->_sError) {
+                $this->_sError = str_replace(array(
+                    '{LENGTH}',
+                    '{ACTUAL_LENGTH}'
+                ), array(
+                    $this->_iMaxLength,
+                    mb_strlen($this->_mValue)
+                ), $this->_arrFieldErrors['too_long']);
+            }
             return false;
         }
         return true;

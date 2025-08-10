@@ -1,7 +1,7 @@
 <?php
 /*
- File: Field_Hidden.class.php
- Copyright (c) 2014 Clemens K. (https://github.com/metacreature)
+ File: Field_Email.class.php
+ Copyright (c) 2025 Clemens K. (https://github.com/metacreature)
  
  MIT License
  
@@ -24,24 +24,14 @@
  SOFTWARE.
 */
 
-require_once 'Field_Base.class.php';
+require_once 'Field_Number.class.php';
 
-class Field_Hidden extends Field_Base
-{
-    function validate()
+class Field_Integer extends Field_Number
+{    
+    function __construct($sName)
     {
-        $this->_bValid = true;
-        if (! $this->_validateMandatory())
-            return false;
-        if (! $this->_validateLength())
-            return false;
-        if (! $this->_validateRegEx())
-            return false;
-        return $this->_checkError();
-    }
+        parent::__construct($sName);
 
-    function printInput($arrAttributes = null, $bFormDisabled = false)
-    {
-        return '<input type="hidden" id="' . $this->_sName . '" name="' . $this->_sName . '" value="' . xssProtect($this->_mValue) . '">';
+        $this->setRegEx('#^[0-9]+$#');
     }
 }
