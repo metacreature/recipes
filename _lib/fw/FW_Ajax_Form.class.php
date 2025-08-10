@@ -49,14 +49,12 @@ class FW_Ajax_Form
         $this->_secure_time = $secure_time;
     }
 
-    function addFormField($sType, $sFieldName, $bHelper = true, $sLabel = null, $bMandatory = false, $sDefaultValue = '', $bDisabled = false)
+    function addFormField($sType, $sFieldName, $bMandatory = false, $sDefaultValue = '', $bDisabled = false)
     {
         $sType = 'Field_' . preg_replace('#[^a-zA-Z0-9_]#', '', $sType);
         require_once ('Field/' . $sType . '.class.php');
 
         $oField = new $sType($sFieldName);
-        $oField->setHelper($bHelper);
-        $oField->setLabel($sLabel);
         $oField->setMandatory($bMandatory);
         $oField->setValue($sDefaultValue);
         $oField->setDisabled($bDisabled);

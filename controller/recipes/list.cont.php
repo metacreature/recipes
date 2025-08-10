@@ -57,33 +57,33 @@ class Controller_Recipes_List extends Controller_Base
 
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
         
-        $form->addFormField('Hidden', 'sort', false, 'x', false)
+        $form->addFormField('Hidden', 'sort', false)
             ->setRegex('#^[1-9]+$#');
             
         if ($user_list && count($user_list) > 1) {
-            $form->addFormField('Select', 'user_ids', false, 'x', false)
+            $form->addFormField('Select', 'user_ids', false)
                 ->setList($user_list)
                 ->setMultiple(true)
                 ->setRegex('#^[0-9]+$#');
         } else {
-            $form->addFormField('Request', 'user_ids', false, 'x', false)
+            $form->addFormField('Request', 'user_ids', false)
                 ->setMultiple(true)
                 ->setRegex('#^[0-9]+$#');
         }
-        $form->addFormField('Select', 'category_id', false, 'x', false)
+        $form->addFormField('Select', 'category_id', false)
                 ->setList($category_list)
                 ->setMultiple(true)
                 ->setRegex('#^[0-9]+$#');
-        $form->addFormField('Select', 'tag_id', false, 'x', false)
+        $form->addFormField('Select', 'tag_id', false)
                 ->setList($tag_list)
                 ->setMultiple(true)
                 ->setRegex('#^[0-9]+$#');
-        $form->addFormField('Select', 'ingredients_id', false, 'x', false)
+        $form->addFormField('Select', 'ingredients_id', false)
                 ->setList($ingredients_list)
                 ->setMultiple(true)
                 ->setRegex('#^[0-9]+$#');
 
-        $form->addFormField('Text', 'recipe_name', false, 'x', false);
+        $form->addFormField('Text', 'recipe_name', false);
 
         return $form;
     }

@@ -47,30 +47,30 @@ class Controller_Recipes_Editor extends Controller_Base
 
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
         
-        $form->addFormField('Hidden', 'recipe_id', false, null, false)
+        $form->addFormField('Hidden', 'recipe_id', false)
             ->setRegex('#^[0-9]+$#');
-        $form->addFormField('Hidden', 'cnt_ingredients', false, null, true)
+        $form->addFormField('Hidden', 'cnt_ingredients', true)
             ->setRegex('#^[1-9][0-9]*$#');
-        $form->addFormField('Hidden', 'cnt_step', false, null, true)
+        $form->addFormField('Hidden', 'cnt_step', true)
             ->setRegex('#^[1-9][0-9]*$#');
         
-        $form->addFormField('Checkbox', 'public', false, null, false);
-        $form->addFormField('Select', 'category_id', false, null, true)
+        $form->addFormField('Checkbox', 'public', false);
+        $form->addFormField('Select', 'category_id', true)
             ->setList($category_list);
-        $form->addFormField('Text', 'tag_list', false, null, true);
-        $form->addFormField('Text', 'recipe_name', false, null, true);
-        $form->addFormField('Text', 'persons', false, null, true)
+        $form->addFormField('Text', 'tag_list', true);
+        $form->addFormField('Text', 'recipe_name', true);
+        $form->addFormField('Text', 'persons', true)
             ->setRegex('#^[1-9][0-9]*$#');
-        $form->addFormField('Text', 'costs', false, null, false)
+        $form->addFormField('Text', 'costs', false)
 			->setRegex('#^(([1-9][0-9]*)|([0-9]+[.,][0-9]+))?$#');
-        $form->addFormField('Text', 'duration', false, null, false)
+        $form->addFormField('Text', 'duration', false)
             ->setRegex('#^[0-9]+$#');
-        $form->addFormField('Text', 'total_duration', false, null, false)
+        $form->addFormField('Text', 'total_duration', false)
             ->setRegex('#^[0-9]+$#');
-        $form->addFormField('Textarea', 'original_text', false, null, false);
-        $form->addFormField('File', 'image', false, null, false)
+        $form->addFormField('Textarea', 'original_text', false);
+        $form->addFormField('File', 'image', false)
             ->setExtensions('jpg','jpeg','png','webp');
-        $form->addFormField('Checkbox', 'del_image', false, null, false);
+        $form->addFormField('Checkbox', 'del_image', false);
         
         $form->resolveRequest($request);
 
@@ -78,11 +78,11 @@ class Controller_Recipes_Editor extends Controller_Base
         $cnt_ingeredients = $form->getValue('cnt_ingredients') ? (int)$form->getValue('cnt_ingredients') : 1;
         while($cnt < $cnt_ingeredients) {
             $cnt++;
-            $form->addFormField('Checkbox', 'ingredients_is_alternative_'.$cnt, false, '', false);
-            $form->addFormField('Text', 'ingredients_quantity_'.$cnt, false, '', false)
+            $form->addFormField('Checkbox', 'ingredients_is_alternative_'.$cnt, false);
+            $form->addFormField('Text', 'ingredients_quantity_'.$cnt, false)
                 ->setRegex('#^(([1-9][0-9]*)|([0-9]+[.,][0-9]+))?$#');
-            $form->addFormField('Text', 'ingredients_unit_'.$cnt, false, '', false);
-            $form->addFormField('Text', 'ingredients_name_'.$cnt, false, '', true);
+            $form->addFormField('Text', 'ingredients_unit_'.$cnt, false);
+            $form->addFormField('Text', 'ingredients_name_'.$cnt, true);
         }
         $form->resolveRequest($request);
         $cnt = 0;
@@ -98,7 +98,7 @@ class Controller_Recipes_Editor extends Controller_Base
         $cnt_step = $form->getValue('cnt_step') ? (int)$form->getValue('cnt_step') : 1;
         while($cnt < $cnt_step) {
             $cnt++;
-            $form->addFormField('Textarea', 'step_description_'.$cnt, false, '', true);
+            $form->addFormField('Textarea', 'step_description_'.$cnt, true);
         }
 
         return $form;
