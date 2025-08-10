@@ -220,7 +220,6 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
         if (empty_slideshow_cache) {
             slideshow_cache = {};
         }
-        var history_add = $('#slideshow').attr('historyadd');
         if ($('#slideshow').data('opened')) {
             $('#slideshow').data('opened', false);
             $('#slideshow').stop(true, true);
@@ -233,7 +232,7 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
                 }
             });
         }
-        if (history_add) {
+        if ($('#slideshow').attr('historyadd') == 'yes') {
             if (perform_back) {
                 history.back();
             }
