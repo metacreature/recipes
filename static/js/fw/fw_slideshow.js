@@ -31,10 +31,6 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
         return;
     }
     slideshow_init[jquery_selector] = true;
-
-    if (!window.name) {
-        window.name = 'slideshow_' + Date.now();
-    }
     
     if (!$('#focushelper').length) {
         $('body').prepend('<a href="javascript:;" id="focushelper" title="focushelper"></a>');
@@ -112,10 +108,9 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
 
         var history_url = document.location.href.replace(new RegExp('[#]' + id_name + '=[0-9]+$','g'),'');
         if (historyadd) {
-            history.pushState({'slideshow': 'open'}, '', history_url + '#' + id_name + '=' + id);
-            $.cookie(window.name + '_historyadd_' + id_name, 1, {path: '/'});
+            history.pushState({'slideshow': 'open', 'historyadd': $('#slideshow').attr('historyadd')}, '', history_url + '#' + id_name + '=' + id);
         } else {
-            history.replaceState({'slideshow': 'open'}, '', history_url + '#' + id_name + '=' + id);
+            history.replaceState({'slideshow': 'open', 'historyadd': $('#slideshow').attr('historyadd')}, '', history_url + '#' + id_name + '=' + id);
         }
 
         if (slideshow_cache[id]) {
@@ -143,7 +138,7 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
         return node;
     }
 
-    var openSlideshow = function(id, noanimate, historyadd) 
+    var openSlideshow = function(id, noanimate, historyadd, statehistoryadd) 
     {
         if (!$('#slideshow').length) {
 
@@ -155,6 +150,10 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
                         '</div>'+
                         '<div class="body"><div class="inner"></div><div class="clear"></div></div></div>');
             $('body').append(node);
+
+            if (historyadd || statehistoryadd) {
+                $('#slideshow').attr('historyadd', 'yes');
+            }
 
             $('#slideshow_header .close').on('click', onClickSlideshowClose);
             $('#slideshow_header .prev').on('click', onClickSlideshowPrev);
@@ -221,6 +220,7 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
         if (empty_slideshow_cache) {
             slideshow_cache = {};
         }
+        var history_add = $('#slideshow').attr('historyadd');
         if ($('#slideshow').data('opened')) {
             $('#slideshow').data('opened', false);
             $('#slideshow').stop(true, true);
@@ -233,8 +233,7 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
                 }
             });
         }
-        if ($.cookie(window.name + '_historyadd_' + id_name)) {
-            $.removeCookie(window.name + '_historyadd_' + id_name, {path: '/'});
+        if (history_add) {
             if (perform_back) {
                 history.back();
             }
@@ -267,7 +266,7 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
         var id = $(this).attr('href');
         if ($('#slideshow').length) 
             return;
-        openSlideshow(id, false, true);
+        openSlideshow(id, false, true, false);
     }
 
     var onClickSlideshowClose = function(e) 
@@ -285,9 +284,7 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
             if (onChangeStateForward) {
                 onChangeStateForward(e);
             }
-            if (onLoadSlideshow()) {
-                $.cookie(window.name + '_historyadd_' + id_name, 1, {path: '/'});
-            }
+            onLoadSlideshow();
         } else {
             if (!$('#slideshow').data('opened')) 
                 return;
@@ -324,7 +321,11 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
             var id = document.location.href.split('#' + id_name + '=')[1];
             var node = $(jquery_selector + '[href="'+id+'"]');
             if (node.length == 1) {
-                openSlideshow(id, true, false);
+                let statehistoryadd = false;
+                if (history.state && history.state.historyadd == 'yes') {
+                    statehistoryadd = true;
+                }
+                openSlideshow(id, true, false,  statehistoryadd);
                 return true;
             }
         }
@@ -334,5 +335,5 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
     $(jquery_selector).click(onClickThumb);
     window.addEventListener('popstate', onPopState);
 	$(document).on('click', jquery_selector, onClickThumb);
-    onLoadSlideshow(id_name);
+    onLoadSlideshow();
 }
