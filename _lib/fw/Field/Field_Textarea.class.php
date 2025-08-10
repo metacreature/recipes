@@ -33,13 +33,16 @@ class Field_Textarea extends Field_Text
 
     protected function _getAttributes($arrAttributes, $bFormDisabled)
     {
-        $arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
+        if (! is_array($arrAttributes)) {
+            $arrAttributes = array();
+        }
+        $_arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
 
-        unset($arrAttributes['type']);
-        unset($arrAttributes['value']);
-        unset($arrAttributes['placeholder']);
+        unset($_arrAttributes['type']);
+        unset($_arrAttributes['value']);
+        unset($_arrAttributes['placeholder']);
 
-        return $arrAttributes;
+        return array_merge($_arrAttributes, $arrAttributes);
     }
 
     function printInput($arrAttributes = null, $bFormDisabled = false)

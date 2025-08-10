@@ -73,15 +73,18 @@ class Field_Checkbox extends Field_Base
 
     protected function _getAttributes($arrAttributes, $bFormDisabled)
     {
-        $arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
+        if (! is_array($arrAttributes)) {
+            $arrAttributes = array();
+        }
+        $_arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
 
-        $arrAttributes['type'] = 'checkbox';
-        $arrAttributes['value'] = '1';
+        $_arrAttributes['type'] = 'checkbox';
+        $_arrAttributes['value'] = '1';
         if ($this->_mValue) {
-            $arrAttributes['checked'] = '';
+            $_arrAttributes['checked'] = '';
         }
 
-        return $arrAttributes;
+        return array_merge($_arrAttributes, $arrAttributes);
     }
 
     function printInput($arrAttributes = null, $bFormDisabled = false)

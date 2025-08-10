@@ -219,23 +219,28 @@ abstract class Field_Base
             $arrAttributes = array();
         }
 
-        $sClassNames = ! empty($arrAttributes['class']) ? $arrAttributes['class'] : '';
+        $sClassNames = '';
+        if (!empty($arrAttributes['class'])) {
+            $sClassNames = ' ' .$arrAttributes['class'];
+            unset($arrAttributes['class']);
+        }
 
-        $arrAttributes['id'] = $this->_sName;
-        $arrAttributes['autocomplete'] = 'off';
-        $arrAttributes['class'] = mb_trim($this->_sClassName);
-        $arrAttributes['class'] .= $sClassNames ? ' ' . mb_trim($sClassNames) : '';
+        $_arrAttributes = array();
+        $_arrAttributes['id'] = $this->_sName;
+        $_arrAttributes['autocomplete'] = 'off';
+        $_arrAttributes['class'] = $this->_sClassName . $sClassNames;
 
         if ($bFormDisabled || $this->_bDisabled) {
-            $arrAttributes['name'] = '_disabled_' . $this->_sName;
-            $arrAttributes['readonly'] = '';
+            $_arrAttributes['name'] = '_disabled_' . $this->_sName;
+            $_arrAttributes['readonly'] = '';
         } else {
-            $arrAttributes['name'] = $this->_sName;
+            $_arrAttributes['name'] = $this->_sName;
             if ($this->_bMandatory) {
-                // $arrAttributes['required'] = '';
+                // $_arrAttributes['required'] = '';
             }
         }
-        return $arrAttributes;
+
+        return array_merge($_arrAttributes, $arrAttributes);
     }
 
     protected function _buildAttributesString($arrAttributes)

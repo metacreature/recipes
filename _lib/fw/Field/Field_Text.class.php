@@ -126,23 +126,24 @@ class Field_Text extends Field_Base
         return $this->_checkError();
     }
 
-    protected function _getAttributes($arrAttributesAdd, $bFormDisabled)
+    protected function _getAttributes($arrAttributes, $bFormDisabled)
     {
-        $arrAttributes = parent::_getAttributes($arrAttributesAdd, $bFormDisabled);
+        if (! is_array($arrAttributes)) {
+            $arrAttributes = array();
+        }
+        $_arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
 
-        $arrAttributes['type'] = $this->_sType;
-        $arrAttributes['value'] = $this->_mValue;
+        $_arrAttributes['type'] = $this->_sType;
+        $_arrAttributes['value'] = $this->_mValue;
 
         if ($this->getPlaceholder()) {
-            $arrAttributes['placeholder'] = $this->getPlaceholder();
+            $_arrAttributes['placeholder'] = $this->getPlaceholder();
         }
         if ($this->_iMaxLength) {
-            $arrAttributes['maxlength'] = $this->_iMaxLength;
+            $_arrAttributes['maxlength'] = $this->_iMaxLength;
         }
-        if (is_array($arrAttributesAdd) && !empty($arrAttributesAdd['autocomplete'])) {
-            $arrAttributes['autocomplete'] = $arrAttributesAdd['autocomplete'];
-        }
-        return $arrAttributes;
+        
+        return array_merge($_arrAttributes, $arrAttributes);
     }
 
     function printInput($arrAttributes = null, $bFormDisabled = false)

@@ -180,17 +180,20 @@ class Field_Select extends Field_Base
 
     protected function _getAttributes($arrAttributes, $bFormDisabled)
     {
-        $arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
+        if (! is_array($arrAttributes)) {
+            $arrAttributes = array();
+        }
+        $_arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
 
         if ($this->_bMultiple) {
-            $arrAttributes['multiple'] = '';
-            $arrAttributes['name'] .= '[]';
+            $_arrAttributes['multiple'] = '';
+            $_arrAttributes['name'] .= '[]';
         }
         if ($bFormDisabled || $this->_bDisabled) {
-            $arrAttributes['readonly'] = null;
-            $arrAttributes['disabled'] = '';
+            $_arrAttributes['readonly'] = null;
+            $_arrAttributes['disabled'] = '';
         }
-        return $arrAttributes;
+        return array_merge($_arrAttributes, $arrAttributes);
     }
 
     function printInput($arrAttributes = null, $bFormDisabled = false)

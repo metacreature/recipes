@@ -33,17 +33,16 @@ class Field_Password extends Field_Text
 
     protected $_sClassName = 'fieldpassword';
 
-    protected function _getAttributes($arrAttributesAdd, $bFormDisabled)
+    protected function _getAttributes($arrAttributes, $bFormDisabled)
     {
-        $arrAttributes = parent::_getAttributes($arrAttributesAdd, $bFormDisabled);
-
-        $arrAttributes['value'] = null;
-        $arrAttributes['autocomplete'] = 'new-password';
-
-        if (is_array($arrAttributesAdd) && !empty($arrAttributesAdd['autocomplete'])) {
-            $arrAttributes['autocomplete'] = $arrAttributesAdd['autocomplete'];
+        if (! is_array($arrAttributes)) {
+            $arrAttributes = array();
         }
+        $_arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
 
-        return $arrAttributes;
+        $_arrAttributes['value'] = null;
+        $_arrAttributes['autocomplete'] = 'new-password';
+
+        return array_merge($_arrAttributes, $arrAttributes);
     }
 }

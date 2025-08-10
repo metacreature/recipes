@@ -247,24 +247,27 @@ class Field_File extends Field_Base
 
     protected function _getAttributes($arrAttributes, $bFormDisabled)
     {
-        $arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
+        if (! is_array($arrAttributes)) {
+            $arrAttributes = array();
+        }
+        $_arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
 
-        $arrAttributes['type'] = 'file';
-        unset($arrAttributes['autocomplete']);
+        $_arrAttributes['type'] = 'file';
+        unset($_arrAttributes['autocomplete']);
 
         if ($this->_arrExtensions) {
-            $arrAttributes['accept'] = '.' . implode(',.', $this->_arrExtensions);
+            $_arrAttributes['accept'] = '.' . implode(',.', $this->_arrExtensions);
         }
 
         if ($this->_bMultiple) {
-            $arrAttributes['multiple'] = 'true';
-            $arrAttributes['name'] .= '[]';
+            $_arrAttributes['multiple'] = 'true';
+            $_arrAttributes['name'] .= '[]';
         }
         if ($bFormDisabled || $this->_bDisabled) {
-            $arrAttributes['readonly'] = null;
-            $arrAttributes['disabled'] = '';
+            $_arrAttributes['readonly'] = null;
+            $_arrAttributes['disabled'] = '';
         }
-        return $arrAttributes;
+        return array_merge($_arrAttributes, $arrAttributes);
     }
 
     function printInput($arrAttributes = null, $bFormDisabled = false)

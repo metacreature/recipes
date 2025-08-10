@@ -197,15 +197,18 @@ class Field_Date extends Field_Base
 
     protected function _getAttributes($arrAttributes, $bFormDisabled)
     {
-        $arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
+        if (! is_array($arrAttributes)) {
+            $arrAttributes = array();
+        }
+        $_arrAttributes = parent::_getAttributes($arrAttributes, $bFormDisabled);
 
         if ($this->_mValue instanceof DateTime) {
-            $arrAttributes['value'] = $this->_mValue->format(self::$sInternalFormat);
+            $_arrAttributes['value'] = $this->_mValue->format(self::$sInternalFormat);
         } else {
-            $arrAttributes['value'] = $this->_mValue;
+            $_arrAttributes['value'] = $this->_mValue;
         }
 
-        return $arrAttributes;
+        return array_merge($_arrAttributes, $arrAttributes);
     }
 
     function printInput($arrAttributes = null, $bFormDisabled = false)
