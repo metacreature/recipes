@@ -40,14 +40,14 @@ class Controller_User_Password extends Controller_Base
     protected function _get_forgotten_form() {
         $form = new FW_Ajax_Form('forgotten_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
-        $form->addFormField('Email', 'email', true);
+        $form->addField('Email', 'email', true);
         return $form;
     }
 
     protected function _get_change_form() {
         $form = new FW_Ajax_Form('password_change_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
-        $form->addFormField('Hidden', 'token', true);
+        $form->addField('Hidden', 'token', true);
         $this->_add_create_password_fields($form);
         return $form;
     }

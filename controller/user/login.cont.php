@@ -37,9 +37,9 @@ class Controller_User_Login extends Controller_Base
     protected function _get_form() {
         $form = new FW_Ajax_Form('login_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
-        $form->addFormField('Email', 'email', true);
-        $form->addFormField('Password', 'password', true);
-        $form->addFormField('Checkbox', 'remember_login', false);
+        $form->addField('Email', 'email', true);
+        $form->addField('Password', 'password', true);
+        $form->addField('Checkbox', 'remember_login', false);
         return $form;
     }
 

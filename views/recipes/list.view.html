@@ -29,8 +29,10 @@
 
 <div id="recipe_list_filter">
     <?php 
-    echo $form->printStartTag();
+    
     $class = $form->printInput('user_ids') ? ' count5' : ' count4';
+
+    echo $form->printStartTag(false);
     echo '<div class="filter_input_wrapper'. $class .'">';
     echo '  <div class="field_wrapper">' . $form->printInput('user_ids') . '</div>';
     echo '  <div class="field_wrapper">' . $form->printInput('category_id') . '</div>';

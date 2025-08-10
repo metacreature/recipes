@@ -92,10 +92,10 @@ class Controller_Base
     protected function _add_create_password_fields($form) {
         $field_type = SETTINGS_ALLOW_USER_DEFINED_PASSWORDS ? 'Password' : 'Hidden';
 
-        $form->addFormField($field_type, 'password', true)
+        $form->addField($field_type, 'password', true)
             ->setMinLength(8)
             ->setFieldErrors(['external' => LANG_FIELD_USER_PASSWORD_ERROR]);
-        $form->addFormField($field_type, 'password_confirmation', true)
+        $form->addField($field_type, 'password_confirmation', true)
             ->setFieldErrors(['external' => LANG_FIELD_USER_REPEAT_PASSWORD_ERROR]);
     }
 

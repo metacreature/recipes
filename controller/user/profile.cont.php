@@ -38,7 +38,7 @@ class Controller_User_Profile extends Controller_Base
     protected function _get_profile_form() {
         $form = new FW_Ajax_Form('profile_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
-        $form->addFormField('Text', 'user_name', true)
+        $form->addField('Text', 'user_name', true)
             ->setMinLength(6);
         return $form;
     }
@@ -46,15 +46,15 @@ class Controller_User_Profile extends Controller_Base
     protected function _get_email_form() {
         $form = new FW_Ajax_Form('email_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
-        $form->addFormField('Password', 'actual_password', true);
-        $form->addFormField('Email', 'email', true);
+        $form->addField('Password', 'actual_password', true);
+        $form->addField('Email', 'email', true);
         return $form;
     }
 
     protected function _get_password_form() {
         $form = new FW_Ajax_Form('password_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
-        $form->addFormField('Password', 'actual_password', true);
+        $form->addField('Password', 'actual_password', true);
         $this->_add_create_password_fields($form);
         return $form;
     }

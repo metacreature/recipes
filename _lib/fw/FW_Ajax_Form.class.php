@@ -49,7 +49,7 @@ class FW_Ajax_Form
         $this->_secure_time = $secure_time;
     }
 
-    function addFormField($sType, $sFieldName, $bMandatory = false, $sDefaultValue = '', $bDisabled = false)
+    function addField($sType, $sFieldName, $bMandatory = false, $sDefaultValue = '', $bDisabled = false)
     {
         $sType = 'Field_' . preg_replace('#[^a-zA-Z0-9_]#', '', $sType);
         require_once ('Field/' . $sType . '.class.php');
@@ -107,7 +107,7 @@ class FW_Ajax_Form
 
     function getValue($sFieldName)
     {
-        if (! array_key_exists($sFieldName, $this->_arrFormFields)) {
+        if (! $this->getField($sFieldName)) {
             return null;
         }
         return $this->_arrFormFields[$sFieldName]->getValue();
@@ -115,7 +115,7 @@ class FW_Ajax_Form
 
     function setValue($sFieldName, $sValue)
     {
-        if (! array_key_exists($sFieldName, $this->_arrFormFields)) {
+        if (! $this->getField($sFieldName)) {
             return null;
         }
         return $this->_arrFormFields[$sFieldName]->setValue($sValue);
@@ -222,13 +222,14 @@ class FW_Ajax_Form
         return array_merge(array('error' => true, 'field_errors' => $arrFieldErrors, 'message' => $sMessage), $arr);
     }
 
-    function printStartTag()
+    function printStartTag($bIncludeResponse = true)
     {
         $sReturn = '';
         $sEncType = '';
         foreach ($this->_arrFormFields as $oField) {
             if ($oField instanceof Field_Hidden) {
-                $sReturn .= $oField->printInput();
+                $sReturn .= '
+            '.$oField->printInput();
             } else if ($oField instanceof Field_File) {
                 $sEncType = ' enctype="multipart/form-data" ';
             }
@@ -243,77 +244,38 @@ class FW_Ajax_Form
         }
         
         return '
-			<form method="post" ' . $sEncType . ' autocomplete="off" class="ajax-form form-horizontal col-md-'.$this->_col_md_label.'-'.$this->_col_md_field.' ' . $this->_form_name . '" data-name="'.$this->_form_name.'">'.
-			($this->_activate_secure ? '<input type="hidden" name="secure" value="' . $secure . '">' : '').
-            $sReturn;
+
+    <form method="post" ' . $sEncType . ' autocomplete="off" class="ajax-form form-horizontal col-md-'.
+        $this->_col_md_label.'-'.$this->_col_md_field.' ' . $this->_form_name . '" data-name="'.$this->_form_name.'">
+        '.($this->_activate_secure ? '<input type="hidden" name="secure" value="' . $secure . '">' : '').
+        $sReturn. ($bIncludeResponse ? '
+        <div class="ajax-form-response"></div>' : '');
     }
 
     function printEndTag()
     {
         return '
-			</form>';
+	</form>
+
+';
     }
 
-    function printSubmitLine($sDisplayValue, $sClassName = null, $sEndpoint = null)
-    {
-        if (! $this->_bFormDisabled) {
-            return '
-				<div class="button-line form-group row"><label class="control-label col-md-'.$this->_col_md_label.' hidden-xs hidden-sm">&nbsp;</label>' .
-                '<div class="button-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">' .
-                 $this->printSubmit($sDisplayValue, $sClassName, $sEndpoint) . 
-                 '</div><div class="clear"></div></div>';
-        }
-        return '';
-    }
-
-    function printSubmit($sDisplayValue, $sClassName = null, $sEndpoint = null)
-    {
-        return '<a href="#" '.($sEndpoint ? 'data-endpoint="' .$sEndpoint  . '"' : '').' class="btn btn-ajax-submit' . ($sClassName ? ' ' . $sClassName : ''). '"><span>' . $sDisplayValue . '</span></a>';
-    }
-
-    function printButtonLine($sDisplayValue, $sClassName = null)
-    {
-        return '
-            <div class="button-line form-group row"><label class="control-label col-md-'.$this->_col_md_label.' hidden-xs hidden-sm">&nbsp;</label>' .
-            '<div class="button-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">' .
-                $this->printButton($sDisplayValue, $sClassName) . 
-                '</div><div class="clear"></div></div>';
-        
-    }
-
-    function printButton($sDisplayValue, $sClassName = null)
-    {
-        return '<a href="#" class="btn' . ($sClassName ? ' ' . $sClassName : ''). '"><span>' . $sDisplayValue . '</span></a>';
-    }
-
-    function printLabel($sFieldName, $sLabel = null)
-    {
-        if (! array_key_exists($sFieldName, $this->_arrFormFields)) {
-            return null;
-        }
-        $oField = $this->_arrFormFields[$sFieldName];
-        $sLabel = $sLabel ? $sLabel : $oField->getLabel();
-        if ($sLabel) {
-            return '<label class="col-xs-12 col-md-'.$this->_col_md_label.' control-label" for="' . $sFieldName . '">' . $sLabel . ($oField->getMandatory() ? ' *' : '') . '</label>';
-        } else {
-            return '<label class="col-xs-12 col-md-'.$this->_col_md_label.' control-label" for="' . $sFieldName . '">&nbsp;</label>';
-        }
-    }
 
     function printInput($sFieldName, $arrFieldAttributes = null)
     {
-        if (! array_key_exists($sFieldName, $this->_arrFormFields)) {
+        $oField = $this->getField($sFieldName);
+        if (!$oField) {
             return null;
         }
-        return $this->_arrFormFields[$sFieldName]->printInput($arrFieldAttributes, $this->_bFormDisabled);
+        return $oField->printInput($arrFieldAttributes, $this->_bFormDisabled);
     }
 
     function getLineClassName($sFieldName)
     {
-        if (! array_key_exists($sFieldName, $this->_arrFormFields)) {
+        $oField = $this->getField($sFieldName);
+        if (!$oField) {
             return null;
         }
-        $oField = $this->_arrFormFields[$sFieldName];
         $sClassName = ''; 
         
         if ($this->_bFormDisabled || $oField->getDisabled()) {
@@ -326,9 +288,10 @@ class FW_Ajax_Form
         return mb_trim($sClassName);
     }
 
-    function printLine($sFieldName, $sLabel = null, $arrFieldAttributes = null, $sLineClassNames = '')
+    function printLine($sFieldName, $sLabel, $arrFieldAttributes = null, $sLineClassNames = '')
     {
-        if (! $this->getField($sFieldName) || $this->getField($sFieldName)->getType() == 'Hidden') {
+        $oField = $this->getField($sFieldName);
+        if (!$oField || $oField->getType() == 'Hidden') {
             return null;
         } 
 
@@ -336,32 +299,96 @@ class FW_Ajax_Form
         $sClassName .= $this->getLineClassName($sFieldName);
         $sClassName .= $sLineClassNames ? ' ' . $sLineClassNames : '';
 
+        $sLabel .= $sLabel && $oField->getMandatory() ? ' *' : '';
+
         return '
-				<div class="' . mb_trim($sClassName) . '">' .
-                    $this->printLabel($sFieldName, $sLabel) .
-                    '<div class="field-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">' .
-                        $this->printInput($sFieldName, $arrFieldAttributes) .
-                '</div><div class="clear"></div></div>';
+        <div class="' . mb_trim($sClassName) . '">
+            <label class="col-xs-12 col-md-'.$this->_col_md_label.' control-label" for="' . $sFieldName . '">' . $sLabel . '</label>
+            <div class="field-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">
+                ' . $this->printInput($sFieldName, $arrFieldAttributes) . '
+            </div>
+            <div class="clear"></div>
+        </div>';
     }
 
-    function printHTMLLine($sHTML = '&nbsp;')
+    function printCheckboxLine($sFieldName, $sLabel, $arrFieldAttributes = null, $sLineClassNames = '')
     {
+        $oField = $this->getField($sFieldName);
+        if (!$oField || $oField->getType() != 'Checkbox') {
+            return null;
+        } 
+
+        $sClassName = 'field-line form-group row ';
+        $sClassName .= $this->getLineClassName($sFieldName);
+        $sClassName .= $sLineClassNames ? ' ' . $sLineClassNames : '';
+
+        $sLabel .= $sLabel && $oField->getMandatory() ? ' *' : '';
+
         return '
-				<div class="field-line">' . $sHTML . '<div class="clear"></div></div>';
+        <div class="' . mb_trim($sClassName) . '">
+            <div class="control-label col-md-' . $this->_col_md_label . ' hidden-xs hidden-sm">&nbsp;</div>
+            <div class="field-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">
+                ' . $this->printInput($sFieldName, $arrFieldAttributes) . '
+                <label class="control-label" for="' . $sFieldName . '">' . $sLabel . '</label>
+            </div>
+            <div class="clear"></div>
+        </div>';
     }
 
-    function printForm($sSubmitLabel, $sSubmitEndpoint) {
-        $sReturn = $this->printStartTag();
+    function printSubmitLine($sDisplayValue, $sClassName = null, $sEndpoint = null, $sLineClassNames = '')
+    {
+        if (! $this->_bFormDisabled) {
+            $sLineClassName = 'button-line form-group row';
+            $sLineClassName .= $sLineClassNames ? ' ' . $sLineClassNames : '';
 
-        $sReturn .= '<div class="ajax-form-response"></div>';
-    	
-        foreach ($this->_arrFormFields as $sFieldName => $oField) {
-            if (!($oField instanceof Field_Hidden)) {
-                $sReturn .= $this->printLine($sFieldName);
-            } 
+            return '
+        <div class="' . mb_trim($sLineClassName) . '">
+            <div class="control-label col-md-' . $this->_col_md_label . ' hidden-xs hidden-sm">&nbsp;</div>
+            <div class="button-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">
+                ' . $this->printSubmit($sDisplayValue, $sClassName, $sEndpoint) . '
+            </div>
+            <div class="clear"></div>
+        </div>';
         }
-        $sReturn .= $this->printSubmitLine($sSubmitLabel, 'save', $sSubmitEndpoint);
-        $sReturn .= $this->printEndTag();
-        return $sReturn;
+        return '';
+    }
+
+    function printSubmit($sDisplayValue, $sClassName = null, $sEndpoint = null)
+    {
+        return '<a href="#" '.($sEndpoint ? 'data-endpoint="' .$sEndpoint  . '"' : '').' class="btn btn-ajax-submit' . ($sClassName ? ' ' . $sClassName : ''). '"><span>' . $sDisplayValue . '</span></a>';
+    }
+
+    function printButtonLine($sDisplayValue, $sClassName = null, $sLineClassNames = '')
+    {
+        $sLineClassName = 'button-line form-group row';
+        $sLineClassName .= $sLineClassNames ? ' ' . $sLineClassNames : '';
+
+        return '
+        <div class="' . mb_trim($sLineClassName) . '">
+            <div class="control-label col-md-' . $this->_col_md_label . ' hidden-xs hidden-sm">&nbsp;</div>
+            <div class="button-wrapper col-xs-12 col-md-'.$this->_col_md_field.'">
+                ' . $this->printButton($sDisplayValue, $sClassName) . '
+            </div>
+            <div class="clear"></div>
+        </div>';
+        
+    }
+
+    function printButton($sDisplayValue, $sClassName = null)
+    {
+        return '<a href="#" class="btn' . ($sClassName ? ' ' . $sClassName : ''). '"><span>' . $sDisplayValue . '</span></a>';
+    }
+
+    function printHTMLLine($sHTML = '&nbsp;', $sLineClassNames = '')
+    {
+        $sClassName = 'html-line form-group row';
+        $sClassName .= $sLineClassNames ? ' ' . $sLineClassNames : '';
+
+        return '
+        <div class="' . mb_trim($sClassName) . '">
+            <div class="col-xs-12 col-md-'.$this->_col_md_label.' control-label">&nbsp;</div>
+            <div class="col-xs-12 col-md-'.$this->_col_md_field.'">' . $sHTML . '</div>
+            <div class="clear"></div>
+        </div>';
     }
 }

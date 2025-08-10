@@ -42,9 +42,9 @@ class Controller_User_Register extends Controller_Base
     protected function _get_form() {
         $form = new FW_Ajax_Form('register_form', false);
         $form->setFieldErrors(LANG_FORMFIELD_ERRORS);
-        $form->addFormField('Text', 'user_name', true)
+        $form->addField('Text', 'user_name', true)
             ->setMinLength(6);
-        $form->addFormField('Email', 'email', true);
+        $form->addField('Email', 'email', true);
         $this->_add_create_password_fields($form);
         return $form;
     }
