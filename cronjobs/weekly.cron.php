@@ -25,10 +25,10 @@
 */
 
 require_once (dirname(__FILE__).'/../_lib/settings.inc.php');
-require_once (dirname(__FILE__).'/../_lib/fw/func.inc.php');
-require_once (dirname(__FILE__).'/../_lib/fw/FW_ErrorLogger.static.php');
-require_once (dirname(__FILE__).'/../_lib/fw/FW_MySQLDataBaseLayer.class.php');
-require_once (dirname(__FILE__).'/../models/recipe.model.php');
+require_once (DOCUMENT_ROOT.'/_lib/fw/func.inc.php');
+require_once (DOCUMENT_ROOT.'/_lib/fw/FW_ErrorLogger.static.php');
+require_once (DOCUMENT_ROOT.'/_lib/fw/FW_MySQLDataBaseLayer.class.php');
+require_once (DOCUMENT_ROOT.'/models/recipe.model.php');
 
 ini_set('max_execution_time', 3600);
 

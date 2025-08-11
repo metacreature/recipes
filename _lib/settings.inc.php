@@ -24,7 +24,11 @@
  SOFTWARE.
 */
 
-define('TEST_SERVER', strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+if (!empty($_SERVER['HTTP_HOST'])) {
+    define('TEST_SERVER', strpos($_SERVER['HTTP_HOST'], 'localhost') !== false);
+} else {
+    define('TEST_SERVER', false);
+}
 
 // settings
 define('SETTINGS_ALLOW_REGISTER', true);
@@ -95,7 +99,7 @@ if (TEST_SERVER) {
 
 // other (don't modify)
 define('SETTINGS_LANDING_PAGE', '/recipes/list');
-define('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT'].(TEST_SERVER ? '' : ''));
+define('DOCUMENT_ROOT', dirname(dirname(__FILE__)));
 define('GALLERY_ROOT', DOCUMENT_ROOT . '/gallery');
 define('WEB_ROOT', '');
 define('GALLERY_WEB_ROOT', '/gallery');
