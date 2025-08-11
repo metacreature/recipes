@@ -382,6 +382,7 @@ div.combobox_dd div.active{
 	box-sizing: border-box;
 	width: 100%;
 	min-height: 100vh;
+	min-height: 100dvh;
 	margin: 0;
 	padding: 15px 0px 0px 0px;
 	color: #000;
@@ -516,6 +517,7 @@ div.combobox_dd div.active{
 #slideshow .slide {
 	box-sizing: border-box;
 	height: calc(100vh - 53px);
+	height: calc(100dvh - 53px);
 	width: 50%;
 	margin: 0;
 	padding: 0;
@@ -531,6 +533,7 @@ div.combobox_dd div.active{
 
 #slideshow .slide.loading .loading_inner {
 	min-height: calc(100vh - 106px);
+	min-height: calc(100dvh - 106px);
 	width: 100%;
 	margin: 0;
 	padding: 0;
@@ -554,6 +557,7 @@ div.combobox_dd div.active{
 	color: #FFF;
 	background-color: #222;
 	min-height: calc(100vh - 83px);
+	min-height: calc(100dvh - 83px);
 }
 
 #slideshow .slide .info_inner > div{
@@ -575,6 +579,7 @@ div.combobox_dd div.active{
 #slideshow .slide .image {
 	box-sizing: border-box;
 	min-height: calc(100vh - 83px);
+	min-height: calc(100dvh - 83px);
 	float: left;
 	width: calc(100% - 300px);
 	margin: 0;
@@ -595,6 +600,7 @@ div.combobox_dd div.active{
 	background-size: calc(100% - 18px);
 	max-width: 100%;
 	max-height: calc(100vh - 98px);
+	max-height: calc(100dvh - 98px);
 }
 
 

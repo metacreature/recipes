@@ -85,7 +85,7 @@ if (TEST_SERVER) {
 	// error-logging
     define('DEBUG_MODE', false);
 	define('DEBUG_EXECUTION_TIME', false);
-    ini_set('error_reporting', 0);
+    ini_set('error_reporting', E_ALL);
     ini_set('display_errors', false);
 
 	// domain
