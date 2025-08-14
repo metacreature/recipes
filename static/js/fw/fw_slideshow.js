@@ -26,7 +26,7 @@
 */
 
 var slideshow_init = {};
-var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSlide, onChangeStateForward) {
+var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSlide, onChangeStateForward, onCloseSlideshow) {
     if (slideshow_init[jquery_selector]) {
         return;
     }
@@ -238,6 +238,9 @@ var slideshow = function(jquery_selector, slideshow_ajax_url, id_name, renderSli
             }
         } else {
             history.replaceState({}, '', document.location.href.replace(new RegExp('[#]' + id_name + '=[0-9]+$', 'g'),''));
+        }
+        if (typeof onCloseSlideshow != 'undefined') {
+            onCloseSlideshow();
         }
     }
 

@@ -160,4 +160,34 @@ class Controller_Recipes_List extends Controller_Base
         }
         return $form->getFormError(LANG_RECIPE_LIST_DELETE_ERROR);
     }
+
+    function add_favorite() {
+        $form = new FW_Ajax_Form('favorite_form', false);
+        if (empty($_POST['recipe_id']) || !preg_match('#^\d+$#', $_POST['recipe_id'])) {
+            return $form->getFormError(LANG_FORM_DEFAULT_ERROR);
+        }
+        $recipe_obj = new Model_Recipe($this->_db, Controller_Base::get_user_id());
+        $res = $recipe_obj->add_favorite(
+            $_POST['recipe_id']
+        );
+        if ($res) {
+            return $form->getFormSuccess('');
+        }
+        return $form->getFormError(LANG_FORM_DEFAULT_ERROR);
+    }
+
+    function remove_favorite() {
+        $form = new FW_Ajax_Form('favorite_form', false);
+        if (empty($_POST['recipe_id']) || !preg_match('#^\d+$#', $_POST['recipe_id'])) {
+            return $form->getFormError(LANG_FORM_DEFAULT_ERROR);
+        }
+        $recipe_obj = new Model_Recipe($this->_db, Controller_Base::get_user_id());
+        $res = $recipe_obj->remove_favorite(
+            $_POST['recipe_id']
+        );
+        if ($res) {
+            return $form->getFormSuccess('');
+        }
+        return $form->getFormError(LANG_FORM_DEFAULT_ERROR);
+    }
 }

@@ -27,6 +27,15 @@
 
 $(function() {
 
+    var updateListData = function(data) {
+        for (i in recipe_list) {
+            if (recipe_list[i].recipe_id == data.recipe_id) {
+                recipe_list[i] = data;
+                break;
+            }
+        }
+    }
+
     // recipe-detail (slideshow)
 
     var deleteRecipe = function(data, node, html_deleted) {
@@ -54,8 +63,8 @@ $(function() {
                             success: function (xhr) {
                                 if (xhr.success) {
                                     node.html(html_deleted);
-                                    $('#recipe_list a.recipe_entry[href="' + data.recipe_id + '"]').remove();
                                     data.deleted = true;
+                                    updateListData(data);
                                 }
                             }
                         });
@@ -67,6 +76,34 @@ $(function() {
                 }
             }
         });
+    }
+
+    var toggleFavoriteSending = false;
+    function toggleFavorite(data, node) {
+        if (toggleFavoriteSending) {
+            return;
+        }
+        toggleFavoriteSending = true;
+        var url = data.is_favorite ? '/recipes/list/remove_favorite' : '/recipes/list/add_favorite';
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data: {'recipe_id': data.recipe_id},
+            success: function (xhr) {
+                if (xhr.success) {
+                    data.is_favorite = data.is_favorite ? 0 : 1;
+                    updateListData(data);
+                    node.find('.recipe_name img')[0].src = '/static/images/icons/heart-' + (data.is_favorite ? 'sharp.svg' : 'outline.svg');
+                }
+                toggleFavoriteSending = false;
+            },
+            complete: function() {
+                toggleFavoriteSending = false;
+            }
+        });
+
+
     }
 
     function formatQuantity(quantity) {
@@ -161,10 +198,15 @@ $(function() {
         
 
         html += '<div class="recipe_name">';
+        if(data.is_favorite) {
+            html += '<img src="/static/images/icons/heart-sharp.svg" class="favimg" alt="">';
+        } else {
+            html += '<img src="/static/images/icons/heart-outline.svg" class="favimg" alt="">';
+        }
+        html += html_special_chars(data.recipe_name);
         if (parseInt(data.public) == 0) {
             html += '<img src="/static/images/icons/lock-closed.svg" class="private" alt="">';
         }
-        html += html_special_chars(data.recipe_name);
         html += '</div>';
 
         html += '<div class="tags">';
@@ -239,19 +281,36 @@ $(function() {
             e.preventDefault(); 
             deleteRecipe(data, node, html_deleted);
         });
+        node.find('.recipe_name').on('click', function(e) {
+            e.preventDefault(); 
+            toggleFavorite(data, node);
+        });
     }
 
     var createSlideshow = function() {
-        slideshow('#recipe_list a.recipe_entry', '/recipes/list/get', 'recipe_id', createSlide);
+        slideshow('#recipe_list a.recipe_entry', '/recipes/list/get', 'recipe_id', createSlide, null, onCloseSlideshow);
+    }
+
+    var onCloseSlideshow = function() {
+        buildRecipeList(recipe_list);
     }
 
 
     // recipe-list
 
-    function buildRecipeList(recipe_list) {
+    function _buildRecipeList(recipe_list, is_favorite) {
+        var has_favorite;
         for(row of recipe_list) {
+            if (row.deleted || (is_favorite && !row.is_favorite) || (!is_favorite && row.is_favorite)) {
+                continue;
+            }
+            has_favorite = has_favorite || row.is_favorite;
             var html = '<a class="entry recipe_entry" href="'+row.recipe_id+'">';
-                html += '<div class="recipe_name">'+html_special_chars(row.recipe_name)+'</div>';
+                html += '<div class="recipe_name">';
+                if(row.is_favorite) {
+                    html += '<img src="/static/images/icons/heart-sharp.svg" class="favimg" alt="">';
+                }
+                html += html_special_chars(row.recipe_name)+'</div>';
                 html += '<div class="category_name">'+row.category_name;
                 if (row.costs_pp) {
                     html += '<span>'+(Math.round(row.costs_pp * 100) / 100) + SETTINGS_CURRENCY +'</span>';
@@ -267,8 +326,21 @@ $(function() {
                     html += '<img src="/static/images/icons/lock-closed.svg" class="private" alt="">';
                 }
                 html += '</a>';
-            $('#recipe_list').append(html);
+            if (is_favorite && row.is_favorite) {
+                $(html).insertBefore('#recipe_list .add_recipe');
+            } else {
+                $('#recipe_list').append(html);
+            }
         }
+        if (is_favorite && has_favorite) {
+            $('<div class="favseperator"></div>').insertBefore('#recipe_list .add_recipe');
+        }
+    }
+
+    function buildRecipeList(recipe_list) {
+        $('#recipe_list .entry:not(.add_recipe), #recipe_list .favseperator').remove();
+        _buildRecipeList(recipe_list, true);
+        _buildRecipeList(recipe_list, false);
         createSlideshow();
     }
     buildRecipeList(recipe_list);
@@ -291,13 +363,9 @@ $(function() {
 
                 var href = self.location.href.replace(/[#].*$/, '').replace(/\?.*$/, '');
                 history.replaceState({}, '', href + (query_string ? '?' + query_string : ''));
-
-                if (!button.hasClass('pagination')) {
-                    $('#recipe_list .entry:not(.add_recipe)').remove();
-                }
+                recipe_list = data.data;
                 buildRecipeList(data.data);
             }
-            button.removeClass('pagination');
         },
         'beforesubmit': function(form, button) {
             

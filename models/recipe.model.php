@@ -143,7 +143,7 @@ class Model_Recipe extends Model_Base{
             . (!is_null($name) && strlen($name) >= 1 ? " AND recipe_name LIKE CONCAT ('%', ?, '%') " : '');
 
         $query_values = array_merge(
-            [$this->_user_id],
+            [$this->_user_id, $this->_user_id],
             $this->_get_query_value($user_ids),
             $this->_get_query_value($category_ids),
             $this->_get_query_value($tag_ids),
@@ -175,11 +175,13 @@ class Model_Recipe extends Model_Base{
                 tbl_recipe.public as public,
                 tbl_recipe.costs / tbl_recipe.persons as costs_pp, 
                 tbl_recipe.duration as duration, 
-                tbl_recipe.total_duration as total_duration
+                tbl_recipe.total_duration as total_duration,
+                (CASE WHEN tbl_recipe_favorite.user_id > 0 THEN 1 ELSE 0 END) as is_favorite
             FROM tbl_recipe 
             INNER JOIN tbl_category USING (category_id)
-            INNER JOIN tbl_user USING (user_id)'
-            .'WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) AND deleted = 0 '
+            INNER JOIN tbl_user USING (user_id)
+            LEFT JOIN tbl_recipe_favorite ON (tbl_recipe_favorite.recipe_id = tbl_recipe.recipe_id AND tbl_recipe_favorite.user_id = ?)
+            WHERE (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) AND deleted = 0 '
             . $query 
             .'ORDER BY '.$order
             . ($limit ? ' LIMIT ' . (int)$limit : '')
@@ -239,12 +241,13 @@ class Model_Recipe extends Model_Base{
             tbl_recipe.costs as costs, 
             tbl_recipe.duration as duration, 
             tbl_recipe.total_duration as total_duration,
-            tbl_recipe.original_text as original_text
+            tbl_recipe.original_text as original_text,
+            EXISTS (SELECT * FROM tbl_recipe_favorite WHERE tbl_recipe_favorite.recipe_id = tbl_recipe.recipe_id AND tbl_recipe_favorite.user_id = ?) as is_favorite
             FROM tbl_recipe 
             INNER JOIN tbl_category USING (category_id)
             INNER JOIN tbl_user USING (user_id)
             WHERE tbl_recipe.recipe_id = ? AND (tbl_recipe.public = 1 OR tbl_recipe.user_id = ?) AND tbl_recipe.deleted = 0;', 
-            [(int) $recipe_id, $this->_user_id]);
+            [$this->_user_id, (int) $recipe_id, $this->_user_id]);
         $recipe = $this->_db->fetchAssoc();
         if (!$recipe) {
             return;
@@ -440,5 +443,17 @@ class Model_Recipe extends Model_Base{
             WHERE ingredients_id NOT IN (SELECT ingredients_id FROM tbl_recipe_ingredients GROUP BY ingredients_id)');
         $this->_db->executeQuery('DELETE FROM tbl_unit 
             WHERE locked = 0 AND unit_id NOT IN (SELECT unit_id FROM tbl_recipe_ingredients WHERE unit_id IS NOT NULL GROUP BY unit_id)');
+    }
+
+    function add_favorite($recipe_id) {
+        return $this->_db->executePreparedQuery('
+            INSERT INTO tbl_recipe_favorite (recipe_id, user_id) VALUES (?,?)',
+            [$recipe_id, $this->_user_id]);
+    }
+
+    function remove_favorite($recipe_id) {
+        return $this->_db->executePreparedQuery('
+            DELETE FROM tbl_recipe_favorite WHERE recipe_id = ? AND user_id = ?',
+            [$recipe_id, $this->_user_id]);
     }
 }

@@ -108,3 +108,11 @@ CREATE TABLE tbl_recipe_ingredients (
   FOREIGN KEY (ingredients_id) REFERENCES tbl_ingredients (ingredients_id),
   FOREIGN KEY (unit_id) REFERENCES tbl_unit (unit_id)
 );
+
+CREATE TABLE tbl_recipe_favorite (
+  recipe_id INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED NOT NULL,
+  FOREIGN KEY (recipe_id) REFERENCES tbl_recipe (recipe_id),
+  FOREIGN KEY (user_id) REFERENCES tbl_user (user_id),
+  UNIQUE KEY (user_id, recipe_id)
+);
