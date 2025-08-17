@@ -145,7 +145,6 @@ $(function() {
     var clearIngredientsInputs = function () {
         $('.wrapper_ingredients input, .wrapper_ingredients .btn').remove();
         $('.wrapper_ingredients span').show();
-        $('.wrapper_ingredients div.select').hide();
     }
 
     var createIngredients = function(factor, data, node) {
@@ -165,14 +164,17 @@ $(function() {
         html +=         '<td colspan="' + colspan + '">';
         html +=             '<img src="/static/images/icons/people-sharp.svg" alt="">';
         html +=             '<span>' + formatQuantity(data.persons * factor) + '</span>';
-        html +=             '<div class="select">';
+        html +=             '<select>';
         var cnt = 0;
         var max_persons = data.persons > 12 ? data.persons : 12;
         while(cnt < max_persons) {
             cnt++;
-            html +=             '<div value="' + cnt + '">' + cnt + '</div>';
+            html +=             '<option value="' + cnt + '">' + cnt + '</option>';
         }
-        html +=             '</div>';
+        html +=             '</select>';
+        html +=         '</td>';
+        html +=         '<td>';
+        html +=             '<img src="/static/images/icons/refresh-outline.svg" alt="" class="reset" data-value="'+data.persons+'">';
         html +=         '</td>';
         html +=       '</tr>';
 
@@ -195,10 +197,11 @@ $(function() {
         var changeIngredients = function(e) {
             e.preventDefault(); 
             e.stopPropagation();
-            var tr = $(this).parents( "tr" );
-            var value = $(this).attr('value') ? $(this).attr('value') : tr.find('input').val();
-            value = value.replace(',', '.');
-            if (/^[0-9]+([.][0-9]+){0,1}$/.test(value)) {
+            var ele = $(e.currentTarget);
+            var tr = ele.parents( "tr" );
+            var value = ele.data('value') ? ele.data('value') + '': tr.find('input, select').val();
+            if (/^[0-9]+([.,][0-9]+){0,1}$/.test(value)) {
+                value = value.replace(',', '.');
                 createIngredients(value / tr.data('orig'), data, node);
             } else {
                 clearIngredientsInputs();
@@ -211,14 +214,13 @@ $(function() {
             }
             e.preventDefault();
             e.stopPropagation();
-            var td = $(this).find('td:first-child');
+            var td = $(this).find('td.quantity');
             if (td.find('input').length == 0) {
                 clearIngredientsInputs();
-                var width = td[0].offsetWidth;
                 td.append('<input type="number" value=""><a class="btn"><img src="/static/images/icons/checkmark-sharp.svg" alt=""></a>');
                 td.find('span').hide();
                 td.find('.btn').on('click', changeIngredients);
-                td.find('input').css('width', 3 * width + 'px').on('change', changeIngredients).on('keydown', function(e) {
+                td.find('input').on('change', changeIngredients).on('keydown', function(e) {
                     if (e.key === 'Enter' || e.keyCode === 13) {
                         changeIngredients(e);
                     }
@@ -227,18 +229,8 @@ $(function() {
             td.find('input').focus();
         });
 
-        node.find('.wrapper_ingredients tr.persons').on('mousedown', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if ($(this).find('div.select').is(':hidden')) {
-                clearIngredientsInputs();
-                $(this).find('div.select').show().scrollTop(0);
-            } else {
-                clearIngredientsInputs();
-            }
-        });
-
-        node.find('.wrapper_ingredients tr.persons div.select div').on('mousedown', changeIngredients);
+        node.find('.wrapper_ingredients tr.persons select').val('').on('change', changeIngredients);
+        node.find('.wrapper_ingredients tr.persons .reset').on('mousedown', changeIngredients);
     }
 
     var createSlide = function(data, node) {
