@@ -142,31 +142,103 @@ $(function() {
         return '<i>1/8</i>';
     }
 
-    var createIngredients = function(persons, data) {
-        var factor = persons / data.persons;
+    var clearIngredientsInputs = function () {
+        $('.wrapper_ingredients input, .wrapper_ingredients .btn').remove();
+        $('.wrapper_ingredients span').show();
+        $('.wrapper_ingredients div.select').hide();
+    }
 
+    var createIngredients = function(factor, data, node) {
+        
         var has_alternative = false;
+        var colspan = 2;
         for (row of data.ingredients_list) {
             if (row.is_alternative) {
                 has_alternative = true;
+                colspan = 3;
                 break;
             }
         }
-
+        
         var html = '<table>';
-        for (row of data.ingredients_list) {
+        html +=       '<tr data-orig="'+data.persons+'" class="persons">';
+        html +=         '<td colspan="' + colspan + '">';
+        html +=             '<img src="/static/images/icons/people-sharp.svg" alt="">';
+        html +=             '<span>' + formatQuantity(data.persons * factor) + '</span>';
+        html +=             '<div class="select">';
+        var cnt = 0;
+        var max_persons = data.persons > 12 ? data.persons : 12;
+        while(cnt < max_persons) {
+            cnt++;
+            html +=             '<div value="' + cnt + '">' + cnt + '</div>';
+        }
+        html +=             '</div>';
+        html +=         '</td>';
+        html +=       '</tr>';
+
+        for (var i in data.ingredients_list) {
+            var row = data.ingredients_list[i];
             var quantity = formatQuantity(row.quantity * factor);
-            html +=     '<tr>';
+            html +=     '<tr data-orig="'+row.quantity+'" class="ingredients">';
             if (has_alternative) {
                 html +=     '<td>' + (row.is_alternative ? LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE + ' ' : '') + '</td>';
             }
-            html +=         '<td class="quantity">' + quantity + '</td>';
+            html +=         '<td class="quantity"><span>' + quantity + '</span></td>';
             html +=         '<td>' + (row.unit_name ? html_special_chars(row.unit_name) : '' ) + '</td>';
             html +=         '<td>' + html_special_chars(row.ingredients_name) + '</td>';
             html +=     '</tr>';
         }
         html += '</table>';
-        return html;
+
+        node.find('.wrapper_ingredients').html(html);
+
+        var changeIngredients = function(e) {
+            e.preventDefault(); 
+            e.stopPropagation();
+            var tr = $(this).parents( "tr" );
+            var value = $(this).attr('value') ? $(this).attr('value') : tr.find('input').val();
+            value = value.replace(',', '.');
+            if (/^[0-9]+([.][0-9]+){0,1}$/.test(value)) {
+                createIngredients(value / tr.data('orig'), data, node);
+            } else {
+                clearIngredientsInputs();
+            }
+        }
+
+        node.find('.wrapper_ingredients tr.ingredients').on('mousedown', function(e) {
+            if (!$(this).data('orig')) {
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            var td = $(this).find('td:first-child');
+            if (td.find('input').length == 0) {
+                clearIngredientsInputs();
+                var width = td[0].offsetWidth;
+                td.append('<input type="number" value=""><a class="btn"><img src="/static/images/icons/checkmark-sharp.svg" alt=""></a>');
+                td.find('span').hide();
+                td.find('.btn').on('click', changeIngredients);
+                td.find('input').css('width', 3 * width + 'px').on('change', changeIngredients).on('keydown', function(e) {
+                    if (e.key === 'Enter' || e.keyCode === 13) {
+                        changeIngredients(e);
+                    }
+                });
+            }
+            td.find('input').focus();
+        });
+
+        node.find('.wrapper_ingredients tr.persons').on('mousedown', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if ($(this).find('div.select').is(':hidden')) {
+                clearIngredientsInputs();
+                $(this).find('div.select').show().scrollTop(0);
+            } else {
+                clearIngredientsInputs();
+            }
+        });
+
+        node.find('.wrapper_ingredients tr.persons div.select div').on('mousedown', changeIngredients);
     }
 
     var createSlide = function(data, node) {
@@ -243,22 +315,6 @@ $(function() {
             html += '<img src="/gallery/recipes/' + data.image_name + '.webp" alt="">';
         }
         html +=     '<div class="wrapper_ingredients">';
-        html +=         '<div class="persons">';
-        html +=             '<img src="/static/images/icons/people-sharp.svg" alt="">';
-        html +=             '<span>' + data.persons + '</span>';
-        html +=             '<select>';
-        var cnt = 0;
-        var max_persons = data.persons > 12 ? data.persons : 12;
-        while(cnt < max_persons) {
-            cnt++;
-            html +=             '<option' + (data.persons == cnt ? ' selected' : '') + '>' + cnt + '</option>';
-        }
-        html +=             '</select>';
-        html +=             '<div class="clear"></div>';
-        html +=         '</div>';
-        html +=         '<div class="ingredients_list">';
-        html +=             createIngredients(data.persons, data);
-        html +=         '</div>';
         html +=      '</div>';
         html +=      '<div class="clear"></div>';
         html += '</div>';
@@ -273,10 +329,9 @@ $(function() {
 
         html += '</div>';
         node.html(html);
+        
+        createIngredients(1, data, node);
 
-        node.find('select').on('change', function() { 
-            node.find('.ingredients_list').html(createIngredients($(this).val(), data));
-        });
         node.find('.edit_buttons a.delete').on('click', function(e) {
             e.preventDefault(); 
             deleteRecipe(data, node, html_deleted);
@@ -285,6 +340,8 @@ $(function() {
             e.preventDefault(); 
             toggleFavorite(data, node);
         });
+
+        node.on('mousedown', clearIngredientsInputs);
     }
 
     var createSlideshow = function() {
@@ -366,10 +423,7 @@ $(function() {
                 recipe_list = data.data;
                 buildRecipeList(data.data);
             }
-        },
-        'beforesubmit': function(form, button) {
-            
-        },
+        }
     });
 
 

@@ -1073,27 +1073,74 @@ body.slideshow_opened #recipe_list{
 	float: left;
 	margin-top: 15px;
 }
-.recipe_detail .ingredients_list tr{
+.recipe_detail .wrapper_ingredients tr{
 	border-bottom: 0.5px solid black;
+	position: relative;
+	cursor: pointer;
 }
-.recipe_detail .ingredients_list td{
+.recipe_detail .wrapper_ingredients tr[data-orig="null"]{
+	cursor: default;
+}
+.recipe_detail .wrapper_ingredients td{
 	font-size: 16px;
 	font-weight: 100;
 	padding: 2px 0px 2px 10px;
 	white-space: nowrap;
 	vertical-align: top;
 }
-.recipe_detail .ingredients_list td.quantity{ 
+.recipe_detail .wrapper_ingredients tr.persons img{
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
+	display: inline-block;
+	margin-top: -5px;
+}
+.recipe_detail .wrapper_ingredients tr.persons span{
+	font-weight: bold;
+	display: inline-block;
+}
+.recipe_detail .wrapper_ingredients tr.persons div.select{
+	font-size: 14px;
+	border: 1px solid #000;
+	background-color: #ceb692;
+	position: absolute;
+	left: 0;
+	top: 25px;
+	display: none;
+	z-index: 2300;
+	height: 250px;
+	overflow-y: scroll;
+}
+.recipe_detail .wrapper_ingredients tr.persons div.select div{
+	padding: 8px 16px;
+}
+.recipe_detail .wrapper_ingredients tr.persons div.select div:hover{
+	background-color: #c99a54;
+}
+
+
+.recipe_detail .wrapper_ingredients td.quantity{ 
 	text-align: right;
 }
-.recipe_detail .ingredients_list td.quantity i{
+.recipe_detail .wrapper_ingredients td.quantity input{
+	margin-right: 5px;
+	float: left;
+}
+.recipe_detail .wrapper_ingredients td.quantity .btn {
+	float: left;
+}
+.recipe_detail .wrapper_ingredients td.quantity .btn img{
+	height: 12px;
+}
+
+.recipe_detail .wrapper_ingredients td.quantity i{
 	font-size: 14px;
 }
-.recipe_detail .ingredients_list td:last-child{ 
+.recipe_detail .wrapper_ingredients td:last-child{ 
 	white-space: normal;
 	padding: 2px 0px 2px 10px;
 }
-.recipe_detail .ingredients_list td:first-child{
+.recipe_detail .wrapper_ingredients td:first-child{
 	padding-left: 0px;
 }
 .recipe_detail .step_list{
@@ -1114,28 +1161,7 @@ body.slideshow_opened #recipe_list{
 	padding-bottom: 20px;
 	vertical-align: top;
 }
-.recipe_detail .persons{
-	border-bottom: 0.5px solid black;
-	padding-bottom: 5px;
-	margin-bottom: 10px;
-}
-.recipe_detail .persons img{
-	width: 20px;
-	height: 20px;
-	display: block;
-	float: left;
-}
-.recipe_detail .persons span{
-	font-size: 16px;
-	display: block;
-	float: left;
-	padding: 0px 10px;
-}
-.recipe_detail .persons select{
-	font-size: 14px;
-	display: block;
-	float: left;
-}
+
 
 @media(max-width: 1100px) {
 	.recipe_detail .wrapper > img{
