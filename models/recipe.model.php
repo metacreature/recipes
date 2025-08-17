@@ -134,6 +134,24 @@ class Model_Recipe extends Model_Base{
             return [$values];
         }
     }
+
+    function get_shopping_list() {
+        $this->_db->executePreparedQuery('SELECT 
+                tbl_recipe_ingredients.is_alternative as is_alternative,
+                tbl_recipe_ingredients.quantity as quantity,
+                tbl_unit.unit_name as unit_name, 
+                tbl_ingredients.ingredients_name as ingredients_name 
+            FROM tbl_recipe_favorite
+            LEFT JOIN tbl_recipe_ingredients USING (recipe_id)
+            LEFT JOIN tbl_unit USING (unit_id) 
+            INNER JOIN tbl_ingredients USING (ingredients_id) 
+            WHERE tbl_recipe_favorite.user_id = ?
+            GROUP BY tbl_recipe_ingredients.is_alternative, tbl_unit.unit_name, tbl_ingredients.ingredients_name
+            ORDER BY tbl_ingredients.ingredients_name ASC, tbl_recipe_ingredients.is_alternative ASC;',
+            [$this->_user_id]);
+
+        return $this->_db->getAssocResults();
+    }
     
     function list($user_ids, $category_ids, $tag_ids, $ingredients_ids, $name, $sort, $limit = null, $offset = null) {
         $query = $this->_create_in_query('user_id', $user_ids)

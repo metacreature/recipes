@@ -134,16 +134,22 @@ class Controller_Recipes_List extends Controller_Base
 
     function get() {
         $form = new FW_Ajax_Form('detail_form', false);
-        if (empty($_POST['recipe_id']) || !preg_match('#^\d+$#', $_POST['recipe_id'])) {
+        if (!isset($_POST['recipe_id']) || !preg_match('#^\d+$#', $_POST['recipe_id'])) {
             return $form->getFormError(LANG_RECIPE_LIST_LOAD_DETAIL_ERROR);
         }
         $recipe_obj = new Model_Recipe($this->_db, Controller_Base::get_user_id());
-        $data = $recipe_obj->get(
-            $_POST['recipe_id']
-        );
-        if (is_array($data)) {
-            return $form->getFormSuccess('', ['data'=>$data]);
+        if ($_POST['recipe_id'] === '0') {
+            $data = $recipe_obj->get_shopping_list();
+            if (is_array($data)) {
+                return $form->getFormSuccess('', ['data'=>['shopping_list'=>$data]]);
+            }
+        } else {
+            $data = $recipe_obj->get($_POST['recipe_id']);
+            if (is_array($data)) {
+                return $form->getFormSuccess('', ['data'=>$data]);
+            }
         }
+        
         return $form->getFormError(LANG_RECIPE_LIST_LOAD_DETAIL_ERROR);
     }
 

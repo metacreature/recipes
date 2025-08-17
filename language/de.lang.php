@@ -52,7 +52,6 @@ define('LANG_GENEERATE_PASSWORD_POPUP_TITLE', 'Passwort generieren');
 define('LANG_GENEERATE_PASSWORD_POPUP_TEXT', 'Das Passwort wurde in die Zwischenablage kopiert!');
 define('LANG_GENEERATE_PASSWORD_POPUP_BUTTON', 'OK');
 
-
 define('LANG_NAVIGATION_LOGIN', 'login');
 define('LANG_NAVIGATION_LOGOUT', 'logout');
 define('LANG_NAVIGATION_REGISTER', 'registrieren');
@@ -105,18 +104,17 @@ define('LANG_RECIPE_LIST_SORT_DURATION', 'Arbeitszeit');
 define('LANG_RECIPE_LIST_SORT_TOTAL_DURATION', 'Gesamtzeit');
 define('LANG_RECIPE_LIST_ADD', 'Rezept hinzfügen');
 define('LANG_RECIPE_LIST_LOAD_DETAIL_ERROR', 'Etwas ist schiefgelaufen!');
+define('LANG_RECIPE_LIST_SHOPPINGLIST', 'Einkaufsliste');
 define('LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE', 'oder');
 define('LANG_RECIPE_LIST_DETAIL_DURATION_UNIT', 'min');
 define('LANG_RECIPE_LIST_DETAIL_COSTS', 'Kosten p.P.');
 define('LANG_RECIPE_LIST_DETAIL_DURATION', 'Dauer');
-
 
 define('LANG_RECIPE_LIST_DELETE_CONFIRM_TITLE', 'Löschen?');
 define('LANG_RECIPE_LIST_DELETE_CONFIRM_TEXT', 'Wollen Sie das Rezept {recipe_name} wirklich löschen?');
 define('LANG_RECIPE_LIST_DELETE_CONFIRM_CONFIRM', 'Ja');
 define('LANG_RECIPE_LIST_DELETE_CONFIRM_CANCEL', 'Nein');
 define('LANG_RECIPE_LIST_DELETE_ERROR', 'Etwas ist schiefgelaufen!');
-
 
 define('LANG_RECIPE_EDITOR_BACK', 'Zurück');
 define('LANG_RECIPE_EDITOR_ADD_NEW', 'Neues Rezept hinzufügen');

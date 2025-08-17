@@ -232,10 +232,46 @@ $(function() {
         node.find('.wrapper_ingredients tr.persons select').val('').on('change', changeIngredients);
         node.find('.wrapper_ingredients tr.persons .reset').on('mousedown', changeIngredients);
     }
+    
+    var createShoppingList = function(data, node) {
+        var has_alternative = false;
+        for (row of data.shopping_list) {
+            if (row.is_alternative) {
+                has_alternative = true;
+                break;
+            }
+        }
+
+        var html = '';
+        html += '<div class="recipe_detail">';
+        html += '<div class="recipe_name">' + LANG_RECIPE_LIST_SHOPPINGLIST + '</div>';
+        html += '<div class="wrapper_ingredients">';
+        html +=     '<table>';
+        for (var i in data.shopping_list) {
+            var row = data.shopping_list[i];
+            var quantity = formatQuantity(row.quantity);
+            html +=     '<tr class="ingredients">';
+            if (has_alternative) {
+                html +=     '<td>' + (row.is_alternative ? LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE + ' ' : '') + '</td>';
+            }
+            html +=         '<td class="quantity"><span>' + quantity + '</span></td>';
+            html +=         '<td>' + (row.unit_name ? html_special_chars(row.unit_name) : '' ) + '</td>';
+            html +=         '<td>' + html_special_chars(row.ingredients_name) + '</td>';
+            html +=     '</tr>';
+        }
+        html +=     '</table>';
+        html += '</div>';
+        html += '</div>';
+        node.html(html);
+    }
 
     var createSlide = function(data, node) {
-            
+        
         data = data.data;
+        if (typeof data['shopping_list'] != 'undefined') {
+            createShoppingList(data, node);
+            return;
+        }
 
         var html_deleted = '';
         html_deleted += '<div class="recipe_deleted">';
@@ -342,7 +378,7 @@ $(function() {
     }
 
     var createSlideshow = function() {
-        slideshow('#recipe_list a.recipe_entry', '/recipes/list/get', 'recipe_id', createSlide, null, onCloseSlideshow);
+        slideshow('#recipe_list a.slide_entry', '/recipes/list/get', 'recipe_id', createSlide, null, onCloseSlideshow);
     }
 
     var onCloseSlideshow = function() {
@@ -359,7 +395,7 @@ $(function() {
                 continue;
             }
             has_favorite = has_favorite || row.is_favorite;
-            var html = '<a class="entry recipe_entry" href="'+row.recipe_id+'">';
+            let html = '<a class="entry recipe_entry slide_entry" href="'+row.recipe_id+'">';
                 html += '<div class="recipe_name">';
                 if(row.is_favorite) {
                     html += '<img src="/static/images/icons/heart-sharp.svg" class="favimg" alt="">';
@@ -388,6 +424,12 @@ $(function() {
         }
         if (is_favorite && has_favorite) {
             $('<div class="favseperator"></div>').insertBefore('#recipe_list .add_recipe');
+
+            let html = '<a class="entry shopping_list slide_entry" href="0">';
+            html +=        '<img src="/static/images/icons/bag-outline.svg" alt="">';
+            html +=        '<span>' + LANG_RECIPE_LIST_SHOPPINGLIST + '</span>';
+            html +=     '</a>';
+            $('#recipe_list').prepend(html);
         }
     }
 
@@ -455,7 +497,5 @@ $(function() {
     });
     document.addEventListener('click', function(e) {
         sort_close();
-    })
-
-    
+    });
 });

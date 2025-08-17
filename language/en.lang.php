@@ -27,6 +27,7 @@
 
 define('LANG_PAGE_TITLE', 'Metacreature\'s Reciepes');
 define('LANG_NAVIGATION_HOME', 'Home');
+
 define('LANG_FORMFIELD_ERRORS', array(
     'pattern' => 'Invalid value!',
     'external' => 'Invalid value!',
@@ -89,7 +90,6 @@ define('LANG_LOGIN_FAIL', 'Login failed!');
 define('LANG_LOGIN_SUCCESS', 'Login was successful!');
 define('LANG_LOGIN_BRUTE_FORCE', 'You have tried to login for  '.SETTINGS_LOGIN_BRUTEFORCE_CNT.' times. You are now blocked for '.SETTINGS_LOGIN_BRUTEFORCE_EXPIRE.' hour(s)!');
 
-
 define('LANG_RECIPE_LIST_FILTER_USER', 'User');
 define('LANG_RECIPE_LIST_FILTER_CATEGORY', 'Category');
 define('LANG_RECIPE_LIST_FILTER_TAG', 'Tag');
@@ -104,6 +104,7 @@ define('LANG_RECIPE_LIST_SORT_DURATION', 'Working time');
 define('LANG_RECIPE_LIST_SORT_TOTAL_DURATION', 'Total time');
 define('LANG_RECIPE_LIST_ADD', 'add recipe');
 define('LANG_RECIPE_LIST_LOAD_DETAIL_ERROR', 'Something went wrong!');
+define('LANG_RECIPE_LIST_SHOPPINGLIST', 'Shopping list');
 define('LANG_RECIPE_LIST_DETAIL_INGREDINTS_ALTERNATIVE', 'or');
 define('LANG_RECIPE_LIST_DETAIL_DURATION_UNIT', 'min');
 define('LANG_RECIPE_LIST_DETAIL_COSTS', 'Costs p.p.');

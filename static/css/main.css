@@ -888,17 +888,20 @@ body.slideshow_opened #recipe_list{
 	flex-shrink: 0;
 	flex-grow: 0;
 }
-#recipe_list .entry.add_recipe{
+#recipe_list .entry.add_recipe,
+#recipe_list .entry.shopping_list{
 	padding: 10px 10px 50px 10px;
 }
-#recipe_list .entry.add_recipe img{
+#recipe_list .entry.add_recipe img,
+#recipe_list .entry.shopping_list img{
 	display: block;
 	width: 80px;
 	height: 80px;
 	margin: 0px auto;
 	margin-top: 30px;
 }
-#recipe_list .entry.add_recipe span{
+#recipe_list .entry.add_recipe span,
+#recipe_list .entry.shopping_list span{
 	display: block;
 	text-align: center;
 }
@@ -1188,6 +1191,10 @@ body.slideshow_opened #recipe_list{
 	.recipe_detail .edit_buttons{
 		right: 10px;
 	}
+}
+
+.recipe_detail > .wrapper_ingredients{
+	padding-bottom: 50px;
 }
 
 /* recipe-editor */
