@@ -35,7 +35,10 @@
 	<meta name="robots" content="noindex, nofollow">
     <title><?php echo LANG_PAGE_TITLE; ?></title>
     
-    <script>var web_url = "<?php echo WEB_URL ?>";</script>
+    <script>
+        const WEB_URL = "<?php echo WEB_URL ?>";
+        var LANG_FORM_DEFAULT_ERROR = '<?php echo LANG_FORM_DEFAULT_ERROR; ?>';
+    </script>
 
     <?php if (TEST_SERVER) { ?>
 
@@ -62,18 +65,12 @@
 
     <?php } else { ?>
 
-    
-    
         <link type="text/css" rel="stylesheet" href="/static/external_libs/bootstrap/css/bootstrap.min.css">
         <link type="text/css" rel="stylesheet" href="/static/external_libs/bootstrap/css/bootstrap-theme.min.css">
 	    <link type="text/css" rel="stylesheet" href="/static/bundle.min.css?v=6">
         <script src="/static/bundle.min.js?v=6"></script>
 
     <?php } ?>
-
-    <script>
-        var form_default_error = '<?php echo LANG_FORM_DEFAULT_ERROR; ?>';
-    </script>
 </head>
 <body>
 

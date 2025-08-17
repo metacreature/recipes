@@ -262,10 +262,12 @@ $(function() {
         
 
         html += '<div class="recipe_name">';
-        if(data.is_favorite) {
-            html += '<img src="/static/images/icons/heart-sharp.svg" class="favimg" alt="">';
-        } else {
-            html += '<img src="/static/images/icons/heart-outline.svg" class="favimg" alt="">';
+        if (IS_LOGIN) {
+            if(data.is_favorite) {
+                html += '<img src="/static/images/icons/heart-sharp.svg" class="favimg" alt="">';
+            } else {
+                html += '<img src="/static/images/icons/heart-outline.svg" class="favimg" alt="">';
+            }
         }
         html += html_special_chars(data.recipe_name);
         if (parseInt(data.public) == 0) {
@@ -328,10 +330,13 @@ $(function() {
             e.preventDefault(); 
             deleteRecipe(data, node, html_deleted);
         });
-        node.find('.recipe_name').on('click', function(e) {
-            e.preventDefault(); 
-            toggleFavorite(data, node);
-        });
+
+        if (IS_LOGIN) {
+            node.find('.recipe_name').on('click', function(e) {
+                e.preventDefault(); 
+                toggleFavorite(data, node);
+            });
+        }
 
         node.on('mousedown', clearIngredientsInputs);
     }
@@ -397,7 +402,7 @@ $(function() {
     // form
 
     $('.filter_form').ajax_form({
-        'default_error': form_default_error,
+        'default_error': LANG_FORM_DEFAULT_ERROR,
         'success': function(form, button, data) {
             if (data.success) {
                 if ($('.filter_form input[name="recipe_name"]').val() == ''){

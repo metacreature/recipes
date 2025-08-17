@@ -27,14 +27,14 @@
 
 try{
 	if (top != self) {
-		if (web_url && document.location.href.indexOf(web_url) !== 0) {
-			top.location.href = web_url;
+		if (WEB_URL && document.location.href.indexOf(WEB_URL) !== 0) {
+			top.location.href = WEB_URL;
 		} else {
 			top.location.href = self.location.href;
 		}
 	}
-	if (web_url && document.location.href.indexOf(web_url) !== 0) {
-		top.location.href = web_url;
+	if (WEB_URL && document.location.href.indexOf(WEB_URL) !== 0) {
+		top.location.href = WEB_URL;
 	}
 } catch(e) {}
 

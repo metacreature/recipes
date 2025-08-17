@@ -105,6 +105,7 @@ class Controller_Recipes_List extends Controller_Base
                 0,
             );
         }
+        $is_login =  Controller_Base::is_login();
         require_once (DOCUMENT_ROOT . '/views/recipes/list.view.html');
     }
 

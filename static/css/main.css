@@ -983,7 +983,6 @@ body.slideshow_opened #recipe_list{
 	padding-bottom: 5px;
 	width: calc(100% - 120px);
 	text-transform: uppercase;
-	cursor: pointer;
 	margin-left: -5px;
 }
 .recipe_detail .recipe_name img{
@@ -993,6 +992,9 @@ body.slideshow_opened #recipe_list{
 	margin-left: 5px;
 	display: inline-block;
 	margin-top: -3px;
+}
+.recipe_detail .recipe_name:has(img.favimg) {
+	cursor: pointer;
 }
 .recipe_detail .tags{
 	font-size: 14px;

@@ -52,7 +52,7 @@
 
 <script>
     $('.login_form').ajax_form({
-        'default_error': form_default_error,
+        'default_error': LANG_FORM_DEFAULT_ERROR,
         'success': function(form, button, data) {
             if (data.success) {
                 top.location.replace('<?php echo !empty($_GET['target']) ? str_replace("'", "\\'", $_GET['target']) :  SETTINGS_LANDING_PAGE; ?>');
