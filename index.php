@@ -24,7 +24,7 @@
  SOFTWARE.
 */
 
-$time_start =  microtime(true);
+$time_start = microtime(true);
 
 function log_runtime() {
 	global $time_start;
